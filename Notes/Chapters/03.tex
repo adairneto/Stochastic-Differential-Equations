@@ -1,0 +1,434 @@
+\chapter{Stochastic Integrals}
+
+\section{Formalizing the `noise'}
+
+To study the equation \eqref{eq:sde}, the first step is to give a formalization for the `noise' that we are going to consider. In our case, we'll consider the `white noise', which is a generalized stochastic process $W_t$ with gaussian probability distribution with mean zero, finite variance such that $\mathbb{E}[W_sW_t]=0$ whenever $t\neq s$.
+
+In other words, the `noise' will be represented by some stochastic process $W_t$ and our goal is to satisfy the following properties:
+\begin{itemize}
+	\item If $t_1 \neq t_2$, then $W_{t_1}$ and $W_{t_2}$ are independent.
+	\item The collection $\{W_t\}$ is stationary, i.e., the joint distribution of any collections of $W_t$ does not depend on $t$.
+	\item $\mathbb{E}[W_t] = 0$ for all $t$.
+\end{itemize}
+
+However, this process $W_t$ does not have reasonable properties (does not have continuous paths, and it is not measurable for finite time). So our first goal is to replace $W_t$ with some convenient stochastic process.
+
+Let $0 = t_0 < t_1 < \ldots < t_m = t$ and consider the discrete version
+\[
+	X_{k+1} - X_k = b(t_k,X_k)\Delta t_k + \sigma(t_k,X_k)W_k \Delta t_k
+\]
+
+Now, replace $W_k \Delta t_k = \Delta V_k = V_{k+1} - V_k$, where $V_t$ is a stochastic process. Since we want $V_t$ to have stationary independent increments with mean zero, the only suitable process with continuous paths is the Brownian motion, represented in the Figure \ref{fig:brownian_motion}.
+
+Hence, we take $V_t = B_t$, thus obtaining
+\[
+	X_k = X_0 + \sum_{j=0}^{k-1} b(t_j, X_j) \Delta t_j + \sum_{j=0}^{k-1} \sigma(t_j, X_j) \Delta B_j
+\]
+
+Taking the limit as $\Delta t_j$ goes to zero, we have
+\[
+	X_k = X_0 + \int_0^t b(s, X_s) \, \mathrm{d}s + \int_0^t \sigma(s, X_s) \, \mathrm{d}B_s
+\]
+
+Notice that
+\[
+B_t-B_s=W_s(t-s)
+\]
+for all $t\geq s$, i.e., the `white noise' is the derivative, with respect to time, of the Brownian motion.
+
+\begin{figure}[h!]
+\centering
+\pgfmathsetseed{3}
+\begin{tikzpicture}[scale=1.2]
+  \begin{axis}
+    \addplot table [
+        brownian motion = {%
+        	start = 0,	
+            max =  0.5,
+            min = -0.75
+        }
+    ] {\loadedtable};
+    \addplot table [
+        brownian motion = {%
+            start =  0,
+            min   = -0.5,
+            max   =  0.75
+        }
+    ] {\loadedtable};
+  \end{axis}
+\end{tikzpicture}
+\caption{Two realizations of the Brownian motion \cite{texexchange:brownian-tikz}}
+\label{fig:brownian_motion}
+\end{figure}
+
+\section{Preparing the Terrain}
+
+Now we can start treating the equation. In order to do that, notice that in the determinist case, in which there isn't a `noise', we have an equation of the form
+\begin{equation}
+	\frac{\, \mathrm{d} X_t}{\, \mathrm{d} t} = b(t, X_t), \quad X_0 = x_0
+\end{equation}
+
+In this case, a solution is a function $X_t$ such that
+\begin{equation}
+	X_t - X_0 = \int_0^T b(s, X_s) \, \mathrm{d}s
+\end{equation}
+This function can be understood as a stochastic process over a space of probability given by a single point.
+
+Using the formalism above, we propose as a solution to the equation \eqref{eq:sde} an identity of the form
+\begin{equation}\label{eq:sde-sol-prop}
+	X_t - X_0 = \int_0^t b(s, X_s) \, \mathrm{d}s + \int_0^t \sigma(s, X_s) \, \mathrm{d}B_s
+\end{equation}
+where the left integral is a Lebesgue-Stieltjes' integral, but the right integral is what still needs to be formalized. 
+
+As said earlier, our task is to understand the following integral
+\begin{equation}\label{eq:gen_ito_integrand}
+	\int_S^T f(t, \omega) \, \mathrm{d}B_t(\omega)
+\end{equation}
+where $f : [0, \infty] \times \Omega \longrightarrow \textbf{R}$.
+
+The idea will be the following: we'll first define the integral for the most elementary functions and, after that, using approximations and convergence criteria, we'll define it for the other classes of functions.
+
+Since it is natural to approximate a given function $f(t, \omega)$ by
+\[
+	\sum_j f(t_j^\ast, \omega) \chi_{[t_j, t_{j+1})}(t)
+\]
+where $t_j^\ast \in [t_j, t_{j+1}]$, we could define the integral \eqref{eq:gen_ito_integrand} as follows
+\[
+	\int_S^T f(t, \omega) \, \mathrm{d}B_t(\omega) = \lim_{n \to \infty} f(t_j^\ast,\omega) [B_{t_{j+1}} - B_{t_j}](\omega)
+\]
+
+However, the choice of points $t_j^\ast$ make a difference here. If we take $t_j^\ast = t_j$, the left end point, then we obtain the \textbf{Itô integral}, denoted by
+\[
+	\int_S^T f(t, \omega) \, \mathrm{d}B_t(\omega)
+\]
+
+If, on the other hand, we take $t_j^\ast = (t_j + t_{j+1})/2$, the mid point, then we obtain the \textbf{Stratonovich integral}, denoted by
+\[
+	\int_S^T f(t, \omega) \circ \, \mathrm{d}B_t(\omega)
+\]
+
+One of the advantages of Itô integral is its application in Finance. Intuitively, by taking the leftmost point, one does not have to know the future, like whether a stock goes up or down.
+
+Related to this intuition, and developing the Ito integral, we must restrict ourselves to functions $f$ that only depends on the behaviour of $B_s(\omega)$ up to the time $t_j$. 
+
+\begin{definition}[]{}{}
+	Let $B_t(\omega)$ be a Brownian motion. We define $\mathfrak{F}_t$ as the $\sigma$-algebra generated by the random variables $B_s$, where $s \leq t$. I.e., $\mathfrak{F}_t$ is the smallest $\sigma$-algebra containing all sets
+	\[
+		\{ \omega : B_{t_1}(\omega) \in F_1, \ldots, B_{t_k}(\omega) \} \in F_k
+	\]
+	where $t_j \leq t$ and $F_j \subseteq \textbf{R}^n$ are Borel sets, $j \leq k = 1, 2, \ldots$.
+\end{definition}
+
+The intuition behind this definition is that $\mathfrak{F}_t$ can be thought as the `history of $B_s$ up to the time $t$'. A function $h(\omega)$ is $\mathfrak{F}_t$-measurable if $h$ depends only on the values from $B_0$ up to $B_t$. I.e., it does not depend on the `future'. 
+
+\begin{definition}[]{$\mathfrak{N}_t$-Adapted}{}
+	Let $\{ \mathfrak{N}_t \}_{t \geq 0}$ be an increasing family of $\sigma$-algebras of subsets of $\Omega$. A process $g(t,\omega) : [0, \infty) \times \Omega \longrightarrow \textbf{R}^n$ is \textbf{$\mathfrak{N}_t$-adapted} if for each $t \geq 0$ the function $\omega \longrightarrow g(t,\omega)$ is $\mathfrak{N}_t$-measurable.
+\end{definition}
+
+\begin{example}
+	The process $h_1(t, \omega) = B_{t/2}(\omega)$ is $\mathfrak{F}_t$-measurable and, hence, $\mathfrak{F}_t$-adapted. Notice that this process only depends on previous information.
+	
+	However, the process $h_2(t, \omega) = B_{2t}(\omega)$ is not $\mathfrak{F}_t$-measurable and, hence, it is not $\mathfrak{F}_t$-adapted. That's because the process $h_2$ depends on future information.
+\end{example}
+
+%Example. Let $T > 0$, and $\Delta (t) = \max_{t < s < T} \{ X_s \}$ is not adapted to $X_t$.
+%
+%If $B_t \sim N(0,t)$ and $X_t = \sigma B)t \sim N(0, \sigma^2 t)$ and $\int \sigma \, \mathrm{d}B_t$.
+%
+%If $\Delta(t)$ is a process depending only on $t$, then 
+%\[
+%	X(t) = \int \Delta(t) \, \mathrm{d}B_t
+%\]
+%has Normal distribution at all time.
+
+\section{Constructing the Itô Integral}
+
+The class of functions for which the Itô integral will be first defined is the following.
+
+\begin{definition}[]{}{}\label{def:ito-class}
+	Let $\mathfrak{V}(S,T)$ be the class of functions
+	\[
+		f(t, \omega) : [0, \infty) \times \Omega \longrightarrow \textbf{R}
+	\]
+	such that
+	\begin{enumerate}
+		\item The function $(t, \omega) \longrightarrow f(t, \omega)$ is $\mathfrak{B} \times \mathfrak{F}$-measurable, where $\mathfrak{B}$ denotes the Borel $\sigma$-algebra on $[0, \infty)$.
+		\item The function $f(t,\omega)$ is $\mathfrak{F}_t$-adapted.
+		\item $\mathbb{E} \left[ \int_S^T f(t, \omega)^2 \, \mathrm{d}t \right] < \infty$.
+	\end{enumerate}
+\end{definition}
+
+Given functions $f \in \mathfrak{V}$, in order to define the Ito integral
+\[
+	I[f](\omega) = \int_S^T f(t, \omega)\, \mathrm{d}B_t(\omega)
+\]
+we are going to define $I[\varphi]$ for a simple class of functions $\varphi$ and then show how each $f \in \mathfrak{V}$ can be approximated by $\varphi$.
+
+\begin{definition}[]{Elementary functions}{}
+	A function $\varphi \in \mathfrak{V}$ is \textbf{elementary} if it has the form
+\[
+	\varphi(t, \omega) = \sum_j e_j(\omega) \chi_{[t_j, t_{j+1})}(t)
+\]
+\end{definition}
+
+Since $\varphi \in \mathfrak{V}$, each function $e_j$ is $\mathfrak{F}_j$-measurable. And, as we did before, we define
+\[
+	\int_S^T \varphi (t, \omega) \, \mathrm{d}B_t(\omega) = \sum_{j \geq 0} e_j(\omega) [B_{j+1} - B_j](\omega)
+\]
+
+To further our development of the Ito integral, we need the following result.
+
+\begin{theorem}[]{Itô isometry}{}
+	If $\varphi(t, \omega)$ is bounded and elementary, then
+	\[
+		\mathbb{E}\left[\left( \int_S^T \varphi(t,\omega) \, \mathrm{d}B_t(\omega) \right)^2 \right] = \mathbb{E} \left[\int_S^T \varphi(t,\omega)^2 \, \mathrm{d}t \right]
+	\]
+\end{theorem}
+
+Using this isometry, it is possible to extended the previous definition to functions in $\mathfrak{V}$ by the following steps.
+
+\begin{enumerate}
+	\item Let $g(\omega) \in \mathfrak{V}$ be bounded and continuous for each $\omega$. Then there exists elementary functions $\varphi_n \in \mathfrak{V}$ such that
+	\[
+		\mathbb{E} \left[ \int_S^T (g-\varphi_n)^2 \, \mathrm{d}t \right] \longrightarrow 0
+	\]
+	as $n \to \infty$.
+	\item Let $h \in \mathfrak{V}$ be bounded, then there exists bounded functions $g_n \in \mathfrak{V}$ such that $g_n (\omega)$ are continuous for all $\omega$ and $n$, and
+	\[
+		\mathbb{E} \left[ \int_S^T (h-g_n)^2 \, \mathrm{d}t \right] \longrightarrow 0
+	\]
+	\item Let $f \in \mathfrak{V}$. Then there exists a sequence of functions $(h_n) \subseteq \mathfrak{V}$ such that $h_n$ is bounded for each $n$ and 
+	\[
+		\mathbb{E} \left[ \int_S^T (f-h_n)^2 \, \mathrm{d}t \right] \longrightarrow 0
+	\]
+	as $n \to \infty$.
+\end{enumerate}
+
+Please note that we started from bounded and continuous functions, generalized into bounded functions and then generalized further into any function in our class $\mathfrak{V}$.
+
+These steps can be summarized in the following result, which guarantees that the elementary functions are dense in $\mathfrak{V}(S,T)$.
+
+\begin{theorem}[]{}{}
+If $g\in \mathfrak{V}(S,T)$, then there exists a sequence of elementary functions $\varphi_n\in \mathfrak{V}(S,T)$ such that $\varphi_n\to g$ in $L^2(P)$
+\end{theorem}
+
+Finally, we can define the Itô integral as follows.
+
+\begin{definition}[]{The Itô integral}{}
+	Let $f \in \mathfrak{V}(S,T)$, then the \textbf{Itô integral} of $f$, from $S$ to $T$ is
+	\[
+		\int_S^T f(t, \omega) \, \mathrm{d}B_t(\omega) = \lim_{n \to \infty} \int_S^T \varphi_n (t, \omega)  \, \mathrm{d}B_t(\omega)
+	\]
+	where the limit is in $L^2(P)$ and $(\varphi_n)$ is a sequence of elementary functions such that
+	\[
+		\mathbb{E} \left[ \int_S^T (f(t, \omega) - \varphi_n(t, \omega))^2 \, \mathrm{d}t \right] \longrightarrow 0
+	\] 
+	as $n \to \infty$.
+\end{definition}
+
+This new definition induces a generalized form of the Ito isometry.
+
+\begin{theorem}[]{Ito isometry}{}
+	For all $f \in \mathfrak{V}(S,T)$,	
+	\[
+		\mathbb{E}\left[\left( \int_S^T f(t,\omega) \, \mathrm{d}B_t(\omega) \right)^2 \right] = \mathbb{E} \left[\int_S^T f(t,\omega)^2 \, \mathrm{d}t \right]
+	\]
+\end{theorem}
+
+\begin{corollary}[]{}{}
+	If $f(t, \omega) \in \mathfrak{V}(S,T)$ and $f_n(t, \omega) \in \mathfrak{V}(S,T)$ and
+	\[
+		\mathbb{E}\left[\left( \int_S^T f_n(t,\omega) - f(t, \omega) \right)^2 \, \mathrm{d}t \right] \longrightarrow 0
+		\]
+	as $n \to \infty$, then
+	\[
+		\int_S^T f_n(t, \omega) \, \mathrm{d}B_t(\omega) \longrightarrow \int_S^T f(t, \omega) \, \mathrm{d} B)t(\omega)
+	\]
+	in $L^2(P)$ as $n \to \infty$.
+\end{corollary}
+
+\begin{example}
+	We wish to compute the integral
+	\[
+		\int_0^T B(t) \, \mathrm{d}B(t)
+	\]
+	
+	\textbf{Step 1.} Let
+	\[
+		\varphi_n(t) = \sum_{i=0}^{n-1} B_n(t_i^n)[B_n(t_{i+1}^n) - B_n(t_i^n)]
+	\]
+	be a sequence of elementary functions. Then,
+	\begin{equation*}
+		\begin{aligned}
+			\mathbb{E} \left[ \int_0^T (\varphi_n - B_s)^2 ~\mathrm{d}s \right]
+			&= \mathbb{E} \left[ \sum_j \int_{t_j}^{t_{j+1}} (B_j - B_s)^2 ~\mathrm{d}s \right]
+			= \sum_j \int_{t_j}^{t_{j+1}} (s - t_j)^2 ~\mathrm{d}s \\
+			&= \sum_j \frac{1}{2} \left(t_{j+1} - t_j \right)^2 \longrightarrow 0 \, \text{ when } \Delta t_j \to 0
+		\end{aligned}
+	\end{equation*}
+	I.e., $\varphi_n(t)$ converges to $B(t)$ almost surely as $\max_i (t_{i+1}^n - t_i^n) \to 0$ by the continuity of $B(t)$.
+	
+	\textbf{Step 2.} Now notice that
+	\begin{equation*}
+		\begin{aligned}
+			B_n(t_i)[B_n(t_{i+1}) - B_n(t_i)] &= B_n(t_{i+1}) B_n(t_i) - B_n^2(t_i) + B_n^2(t_{i+1}) - B_n^2(t_{i+1}) \\
+			&= \frac{1}{2} [B_n^2(t_{i+1}) - B_n^2(t_i) - (B_n(t_{i+1}) - B_n(t_i))^2 ]
+		\end{aligned}
+	\end{equation*}
+	
+	\textbf{Step 3.} With these two results, we can write the original integral as
+	\[
+		\int_0^T X_n(t) \, \mathrm{d}B(t) = \frac{1}{2} \sum_{i=0}^{n-1} \left[ B_n^2(t_{i+1}) - B_n^2(t_i) \right] - \frac{1}{2} \sum_{i=0}^{n-1} \left[ B_n(t_{i+1}) - B_n(t_i) \right]^2
+	\]
+	
+	\textbf{Step 4.} Since the first sum is a telescopic sum and the second one converges in probability to $T$ by the quadratic variation of Brownian motion, we have
+	\[
+		\int_0^T X_n(t) \, \mathrm{d}B(t) = \frac{1}{2} B^2(t) - \frac{1}{2} B^2(0) - \frac{1}{2}T = \frac{1}{2} B^2(t) - \frac{1}{2}T 
+	\]
+	
+	Hence, the integral converges in $L^2(P)$ to
+	\[
+		\int_0^T B(t) \, \mathrm{d}B(t) = \lim_{n \to \infty} \int_0^T X_n(t) \, \mathrm{d}B(t) = \frac{1}{2} B^2(t) - \frac{1}{2}T 
+	\]
+\end{example}
+
+\section{Properties} % Shreve p. 148
+
+Before heading to more theoretical and important results, let us notice some natural facts of the Itô integral.
+
+\begin{theorem}[]{}{}
+	Let $f, g \in \mathfrak{V}(0,T)$ and let $0 \leq S < U < T$. Then
+	\begin{enumerate}
+		\item $\int_S^T f \, \mathrm{d}B_t = \int_S^U f \, \mathrm{d}B_t + \int_U^T f \, \mathrm{d}B_t$ for a.a. $\omega$.
+		\item $\int_S^T (cf + g) \, \mathrm{d}B_t = c \int_S^T f \, \mathrm{d}B_t + \int_S^T g \, \mathrm{d}B_t$ where $c \in \textbf{R}$.
+		\item $\mathbb{E} \left[ \int_S^T f \, \mathrm{d}B_t \right] = 0$.
+		\item $\int_S^T f \, \mathrm{d}B_t$ is $\mathfrak{F}_T$-measurable.
+	\end{enumerate}
+\end{theorem}
+
+With the Doob's martingale inequality, it can be proved that the Itô integral can be chosen to depend continuously on $t$. A proof of this fact is on the third chapter of \cite{oksendal2013stochastic}.
+
+Now an important result is that the Itô integral is a martingale.
+
+\begin{theorem}
+	Let $f(t, \omega) \in \mathfrak{V}(0,T)$ for all $T$. Then
+	\[
+		M_t(\omega)  = \int_0^t f(s,\omega)\, \mathrm{d}B_s
+	\]
+	is a martingale w.r.t. $\mathfrak{F}_t$ and for $\lambda, T > 0$
+	\[
+		P \left[ \sup_{0 \leq t \leq T} |M_t| \geq \lambda \right] \leq \frac{1}{\lambda^2} \mathbb{E} \left[ \int_0^T f(s,\omega)^2 \, \mathrm{d}s \right]
+	\]
+\end{theorem}
+
+Summarizing, the Itô integral is continuous, adapted, linear, a martingale, satisfies the Itô isometry and has Quadratic variation.
+
+\section{Extensions}
+
+Using the concept of martingales, we can generalize the Itô integral for a larger class of functions than $\mathfrak{V}$.
+
+Considering the Definition \ref{def:ito-class}, we can relax the condition 2. into
+\begin{itemize}
+	\item[2.'] There exists an increasing familiy of $\sigma$-algebras $\mathfrak{H}_t$ such that $B_t$ is a martingale w.r.t. $\mathfrak{H}_t$ and $f_t$ is $\mathfrak{H}_t$-adapted.
+\end{itemize}
+
+The idea here is that $B_t$ must remain a martingale with respect to the history of $f_s$. 
+
+Another way of extending the Itô integral definition is by weaking the condition 3. into
+\begin{itemize}
+	\item[3.'] $P \left[ \int_S^T f(s, \omega)^2 \, \mathrm{d}s < \infty \right] = 1$
+\end{itemize}
+
+Too understand why this works, let $\mathfrak{W}_{\mathfrak{H}} (S,T)$ denote the class of processes satisfying conditions 1, 2' and 3' above. Then, in the 1-dimensional Brownian motion, for all $t$ there exists step functions $f_n \in \mathfrak{W}_{\mathfrak{H}}$ such that
+\[
+	\int_0^t |f_n - f|^2 \, \mathrm{d}s \longrightarrow 0
+\]
+in probability.
+
+Now, since $\int_0^t f_n(s, \omega) \, \mathrm{d}B_s(\omega)$ converges in probability to a random variable and the limit depends only on $f$, we define
+\[
+	\int_0^t f(s, \omega) \, \mathrm{d}B_s(\omega) = \lim_{n \to \infty} \int_0^t f_n(s, \omega) \, \mathrm{d}B_s(\omega)
+\]
+where the limit is in probability and $f \in \mathfrak{W}_{\mathfrak{H}}$.
+
+\section{Stratonovich integral}
+
+As we saw, the Itô integral is one possible interpretation of the integral 
+\[
+	\int_S^T f(t, \omega) \, \mathrm{d}B_t(\omega)
+\]
+
+The Stratonovich integral is another possibility and, in general, leads to different results (except when the integrating function has a derivative). In some cases, the Stratonovich definition may be adequate.
+
+In other cases, Itô's feature of `not looking in the future' (as \cite{oksendal2013stochastic} puts it), justifies its use in biology and finance, for example. Moreover, Itô integral is a martingale, and Stratonovich's is not. This gives an important computational advantage to Itô's definition. 
+
+And, to quote \cite{shreve2004stochastic},
+
+\begin{quotation}
+	However, it [Stratonovich's integral] is inappropriate for finance. In finance, the integrand represents a position in an asset and the integrator represents the price of that asset. We cannot decide at 1:00 p.m. which position we took at 9:00 a.m. We must decide the position at the beginning of each time interval, and the Ito integral is the limit of the gain achieved by that kind of trading as the time between trades approaches zero.
+\end{quotation}
+
+However, Stratonovich integral is used in manifolds and is of particular interest to physicists for obeying rules of classical calculus, such as the chain rule.
+
+% DRAFTS
+
+%\begin{theorem}
+%	If $g(t, B_t)$ is adapted to $B_t$, then
+%	\[
+%		\int g(t,B_t) \, \mathrm{d}B_t
+%	\]
+%	is a martingale as long as $g$ is `reasonable'.
+%\end{theorem}
+%
+%If a SDE has a drift term, then it is not a martingale. If it doesn't, then it is a martingale.
+
+%Differential form of the quadratic variation:
+%	\[
+%		(\, \mathrm{d}B_t)^2 = \, \mathrm{d}t
+%	\]
+%	
+%Simple Ito's Lemma: $\, \mathrm{d} f = f'(B_t)dB_t + 1/2 f''(B_t)\, \mathrm{d}t$
+%
+%Ito's Lemma: if $f$ is smooth function, $X_t : \, \mathrm{d}X_t = \mu \, \mathrm{d}t + \sigma \, \mathrm{d}B_t$, then
+%\[
+%	\, \mathrm{d} f(t, X_t) = \left( \frac{\partial f}{\partial t} + \mu \frac{\partial f}{\partial x} + \frac{1}{2} \sigma^2 \frac{\partial^2 f}{\partial x^2} \right) \, \mathrm{d}t + \sigma \frac{\partial f}{\partial x} \, \mathrm{d}B_t
+%\]
+%
+%Proof: take Taylor expansion.
+%
+%Example:
+%
+%If $f(X) = X^2$, then 
+%\[
+%	\, \mathrm{d}f(B_t) = 2 B_t \, \mathrm{d} B_t + \frac{1}{2} 2 \, \mathrm{d}t
+%\]
+%because $\frac{\partial f}{\partial t} = 0$, $\frac{\partial f}{\partial x} = 2x$, $\frac{\partial^2 f}{\partial x^2} = 2$, $\mu = 0$, and $\sigma = 1$.
+%
+%Another way:
+%\[
+%	\, \mathrm{d}f(B_t) = \frac{\partial f}{\partial t} \, \mathrm{d}t + \frac{\partial f}{\partial x} \, \mathrm{d}B_t + \frac{1}{2} \frac{\partial^2 f}{\partial x^2} (\, \mathrm{d}B_t)^2 = 2 B_t \, \mathrm{d} B_t + \, \mathrm{d} t
+%\]
+%
+%Example:
+%
+%If $f(t,X) = e^{\mu t + \sigma X}$, then
+%\begin{equation*}
+%\begin{aligned}
+%	\, \mathrm{d}f(t, B_t) &= \frac{\partial f}{\partial t} \, \mathrm{d}t + \frac{\partial f}{\partial x} \, \mathrm{d}B_t + \frac{1}{2} \frac{\partial^2 f}{\partial x^2} (\, \mathrm{d}B_t)^2 \\
+%	&= \mu e^{\mu t + \sigma x}\, \mathrm{d}t + \sigma e^{\mu t + \sigma x} \, \mathrm{d}B_t + \frac{1}{2} \sigma^2 e^{\mu t + \sigma x} \, \mathrm{d}t \\
+%	&= \left( \mu + \frac{1}{2} \sigma^2 \right) f \, \mathrm{d}t + \sigma f \, \mathrm{d}B_t
+%\end{aligned}
+%\end{equation*}
+%
+%Integral Definition:
+%\[
+%	F(t, B_t) = \int f(t, B_t) \, \mathrm{d}B_t + \int g(t, B_t) \, \mathrm{d}t
+%\]
+%if
+%\[
+%	\, \mathrm{d}F = f \, \mathrm{d}B_t + g \, \mathrm{d}t
+%\]
+
+In this section, we presented a formalism for modeling evolution process with noise using the Brownian motion. We saw that the classical notion of solution doesn't work and we proposed a new interpretation. As a result, it was necessary to construct a new theory of integration and, with that, the Itô and Stratonovich integrals. We hence studied the properties of these integrals.
+
+Given that, we can advance on more elaborated questions, for example: does the equation \eqref{eq:sde} has a solution? Under which hypothesis? How can we study the behavior of the solution?

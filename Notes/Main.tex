@@ -1,0 +1,44 @@
+\documentclass[tikz]{report}
+
+\include{Preamble/Pacotes}% Pacotes usados
+\include{Preamble/Teoremas}% Definição das estruturas de teorema
+\include{Preamble/Config}% Configurações de formatação
+\include{Preamble/Comandos}% Comandos definidos
+\include{Preamble/tableofcontents}
+
+\everymath{\displaystyle}
+
+\begin{document}
+
+
+%MODELO DA CAPA 1:
+\tituloum
+{Stochastic Differential Equations}
+{Study Notes}
+{\href{https://github.com/adairneto}{Adair Antonio da Silva Neto}}
+{\href{https://www.ime.unicamp.br/}{IMECC \textendash UNICAMP}}
+{2022}
+
+%MODELO DE CAPA 2:
+%\include{Preamble/Capa}
+
+\thispagestyle{empty}
+\pagenumbering{roman}
+\tableofcontents
+
+\newpage
+
+\pagenumbering{arabic}
+\include{Chapters/01}
+\include{Chapters/02}
+\include{Chapters/03}
+
+\appendix
+\include{Chapters/a01}
+
+\nocite{*}
+\bibliographystyle{alpha}
+\bibliography{Main.bib}
+\addcontentsline{toc}{chapter}{References}
+
+\end{document}
