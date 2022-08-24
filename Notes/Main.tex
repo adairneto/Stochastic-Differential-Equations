@@ -1,34 +1,20 @@
-\documentclass[tikz]{report}
+\documentclass[12pt,a4paper]{report}
+\input{../../LaTeX_Template/preamble.tex}
+\input{./pretikz.tex}
 
-\include{Preamble/Pacotes}% Pacotes usados
-\include{Preamble/Teoremas}% Definição das estruturas de teorema
-\include{Preamble/Config}% Configurações de formatação
-\include{Preamble/Comandos}% Comandos definidos
-\include{Preamble/tableofcontents}
-
-\everymath{\displaystyle}
+% Title
+\author{\sffamily \href{https://github.com/adairneto}{Adair Antonio da Silva Neto}}
+\title{\sffamily \uppercase{Stochastic Differential Equations}}
+\date{\sffamily \today}
 
 \begin{document}
 
-
-%MODELO DA CAPA 1:
-\tituloum
-{Stochastic Differential Equations}
-{Study Notes}
-{\href{https://github.com/adairneto}{Adair Antonio da Silva Neto}}
-{\href{https://www.ime.unicamp.br/}{IMECC \textendash UNICAMP}}
-{2022}
-
-%MODELO DE CAPA 2:
-%\include{Preamble/Capa}
-
-\thispagestyle{empty}
-\pagenumbering{roman}
+% Make title and TOC, start counting pages
+\maketitle
 \tableofcontents
+\thispagestyle{empty}
+\setcounter{page}{1}
 
-\newpage
-
-\pagenumbering{arabic}
 \include{Chapters/01}
 \include{Chapters/02}
 \include{Chapters/03}

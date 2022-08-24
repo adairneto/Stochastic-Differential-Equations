@@ -4,7 +4,7 @@
 
 Given a set $S$, on what collection $\mathfrak{S}$ of subsets of $S$ are suitable to be a domain of measure?
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $S$ be a set and $\mathfrak{S}$ be a family of subsets of $S$. Then $\mathfrak{S}$ is called a \textbf{$\sigma$-algebra} on $S$ if
 	\begin{enumerate}
 		\item $\emptyset, S \in \mathfrak{S}$.
@@ -23,7 +23,7 @@ Particularlly, the smallest $\sigma$-algebra containing all of the open sets of 
 
 Now, how can we assign a size (or a probability) to all the sets in $\mathfrak{S}$?
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $(S, \mathfrak{S})$ be a measurable space. A \textbf{measure} is an extended real-valued function $\mu : \mathfrak{S} \longrightarrow \overline{\textbf{R}}$ such that 
 	\begin{enumerate}
 		\item $\mu ( \emptyset ) = 0$;
@@ -44,7 +44,7 @@ If $\mu(S) = 1$, then $\mu$ is a \textbf{probability measure} and $(S, \mathfrak
 
 Notice that if $A, B \in \mathfrak{S}$ and $A \subseteq B$, then $\mu(A) \leq \mu(B)$. If $\mu(A) < \infty$, then $\mu(B \setminus A) = \mu(B) - \mu(A)$.
 
-\begin{theorem}[]{}{}
+\begin{theorem}
 	Let $(S, \mathfrak{S}, \mu)$ be a measure space.
 	\begin{enumerate}
 		\item If $(A_n)_{n=1}^\infty$ is an increasing sequence in $\mathfrak{S}$ (i.e. if $A_n \subseteq A_{n+1}$ for all $n$), then \[ \mu \left( \bigcup_{n=1}^\infty A_n \right) = \lim_{n \to \infty} \mu(A_n) \] 
@@ -54,7 +54,7 @@ Notice that if $A, B \in \mathfrak{S}$ and $A \subseteq B$, then $\mu(A) \leq \m
 
 First, we define a measure on a small family of sets and then present an extension theorem.
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $S$ be a set and $\mathfrak{A}$ be a family of subsets of $S$. Then $\mathfrak{A}$ is called an \textbf{algebra} if 
 	\begin{enumerate}
 		\item $\emptyset, S \in \mathfrak{A}$;
@@ -65,7 +65,7 @@ First, we define a measure on a small family of sets and then present an extensi
 
 I.e., an algebra is closed under complementation and finite union. On an algebra, the idea of measure is very much similar to the definition on a $\sigma$-algebra.
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $S$ be a set, and let $\mathfrak{A}$ be an algebra of subsets of $S$. A \textbf{measure} is a real-valued function $\mu : \mathfrak{A} \longrightarrow \overline{\textbf{R}}$ such that 
 	\begin{enumerate}
 		\item $\mu ( \emptyset ) = 0$;
@@ -78,23 +78,23 @@ Notice that last item is different from the definition on a $\sigma$-algebra. He
 
 Although it is easier to define measures on algebras, it is more convenient to work with $\sigma$-algebras.
 
-\begin{theorem}[]{Caratheodory Extension Theorem}{}\label{thm:caratheodory}
+\begin{theorem}[Caratheodory Extension Theorem]\label{thm:caratheodory}
 	Let $S$ be a set, $\mathfrak{A}$ an algebra of its subsets, and $\mu$ a measure on $\mathfrak{A}$. Let $\mathfrak{S}$ be the smallest $\sigma$-algebra containing $\mathfrak{A}$. Then there exists a measure $\mu^{\ast}$ on $\mathfrak{S}$ such that $\mu(A) = \mu^{\ast}(A)$, for all $A \in \mathfrak{A}$.
 \end{theorem}
 
 To rule out the possibility of more than one extension of $\mu$ to $\mathfrak{S}$, we'll need the following definition
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $S$ be a set, $\mathfrak{A}$ an algebra of its subsets, and $\mu$ a measure on $\mathfrak{A}$. If there is a countable sequence of sets $(A_i)_{i=1}^\infty \in \mathfrak{A}$ with $\mu(A_i) < \infty$ for all $i$, and $S = \bigcup_{i=1}^\infty A_i$, then $\mu$ is called \textbf{$\sigma$-finite}.
 \end{definition}
 
 By definition, any probability measure is $\sigma$-finite. And the next theorem shows that the extension of a $\sigma$-finite measure is unique.
 
-\begin{theorem}[]{Hahn Extension Theorem}{}
+\begin{theorem}[Hahn Extension Theorem]
 	Let $S$, $\mathfrak{A}$, $\mu$ and $\mathfrak{S}$ be as specified in \hyperref[thm:caratheodory]{Caratheodory Extension Theorem}. If $\mu$ is $\sigma$-finite, then the extension $\mu^{\ast}$ to $\mathfrak{S}$ is unique.
 \end{theorem}
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $(S, \mathfrak{S}, \mu)$ be a measure space, $A \in \mathfrak{S}$ be any set with measure zero, and let $C \subseteq A$. Denoting by $\mathfrak{C}$ the family of such sets $C$, i.e.,
 	\[
 		\mathfrak{C} = \{ C \subset S : C \subseteq A \text{ for some } A \in \mathfrak{S} \text{ with } \mu(A) = 0 \}
@@ -110,7 +110,7 @@ Intuitively, $\mathfrak{S}'$ consists of all the subsetes of $S$ that differ fro
 
 \section{Measurable Functions}
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Given a measurable space $(S, \mathfrak{S})$, a real-valued function $f : S \longrightarrow \textbf{R}$ is \textbf{measurable with respect to $\mathfrak{S}$} (or \textbf{$\mathfrak{S}$-measurable}) if 
 	\[
 		\{ s \in S : f(s) \leq a \} \in \mathfrak{S}, \, \forall a \in \textbf{R}
@@ -148,7 +148,7 @@ As we'll see in the next two theorems, the set of all measurable functions consi
 
 First, any function $f$ that is pointwise limit of a sequence $(f_n)$ of measurable function is itself measurable.
 
-\begin{theorem}[]{Pointwise convergence preserves measurability}{}
+\begin{theorem}[Pointwise convergence preserves measurability]
 	Let $(S, \mathfrak{S})$ be a measurable space, and let $(f_n)$ be a sequence of $\mathfrak{S}$-measurable functions converging pointwise to $f$, i.e.,
 	\[
 		\lim_{n \to \infty} f_n(s) = f(s), \, \forall s \in S
@@ -161,7 +161,7 @@ Second, any measurable function $f$ can be expressed as the pointwise limit of a
 
 The idea is that we can construct a class of measurable functions by taking the class of measurable simple function and then closing this under pointwise convergence. The next result shows that this set contains all the measurable functions.
 
-\begin{theorem}[]{Approximation of measurable functions by simple functions}{}
+\begin{theorem}[Approximation of measurable functions by simple functions]
 	Let $(S, \mathfrak{S})$ be a measurable space. If $f : S \longrightarrow \textbf{R}$ is $\mathfrak{S}$-measurable, then there exists a sequence of measurable simple functions $(\varphi_n)$ such that $\varphi_n \longrightarrow f$ pointwise. If $0 \leq f$, then the sequence can be chosen so that 
 	\[
 		0 \leq \varphi_n \leq \varphi_{n+1} \leq f
@@ -179,7 +179,7 @@ Some important properties follow. Suppose that $f$ and $g$ are $\mathfrak{S}$-me
 	\item The composition of Borel measurable functions are Borel measurable. However, this is not true for Lebesgue measurable functions.
 \end{itemize}
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $(S, \mathfrak{S})$ and $(T, \mathfrak{T})$ be measurable spaces. Then the function $f : S \longrightarrow T$ is \textbf{measurable} if the inverse image of every measurable set is measurable, i.e., 
 	\[
 		\{ s \in S : f(s) \in A \} \in \mathfrak{S}, \, \forall A \in \mathfrak{T}
@@ -188,11 +188,11 @@ Some important properties follow. Suppose that $f$ and $g$ are $\mathfrak{S}$-me
 
 Hence, if $(S, \mathfrak{S})$, $(T, \mathfrak{T})$, and $(U, \mathfrak{U})$ are measurable spaces, and $f : S \longrightarrow T$ and $g : T \longrightarrow U$ are measurable functions, then $h : S \longrightarrow U$ defined by $h(s) = g \circ f(s)$ is a measurable function.
 
-\begin{definition}[]{Measurable selection}{}
+\begin{definition}[Measurable selection]
 	Let $(S, \mathfrak{S})$ and $(T, \mathfrak{T})$ be measurable spaces, and let $\Gamma$ be a correspondence of $S$ into $T$. Then the function $h : S \longrightarrow T$ is a \textbf{measurable selection from $\Gamma$} if $h$ is measurable and $h(s) \in \Gamma(s)$, for all $s \in S$.
 \end{definition}
 
-\begin{theorem}[]{Measurable Selection}{}
+\begin{theorem}[Measurable Selection]
 	Let $S \subseteq \textbf{R}^l$ and $T \subseteq \textbf{R}^m$ be Borel sets, with their Borel subsets $\mathfrak{S}$ and $\mathfrak{T}$. Let $\Gamma : S \longrightarrow T$ be a nonempty compact-valued and upper hemi-continuous (UHC) correspondence. Then there exists a measurable selection from $\Gamma$.
 \end{theorem}
 
@@ -202,7 +202,7 @@ Let $(S, \mathfrak{S}, \mu)$ be a fixed measure space and $M(S, \mathfrak{S})$ b
 
 For a nonnegative, measurable and simple function, we have the following definition.
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $\varphi \in M^+(S, \mathfrak{S})$ be a measurable simple function, with the standard representation $\varphi(s) = \sum_{i=1}^n a_i \chi_{A_i}(s)$. Then the \textbf{integral of $\varphi$ with respect to $\mu$} is 
 	\[
 		\int_S \varphi(s) \, \mu(\mathrm{d} s) = \sum_{i=1}^n a_i \mu(A_i)
@@ -211,7 +211,7 @@ For a nonnegative, measurable and simple function, we have the following definit
 
 To extended from simple functions to all $M^+(S, \mathfrak{S})$, we define
 
-\begin{definition}[]{}{}
+\begin{definition}
 	For $f \in M^+(S, \mathfrak{S})$, the \textbf{integral of $f$ with respect to $\mu$} is 
 	\[
 		\int_A f(s) \, \mu(\mathrm{d}s) = \int_S f(s) \chi_A (s) \mu(\mathrm{d}s)
@@ -223,7 +223,7 @@ Since any function $f \in M^+(S, \mathfrak{S})$ can be expressed as the limit of
 
 Before that, the following result shows that a simple function on a measure space can be used to define a new measure on the space.
 
-\begin{lemma}[]{}{}
+\begin{lemma}
 	If $\varphi \in M^+(S, \mathfrak{S})$ is a simple function and $\lambda: \mathfrak{S} \longrightarrow \textbf{R}$ is defined by
 	\[
 		\lambda(A) = \int_A \varphi\, \mathrm{d}\mu 
@@ -231,7 +231,7 @@ Before that, the following result shows that a simple function on a measure spac
 	for all $A \in \mathfrak{S}$, then $\lambda$ is a measure on $\mathfrak{S}$.
 \end{lemma}
 
-\begin{theorem}[]{Monotone Convergence Theorem}{}
+\begin{theorem}[Monotone Convergence Theorem]
 	If $(f_n)$ is a monotone increasing sequence of functions in $M^+(S, \mathfrak{S})$ converging pointwise to $f$ then 
 	\[
 		\int f\, \mathrm{d}\mu = \lim_{n \to \infty} \int f_n \, \mathrm{d} \mu
@@ -269,7 +269,7 @@ Some important properties:
 	\]
 \end{enumerate}
 
-\begin{lemma}[]{Fatou's Lemma}{}
+\begin{lemma}[Fatou's Lemma]
 	If $(f_n)$ is a sequence of functions in $M^+(S, \mathfrak{S})$, then
 	\[
 		\int (\liminf f_n)\, \mathrm{d}\mu \leq \liminf \int f_n\, \mathrm{d}\mu
@@ -295,7 +295,7 @@ and
 
 Hence, if $f$ is measurable, $f^+$ and $f^-$ are both in $M^+(S, \mathfrak{S})$ and $f = f^+ - f^-$. This motivates the following generalization.
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $(S, \mathfrak{S}, \mu)$ be a measure space, and let $f$ be a measurable real-valued function on $S$. If $f^+$ and $f^-$ both have finite integrals with respect to $\mu$, then $f$ is integrable and the \textbf{integral of $f$ with respect to $\mu$} is 
 	\[
 		\int f \, \mathrm{d}\mu = \int f^+ \, \mathrm{d}\mu - \int f^- \, \mathrm{d}\mu
@@ -316,14 +316,14 @@ Now let $L(S, \mathfrak{S}, \mu)$ denote the set of all $\mathfrak{S}$-measurabl
 	\item If $f$ and $g$ are $\mu$-integrable and $\alpha \in \textbf{R}$, then $\alpha f$ and $f + g$ are $\mu$-integrable, satisfying the standard rules of calculus.
 \end{enumerate}
 
-\begin{theorem}[]{Lebesgue Dominated Convergence Theorem}{}
+\begin{theorem}[Lebesgue Dominated Convergence Theorem]
 	Let $(S, \mathfrak{S}, \mu)$ be a measure space, and let $(f_n)$ be a sequence of integrable functions that converges almost everywhere to a measurable function $f$.If there exists an integrable function $g$ such that $|f_n| \leq g$ for all $n$, then $f$ is integrable and
 	\[
 		\int f \, \mathrm{d}\mu = \lim \int f_n \, \mathrm{d}\mu
 	\]
 \end{theorem}
 
-\begin{definition}[]{}{}
+\begin{definition}
 	Let $\lambda$ and $\mu$ be finite measures on $(S, \mathfrak{S})$. If
 	\[
 		\mu(A) = 0 \implies \lambda(A) = 0 \, \forall A \in \mathfrak{S}
@@ -335,7 +335,7 @@ Now let $L(S, \mathfrak{S}, \mu)$ denote the set of all $\mathfrak{S}$-measurabl
 	If there are disjoint sets $A, B \in \mathfrak{S}$ such that $\lambda$ is concentrated on $A$ and $\mu$ is concentrated on $B$, then $\lambda$ and $\mu$ are \textbf{mutually singular}, written $\lambda \perp \mu$.
 \end{definition}
 
-\begin{theorem}[]{Radon-Nikodym Theorem}
+\begin{theorem}[Radon-Nikodym Theorem]
 	Let $\lambda$ and $\mu$ be $\sigma$-finite positive measures on $(S, \mathfrak{S})$ with $\lambda << \mu$. Then there exists an integrable function $h$ such that
 	\[
 		\lambda(A) = \int_A h(s) \, \mu(\mathrm{d}s), \, \text{ all } A \in \mathfrak{S}
@@ -343,7 +343,7 @@ Now let $L(S, \mathfrak{S}, \mu)$ denote the set of all $\mathfrak{S}$-measurabl
 	And the function $h$ is called the \textbf{Radon-Nikodym derivative} of $\lambda$ with respect to $\mu$.
 \end{theorem}
 
-\begin{lemma}[]{}{}
+\begin{lemma}
 	Let $\lambda_1$ and $\lambda_2$ be finite measures on $(S, \mathfrak{S})$. Then there exists a triple of measures $\gamma, \alpha_1, \alpha_2$ such that
 	\[
 		\lambda_i = \gamma + \alpha_1
@@ -357,17 +357,17 @@ Let $(X, \mathfrak{X})$ and $(Y, \mathfrak{Y})$ be measurable spaces, and let $Z
 
 Our first task is to define a $\sigma$-algebra of subsets of $Z$ that is a natural product of $\mathfrak{X}$ and $\mathfrak{Y}$.
 
-\begin{definition}[]{Measurable rectangle}
+\begin{definition}[Measurable rectangle]
 	A set $C = A \times B \subseteq Z$ is a \textbf{measurable rectangle} if $A \in \mathfrak{X}$ and $B \in \mathfrak{Y}$.
 \end{definition}
 
 We denote by $\mathfrak{C}$ the set of all measurable rectangles and $\mathfrak{E}$ the set of all finite unions of measurable rectangles. Notice that $\mathfrak{E}$ is an algebra and that every set in $\mathfrak{E}$ can be written as the finite union of disjoint measurable rectangles.
 
-\begin{definition}[]{Product Space}{}
+\begin{definition}[Product Space]
 	Let $\mathfrak{F} = \mathfrak{X} \times \mathfrak{Y}$ be the $\sigma$-algebra generated by $\mathfrak{E}$. The measurable space $(Z, \mathfrak{F})$ is called the \textbf{product space}.
 \end{definition}
 
-\begin{theorem}[]{}{}
+\begin{theorem}
 	Let $(X, \mathfrak{X})$, $(Y, \mathfrak{Y})$, $\mathfrak{C}$, and $\mathfrak{E}$ be as specified above. Let $\mu : \mathfrak{C} \longrightarrow \textbf{R}_+$ have the following properties:
 	\begin{itemize}
 		\item $\mu(\emptyset) = 0$;
@@ -386,7 +386,7 @@ This theorem can be naturally extended to any space that is the product of a fin
 
 Intuitively, the $x$-section of a function is found by fixing $x$ and viewing $f$ only as a function of $y$.
 
-\begin{theorem}[]{}{}
+\begin{theorem}
 	Let $(X, \mathfrak{X})$ and $(Y, \mathfrak{Y})$ be measurable spaces, and let $(Z, \mathfrak{F})$ be the product space.
 	\begin{enumerate}
 		\item If the set $E$ in $Z$ is $\mathfrak{F}$-measurable, then every section of $E$ is measurable. 
@@ -398,7 +398,7 @@ Intuitively, the $x$-section of a function is found by fixing $x$ and viewing $f
 
 The main question that this section aims to answer is whether a propery $P$ holds at a given $\sigma$-algebra. 
 
-\begin{definition}[]{Monotone Class}{}
+\begin{definition}[Monotone Class]
 	A \textbf{monotone class} is a nonempty collection $\mathfrak{M}$ of sets such that it contains
 	\begin{enumerate}
 		\item The union of every nested increasing sequence $A_1 \subseteq A_2 \subseteq \ldots $ of sets in $\mathfrak{M}$.
@@ -414,7 +414,7 @@ Some important facts:
 	\item If a monotone class is an algebra, then it is a $\sigma$-algebra.
 \end{enumerate}
 
-\begin{lemma}[]{Monotone class}{}
+\begin{lemma}[Monotone class]
 	Leet $S$ be a set and let $\mathfrak{A}$ be an algebra of subsets of $S$. Then the monotone class $\mathfrak{M}$ generated by $\mathfrak{A}$ is the same as the $\sigma$-algebra $\mathfrak{S}$ generated by $\mathfrak{A}$.
 \end{lemma}
 
@@ -445,7 +445,7 @@ Recall that a property $P(x)$ is said to hold \textbf{almost everywhere} if the 
 
 Let $(\Omega, \mathfrak{F}, \mu)$ be a probability space.
 
-\begin{definition}[]{Conditional Probability}
+\begin{definition}[Conditional Probability]
 For a measurable set $A$ satisfying $\mu(A) > 0$ and for any measurable set $B$ we define the \textbf{conditional probability} of $B$ given $A$ as
 \[
 	\mu_A(B) := \frac{\mu(B \cap A)}{\mu(A)} 
@@ -455,14 +455,14 @@ We'll also use $P(B | A)$ to denote this probability.
 
 Now notice that $\mu_A : \mathfrak{F} \longrightarrow [0,1]$, i.e., it is also a probability measure.
 
-\begin{definition}[]{Conditional Expectation}
+\begin{definition}[Conditional Expectation]
 	The \textbf{conditional expectation} of $f$ given $A$ is defined as 
 \[
 	\mathbb{E} [f | A] = \int f ~\mathrm{d}\mu_A
 \]
 \end{definition}
 
-\begin{definition}[]{Measurable Partition}{}
+\begin{definition}[Measurable Partition]
 	A family ${A_\eta}_{\eta \in H}$ of subsets of $\Omega$ is a \textbf{measurable partition} of $\Omega$ if the following conditions hold:
 	\begin{enumerate}
 		\item $A_\eta \in \mathfrak{F}$, $\forall \eta \in H$.
@@ -474,7 +474,7 @@ Now notice that $\mu_A : \mathfrak{F} \longrightarrow [0,1]$, i.e., it is also a
 
 To formalize it better, extending the concept to $\sigma$-algebras not generated by a countable partition, we'll introduce the following.
 
-\begin{definition}[]{Conditional Expectation}{}
+\begin{definition}[Conditional Expectation]
 	Let $A \subset \mathfrak{F}$ be a $\sigma$-algebra and let $f : \Omega \longrightarrow \textbf{R}$ be an integrable function. Then the \textbf{conditional expectation of $f$ relative to $A$} is an $\mathfrak{A}$-measurable function $\mathbb{E}[f | \mathfrak{A}] : \Omega \longrightarrow \textbf{R}$ such that
 	\[
 		\int_C \mathbb{E}[f | \mathfrak{A}](\omega) \mu ~(\mathrm{d} \omega) = \int_C f(\omega) \mu ~(\mathrm{d} \omega), \, \forall C \in \mathfrak{A}

@@ -1,28 +1,27 @@
-\babel@toc {english}{}\relax 
-\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Probability Theory}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Probability Spaces}{3}{section.2.1}%
+\babel@toc {american}{}
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Probability Theory}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Probability Spaces}{4}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Distribution and Density of a Random Variable}{6}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Expected Value and Variance}{7}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Stochastic Processes}{12}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Brownian Motion}{14}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Riemann-Stieltjes Integral}{16}{section.2.6}%
-\contentsline {section}{\numberline {2.7}Modes of Convergence}{16}{section.2.7}%
-\contentsline {chapter}{\numberline {3}Stochastic Integrals}{19}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Formalizing the `noise'}{19}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Preparing the Terrain}{20}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Constructing the It\IeC {\^o} Integral}{23}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Properties}{27}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Extensions}{29}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Stratonovich integral}{30}{section.3.6}%
-\contentsline {chapter}{\numberline {A}Measure Theory}{32}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Measurable Spaces}{32}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Measures}{33}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Measurable Functions}{37}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Integration}{40}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Product Spaces}{46}{section.A.5}%
-\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{47}{section.A.6}%
-\contentsline {section}{\numberline {A.7}Modes of Convergence}{49}{section.A.7}%
-\contentsline {section}{\numberline {A.8}Conditional Expectation}{50}{section.A.8}%
-\contentsline {chapter}{References}{54}{appendix*.4}%
-\contentsfinish 
+\contentsline {section}{\numberline {2.3}Expected Value and Variance}{6}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Stochastic Processes}{9}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Brownian Motion}{10}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Riemann-Stieltjes Integral}{11}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Modes of Convergence}{11}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Stochastic Integrals}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Formalizing the `noise'}{13}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Preparing the Terrain}{14}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Constructing the It\IeC {\^o} Integral}{16}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Properties}{19}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Extensions}{19}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Stratonovich integral}{20}{section.3.6}%
+\contentsline {chapter}{\numberline {A}Measure Theory}{22}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Measurable Spaces}{22}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Measures}{22}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Measurable Functions}{24}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Integration}{26}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Product Spaces}{29}{section.A.5}%
+\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{30}{section.A.6}%
+\contentsline {section}{\numberline {A.7}Modes of Convergence}{31}{section.A.7}%
+\contentsline {section}{\numberline {A.8}Conditional Expectation}{32}{section.A.8}%
+\contentsline {chapter}{References}{34}{appendix*.2}%
