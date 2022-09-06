@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: XXX_Congresso.aux
+The style file: alpha.bst
+Database file #1: XXX_Congresso.bib
+You've used 4 entries,
+            2543 wiz_defined-function locations,
+            581 strings with 5079 characters,
+and the built_in function-call counts, 1123 in all, are:
+= -- 102
+> -- 32
+< -- 5
++ -- 9
+- -- 8
+* -- 52
+:= -- 190
+add.period$ -- 14
+call.type$ -- 4
+change.case$ -- 18
+chr.to.int$ -- 4
+cite$ -- 4
+duplicate$ -- 54
+empty$ -- 101
+format.name$ -- 16
+if$ -- 231
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 4
+newline$ -- 25
+num.names$ -- 12
+pop$ -- 39
+preamble$ -- 1
+purify$ -- 24
+quote$ -- 0
+skip$ -- 39
+stack$ -- 0
+substring$ -- 29
+swap$ -- 5
+text.length$ -- 5
+text.prefix$ -- 4
+top$ -- 0
+type$ -- 24
+warning$ -- 0
+while$ -- 8
+width$ -- 5
+write$ -- 54

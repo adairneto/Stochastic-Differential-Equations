@@ -1,0 +1,181 @@
+\chapter{The Itô Formula and the Martingale Representation Theorem}
+
+\section{1-Dimensional Itô Processes}
+
+Itô formula: Integral version of the Chain Rule
+
+Idea: introduce \textbf{Itô processes (stochastic integrals)} as sums of a  $\mathrm{d}B_s-$ and a $\mathrm{d}s$-integral. This family of integrals is stable under smooth maps (what does this mean?)
+
+\begin{definition}[1-dimensional Itô processes]\label{def:ito-process}
+    $B_t$ 1-dimensional Brownian motion on $(\Omega, \mathfrak{F}, \mathbb{P})$. A 1-dimensional Itô process (or stochastic integral) is a stochastic process $X_t$ on $(\Omega, \mathfrak{F}, \mathbb{P})$ of the form 
+    \begin{equation}\label{eq:1d-ito}
+        X_t = X_0 + \int_0^t u(s, \omega) ~\mathrm{d}s + \int_0^t v(s, \omega) ~\mathrm{d}B_s
+    \end{equation}
+    where $v \in \mathfrak{W}_\mathfrak{H}$ and
+    \begin{equation*}
+        \mathbb{P} \left[ \int_0^t v(s,\omega)^2 ~\mathrm{d}s < \infty \text{ for all } t \geq 0 \right] = 1
+    \end{equation*}
+    and $u$ is $\mathfrak{H}_t$-adapted (as in the condition 2') and 
+    \begin{equation*}
+        \mathbb{P} \left[ \int_0^t |u(s,\omega)| ~\mathrm{d}s < \infty \text{ for all } t \geq 0 \right] = 1
+    \end{equation*}
+\end{definition}
+
+If $X_t$ is an Itô process of this form, then the equation \eqref{eq:1d-ito} is written in the differential form
+\begin{equation*}
+    \mathrm{d}X_t = u \mathrm{d}t + v \mathrm{d}B_t
+\end{equation*}
+
+Hence, we can write
+\begin{equation*}
+    \mathrm{d}\left( \frac{1}{2} B_t^2 \right) = \frac{1}{2} \mathrm{d}t + B_t \mathrm{d}B_t
+\end{equation*}
+
+\begin{theorem}[The 1-dimensional Itô formula]
+    $X_t$ be an Itô process given by 
+    \begin{equation*}
+        \mathrm{d}X_t = u \mathrm{d}t + v \mathrm{d}B_t
+    \end{equation*}
+    and $g(t,x) \in \mathfrak{C}^2([0, \infty) \times \textbf{R})$. Then 
+    \[
+        Y_t = g(t, X_t)
+    \]
+    is an Itô process, and
+    \begin{equation}
+        \mathrm{d}Y_t = \frac{\partial g}{\partial t}(t, X_t) \mathrm{d}t + \frac{\partial g}{\partial x}(t, X_t) \mathrm{d}X_t + \frac{1}{2}\frac{\partial^2 g}{\partial x^2}(t, X_t)(\mathrm{d}X_t)^2
+    \end{equation}
+    where $(\mathrm{d}X_t)^2$ is computed according to the rules
+    \[
+        \mathrm{d}t \cdot \mathrm{d}t = \mathrm{d}t \cdot \mathrm{d}B_t = \mathrm{d}B_t \cdot \mathrm{d}t = 0, \, \mathrm{d}B_t \cdot \mathrm{d}B_t = dt
+    \]
+\end{theorem}
+
+The idea is to take the Taylor expansion with respect to the arguments (in this case, $t$ and $X_t$), taking the first order terms for all arguments with zero quadratic variation (here, $t$) and up to the second order for every argument with non zero quadratic variation (here, $X_t$).
+
+\begin{example}
+    Consider again the following integral
+    \begin{equation*}
+        I = \int_0^t B_s ~\mathrm{d}B_s
+    \end{equation*}
+
+    Choose $X_t = B_t$ and $g(t,x) = \frac{1}{2}x^2$, then 
+    \[
+        Y_t = g(t,B_t) = \frac{1}{2}B_t^2
+    \]
+
+    Then, by Itô's formula,
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}Y_t   &= \frac{\partial g}{\partial t} \mathrm{d}t + \frac{\partial g}{\partial x} \mathrm{d}B_t + \frac{1}{2}\frac{\partial^2 g}{\partial x^2} (\mathrm{d}B_t)^2 \\
+                            &= B_t \mathrm{d}B_t + \frac{1}{2}(\mathrm{d}B_t)^2 \\
+                            &= B_t \mathrm{d}B_t + \frac{1}{2} \mathrm{d}t
+        \end{aligned}
+    \end{equation*}
+    I.e.,
+    \[
+        \mathrm{d}\left( \frac{1}{2} B_t^2 \right) = B_t \mathrm{d}B_t + \frac{1}{2} \mathrm{d}t
+    \]
+
+    Put it another way,
+    \begin{equation*}
+        \frac{1}{2} B_t^2 = \int_0^t B_s ~\mathrm{d}B_s + \frac{1}{2}t
+    \end{equation*}
+\end{example}
+
+\begin{example}
+    Now consider
+    \[
+        \int_0^t s ~\mathrm{d}B_s
+    \]
+
+    Put
+    \[
+        g(t,x) = tx \text{ and } Y_t = g(t,B_t) = tB_t
+    \]
+
+    By Itô's formula,
+    \[
+        \mathrm{d}Y_t = \frac{\partial g}{\partial t} \mathrm{d}t + \frac{\partial g}{\partial x} \mathrm{d}B_t + \frac{1}{2}\frac{\partial^2 g}{\partial x^2} (\mathrm{d}B_t)^2 
+    \]
+    i.e.
+    \[
+        \mathrm{d}(tB_t) = \mathrm{d}Y_t = B_t \mathrm{d}t + t \mathrm{d}B_t +  \cdot 0
+    \]
+
+    In the integral form,
+    \[
+        tB_t = \int_0^t B_s ~\mathrm{d}s + \int_0^t s ~\mathrm{d}B_s
+    \]
+    or
+    \[
+        \int_0^t s ~\mathrm{d}B_s = tB_t - \int_0^t B_s ~\mathrm{d}s
+    \]
+\end{example}
+
+This example is generalized in the next theorem.
+
+\begin{theorem}[Integration by parts]
+    Suppose that $f(s, \omega) = f(s)$ only depends on $s$ and that $f$ is continuous and of bounded variation in $[0,t]$. Then 
+    \begin{equation*}
+        \int_0^t f(s) ~\mathrm{d}B_s = f(t) B_t - \int_0^t B_s ~\mathrm{d}f_s
+    \end{equation*}
+\end{theorem}
+
+\section{The Multi-Dimensional Itô Formula}
+
+\begin{definition}[$n$-dimensional Itô process]
+    Let $B(t, \omega) = (B_{t_1}(t, \omega), \ldots , B_m(t, \omega))$ denote $m$-dimensional Brownian motion. If each $u_i(t, \omega)$ and $v_{ij}(t, \omega)$, for $1 \leq i \leq n$ and $1 \leq j \leq m$, satisfies the conditions given in the \hyperref[def:ito-process]{definition of Itô process}, then we can form $n$ Itô processes 
+    \begin{equation*}
+        \left\{\begin{aligned}
+            \mathrm{d} X_1 &= u_1 \mathrm{d}t + v_{11}\mathrm{d}B_1 + \ldots + v_{1m}\mathrm{d}B_m \\
+            &\vdots \\
+            \mathrm{d} X_n &= u_n \mathrm{d}t + v_{n1}\mathrm{d}B_1 + \ldots + v_{nm}\mathrm{d}B_m \\ 
+        \end{aligned}\right.
+    \end{equation*}
+
+    Or simply
+    \[
+        \mathrm{d}X(t) = u \mathrm{d}t + v \mathrm{d}B(t)
+    \]
+    where
+    \[
+        X(t) = \begin{bmatrix}
+            X_1(t) \\
+            \vdots \\
+            X_n(t)
+        \end{bmatrix}, \,
+        u = \begin{bmatrix}
+            u_1 \\
+            \vdots \\
+            u_n
+        \end{bmatrix}, \,
+        v = \begin{bmatrix}
+            v_{11} && \cdots && v_{1m} \\
+            \vdots && \ddots && \vdots \\
+            v_{n1} && \cdots && v_{nm}
+        \end{bmatrix}, \,
+        \mathrm{d}B(t) = \begin{bmatrix}
+            \mathrm{d}B_1(t) \\
+            \vdots \\
+            \mathrm{d}B_m(t)
+        \end{bmatrix}
+    \]
+
+    The process $X(t)$ is called an \textbf{$n$-dimensional Itô process}.
+\end{definition}
+
+\begin{theorem}[General Itô Formula]
+    Let
+    \[
+        \mathrm{d}X(t) = u \mathrm{d}t + v \mathrm{d}B(t)
+    \]
+    be an $n$-dimensional Itô process. And let $g(t,x) = (g_1(t,x), \ldots, g_p(t,x))$ be a $\mathcal{C}^2$ map from $[0, \infty) \times \textbf{R}^n$ into $\textbf{R}^p$. Then the process 
+    \[
+        Y(t, \omega) = g(t, X(t))
+    \]
+    is an Itô process, whose $k$-th component is given by 
+    \[
+        \mathrm{d}Y_k = \frac{\partial g_k}{\partial t}(t, X) \mathrm{d}t + \sum_i \frac{\partial g_k}{\partial x_i}(t, X) \mathrm{d}X_i + \frac{1}{2} \sum_{i,j} \frac{\partial^2 g_k}{\partial x_i \partial x_j} (t,X) \mathrm{d}X_i \mathrm{d}X_j
+    \]
+    where $\mathrm{d}B_i \mathrm{d}B_j = \delta_{ij}\mathrm{d}t$, $\mathrm{d}B_i \mathrm{d}t = \mathrm{d}t \mathrm{d}B_i = 0$.
+\end{theorem}
