@@ -1,17 +1,29 @@
 \babel@toc {american}{}\relax 
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Mathematical Preliminaries}{2}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Probability Spaces}{2}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Distribution and Density of a Random Variable}{4}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Expected Value and Variance}{5}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Stochastic Processes}{8}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Brownian Motion}{9}{subsection.2.5}%
-\contentsline {subsection}{\numberline {2.6}Lebesgue Integral}{10}{subsection.2.6}%
-\contentsline {section}{\numberline {3}Ito Integrals}{12}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Construction}{12}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Properties}{18}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Extensions}{18}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Stratonovich integral}{19}{subsection.3.4}%
-\contentsline {section}{\numberline {4}The Ito Formula and the Martingale Representation Theorem}{21}{section.4}%
-\contentsline {section}{\numberline {5}Stochastic Differential Equations}{22}{section.5}%
-\contentsline {section}{References}{23}{section*.2}%
+\contentsline {section}{\numberline {2}Stochastic Integrals}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Formalizing the `noise'}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Preparing the Terrain}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Constructing the It\IeC {\^o} Integral}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Properties}{9}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Extensions}{10}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Stratonovich integral}{10}{subsection.2.6}%
+\contentsline {section}{\numberline {3}The Ito Formula and the Martingale Representation Theorem}{12}{section.3}%
+\contentsline {section}{\numberline {4}Stochastic Differential Equations}{13}{section.4}%
+\contentsline {section}{\numberline {A}Measure Theory}{14}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Measurable Spaces}{14}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Measures}{14}{subsection.A.2}%
+\contentsline {subsection}{\numberline {A.3}Measurable Functions}{17}{subsection.A.3}%
+\contentsline {subsection}{\numberline {A.4}Integration}{19}{subsection.A.4}%
+\contentsline {subsection}{\numberline {A.5}Product Spaces}{23}{subsection.A.5}%
+\contentsline {subsection}{\numberline {A.6}The Monotone Class Lemma}{24}{subsection.A.6}%
+\contentsline {subsection}{\numberline {A.7}Modes of Convergence}{25}{subsection.A.7}%
+\contentsline {subsection}{\numberline {A.8}Conditional Expectation}{26}{subsection.A.8}%
+\contentsline {section}{\numberline {B}Probability Theory}{28}{appendix.B}%
+\contentsline {subsection}{\numberline {B.1}Probability Spaces}{28}{subsection.B.1}%
+\contentsline {subsection}{\numberline {B.2}Distribution and Density of a Random Variable}{30}{subsection.B.2}%
+\contentsline {subsection}{\numberline {B.3}Expected Value and Variance}{31}{subsection.B.3}%
+\contentsline {subsection}{\numberline {B.4}Stochastic Processes}{34}{subsection.B.4}%
+\contentsline {subsection}{\numberline {B.5}Brownian Motion}{35}{subsection.B.5}%
+\contentsline {subsection}{\numberline {B.6}Riemann-Stieltjes Integral}{36}{subsection.B.6}%
+\contentsline {subsection}{\numberline {B.7}Modes of Convergence}{37}{subsection.B.7}%
+\contentsline {section}{References}{39}{definition.B.26}%

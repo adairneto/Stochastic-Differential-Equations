@@ -1,7 +1,7 @@
-PWD /mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso
+PWD /home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex
+INPUT /home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex
 OUTPUT XXX_Congresso.log
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls

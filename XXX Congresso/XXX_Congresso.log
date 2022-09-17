@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.6.16)  3 AUG 2022 19:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.6.16)  8 SEP 2022 17:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex"
-(/mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex
+**"/home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex"
+(/home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-04-10> (/usr/share/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -1101,12 +1101,12 @@ Package rerunfilecheck Info: File `XXX_Congresso.brf' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  37585 strings out of 478238
- 843840 string characters out of 5850456
+ 843846 string characters out of 5850456
  1286685 words of memory out of 5000000
  55141 multiletter control sequences out of 15000+600000
  516912 words of font info for 97 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,12n,94p,826b,2173s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 99i,12n,94p,828b,2173s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc}</usr/share/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chb8t.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7m.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7v.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chri7m.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chrma.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
 Output written on XXX_Congresso.pdf (5 pages, 483787 bytes).
 PDF statistics:

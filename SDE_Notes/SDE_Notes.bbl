@@ -1,5 +1,5 @@
 \newcommand{\etalchar}[1]{$^{#1}$}
-\begin{thebibliography}{Dur19}
+\begin{thebibliography}{Wik22}
 
 \bibitem[Dur19]{durrett2019probability}
 Rick Durrett.
@@ -11,6 +11,12 @@ Lawrence~C Evans.
 \newblock {\em An introduction to stochastic differential equations},
   volume~82.
 \newblock American Mathematical Soc., 2012.
+
+\bibitem[Jak]{texexchange:brownian-tikz}
+Jake.
+\newblock How to draw brownian motions in tikz/pgf.
+\newblock \url{https://tex.stackexchange.com/a/59934}.
+\newblock [Acesso em: 07/07/2022].
 
 \bibitem[Kle12]{klebaner2012introduction}
 Fima~C Klebaner.
@@ -28,5 +34,13 @@ Steven~E Shreve et~al.
 \newblock {\em Stochastic calculus for finance II: Continuous-time models},
   volume~11.
 \newblock Springer, 2004.
+
+\bibitem[Wik22]{wiki:Kalman_filter}
+Wikipedia.
+\newblock {Kalman filter} --- {W}ikipedia{,} the free encyclopedia.
+\newblock
+  \url{http://en.wikipedia.org/w/index.php?title=Kalman\%20filter&oldid=1091166052},
+  2022.
+\newblock [Online; accessed 06-July-2022].
 
 \end{thebibliography}

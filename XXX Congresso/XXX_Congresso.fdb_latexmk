@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex XXX_Congresso"] 1659566284 "XXX_Congresso.aux" "XXX_Congresso.bbl" "XXX_Congresso" 1659566286
+["bibtex XXX_Congresso"] 1659566284 "XXX_Congresso.aux" "XXX_Congresso.bbl" "XXX_Congresso" 1662670014
   "/usr/share/texmf-dist/bibtex/bst/base/alpha.bst" 1650183167 23907 a5f93555796fb564b924339521f10a7c ""
-  "XXX_Congresso.aux" 1659566286 2352 bcd67d4f9b533ebb4f53427e71e4c30c "pdflatex"
-  "XXX_Congresso.bib" 1657934690 907 d4351821a6c190cc1cdf62c34a7d8bfa ""
+  "XXX_Congresso.aux" 1662670014 2352 bcd67d4f9b533ebb4f53427e71e4c30c "pdflatex"
+  "XXX_Congresso.bib" 1657934688 907 d4351821a6c190cc1cdf62c34a7d8bfa ""
   (generated)
   "XXX_Congresso.bbl"
   "XXX_Congresso.blg"
-["pdflatex"] 1659566284 "/mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex" "XXX_Congresso.pdf" "XXX_Congresso" 1659566286
-  "/mnt/windows/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex" 1659566280 15823 b9ea12f738ee076bc981c64602f320d0 ""
+["pdflatex"] 1662670011 "/home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex" "XXX_Congresso.pdf" "XXX_Congresso" 1662670014
+  "/home/herrmath/Dropbox/1. Projects/Stochastic Differential Equations/XXX Congresso/XXX_Congresso.tex" 1658261916 15823 b9ea12f738ee076bc981c64602f320d0 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1650183167 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc" 1650179560 6938 5135be6a8802f13a7faf296d1959a1ab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1650183167 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -266,13 +266,13 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1650183167 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1655393430 4278762 af3ac1370db81a450c1118eabf1fe718 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1655393404 2927664 6b88a1d22123e759178b4fc3442d30c8 ""
-  "Kalman.png" 1657150616 216874 b7c28495b80d6a432dbba954a6aa2925 ""
-  "XXX_Congresso.aux" 1659566286 2352 bcd67d4f9b533ebb4f53427e71e4c30c "pdflatex"
+  "Kalman.png" 1657150615 216874 658e13869b692ba5c1d380fd9863a0d3 ""
+  "XXX_Congresso.aux" 1662670014 2352 bcd67d4f9b533ebb4f53427e71e4c30c "pdflatex"
   "XXX_Congresso.bbl" 1659566284 888 287ce6497b84193f7c6580fcc382fedc "bibtex XXX_Congresso"
-  "XXX_Congresso.brf" 1659566286 105 5474dd82b81365cc4320d40e64374c58 "pdflatex"
+  "XXX_Congresso.brf" 1662670014 105 5474dd82b81365cc4320d40e64374c58 "pdflatex"
   "XXX_Congresso.out" 0 -1 0 "pdflatex"
-  "XXX_Congresso.tex" 1659566280 15823 b9ea12f738ee076bc981c64602f320d0 ""
-  "logo.png" 1656978966 166204 79184b66a515b71b059ab9875d245829 ""
+  "XXX_Congresso.tex" 1658261916 15823 b9ea12f738ee076bc981c64602f320d0 ""
+  "logo.png" 1656978965 166204 af33df73b5d4d697b82ac56f5cca2dba ""
   (generated)
   "XXX_Congresso.aux"
   "XXX_Congresso.brf"

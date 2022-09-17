@@ -179,3 +179,62 @@ This example is generalized in the next theorem.
     \]
     where $\mathrm{d}B_i \mathrm{d}B_j = \delta_{ij}\mathrm{d}t$, $\mathrm{d}B_i \mathrm{d}t = \mathrm{d}t \mathrm{d}B_i = 0$.
 \end{theorem}
+
+\section{The Martingale Representation Theorem}
+
+Let $B(t)$ be an $n$-dimensional Brownian motion. We saw that if $v \in \mathfrak{V}^n$, then the Itô integral
+\begin{equation*}
+    X_t = X_0 + \int_0^t v(s, \omega) ~\mathrm{d}B(s), \, t \geq 0
+\end{equation*}
+is always a martingale w.r.t. filtration $\mathfrak{F}_t^n$ and the probability measure $\mathbb{P}$.
+
+In this section, we show that the converse is also true: Any $\mathfrak{F}_t^n$-martingale (w.r.t to $\mathbb{P}$) can be represented as an Itô integral. This result is called the martingale representation theorem, and is important in many applications, such as mathematical finance.
+
+\begin{lemma}
+    Fix $T > 0$. The set of random variables 
+    \[
+        \{ \varphi(B_{t_1}, \ldots, B_{t_n}) \}
+    \]
+    where $t_i \in [0, T]$, $\varphi \in C_0^\infty(\textbf{R}^n)$, and $n = 1, 2, \ldots$ is dense in $L^2(\mathfrak{F}_T, \mathbb{P})$.
+\end{lemma}
+
+\begin{lemma}
+    The linear span of random variables of the type
+    \begin{equation*}
+        \exp \left\{ \int_0^T h(t) ~\mathrm{d}B_t(\omega) - \frac{1}{2} \int_0^T H^2(t) ~\mathrm{d}t \right\}
+    \end{equation*}
+    where $h \in L^2[0,T]$ is dense in $L^2(\mathfrak{F}_T, \mathbb{P})$.
+\end{lemma}
+
+Suppose that $B(t)$ is $n$-dimensional. If $v(s, \omega) \in \mathfrak{V}^n(0,T)$, then the random variable
+\begin{equation*}
+    V(\omega) := \int_0^T v(t, \omega) ~\mathrm{d}B(t)
+\end{equation*}
+is $\mathfrak{F}_t^n$-measurable and by the Itô isometry
+\begin{equation*}
+    \mathbb{E}[V^2] = \int_0^T \mathbb{E}[v^2(t, \cdot)] ~\mathrm{d}t < \infty
+\end{equation*}
+so $V \in L^2(\mathfrak{F}_T, \mathbb{P})$.
+
+\begin{theorem}[Itô Representation Theorem]
+    Let $F \in L^2(\mathfrak{F}_T, \mathbb{P})$. Then there exists a unique stochastic process $f(t, \omega) \in \mathfrak{V}^n(0, T)$ such that
+    \begin{equation*}
+        F(\omega) = \mathbb{E}[F] + \int_0^T f(t, \omega) ~\mathrm{d}B(t)
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}[The Martingale Representation Theorem]
+    Let $B(t)$ be an $n$-dimensional Brownian motion. Suppose $M_t$ is an $\mathfrak{F}_t^{(n)}$-martingale w.r.t. $\mathbb{P}$ and that $M_t \in L^2(\mathbb{P})$ for all $t \geq 0$.
+
+    Then there exists a unique stochastic process $g(s, \omega)$ such that $g \in \mathfrak{V}^{(n)}(0, t)$ for all $t \geq 0$ and 
+    \begin{equation*}
+        M_t(\omega) = \mathbb{E}[M_0] + \int_0^t g(s, \omega) ~\mathrm{d}B(s)
+    \end{equation*}
+    almost surely, for all $t \geq 0$.
+\end{theorem}
+
+How to find the $g(s, \omega)$? 
+
+% Questions:
+% Fatou's Lemma
+% Construction of Itô integral, conditions
