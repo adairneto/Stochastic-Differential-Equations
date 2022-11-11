@@ -5,12 +5,13 @@ A level-1 auxiliary file: Chapters/01.aux
 A level-1 auxiliary file: Chapters/02.aux
 A level-1 auxiliary file: Chapters/03.aux
 A level-1 auxiliary file: Chapters/04.aux
+A level-1 auxiliary file: Chapters/05.aux
 A level-1 auxiliary file: Chapters/a01.aux
 The style file: alpha.bst
 Database file #1: Main.bib
 You've used 7 entries,
             2543 wiz_defined-function locations,
-            602 strings with 5474 characters,
+            603 strings with 5489 characters,
 and the built_in function-call counts, 2005 in all, are:
 = -- 179
 > -- 67

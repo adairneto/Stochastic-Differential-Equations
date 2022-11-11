@@ -1,0 +1,302 @@
+\chapter{Stochastic Differential Equations}
+
+\begin{equation}\label{202211031443}
+    \frac{\mathrm{d} X_t}{\mathrm{d} t} = b_t(X_t) + \sigma_t(X_t) W_t
+\end{equation}
+where $b_t(x), \sigma_t(x) \in \textbf{R}$ and $W_t$ is the one-dimensional `white noise'.
+
+Itô interpretation:
+\begin{equation}\label{202211031444}
+    X_t = X_0 + \int_0^t b_s(X_s)~\mathrm{d}s + \int_0^t \sigma_s(X_s)~\mathrm{d}B_s
+\end{equation}
+
+I.e.,
+\begin{equation}\label{202211031445}
+    \mathrm{d} X_t = b_t(X_t)~\mathrm{d}t + \sigma_t(X_t)~\mathrm{d}B_t
+\end{equation}
+
+To get from \eqref{202211031443} to \eqref{202211031445} we replace $W_t$ by $\frac{\mathrm{d}B_t}{\mathrm{d}t}$ and multiply by $\mathrm{d}t$.
+
+When there exists a solution? Is this solution unique? What are its properties? How to solve such equation?
+
+\section{Solution Methods}
+
+\subsection{Examples}
+
+\begin{example}[Stochastic Exponential]
+    Consider
+    \begin{equation}\label{eq:exp_sde}
+        \mathrm{d}U_t = U_t \mathrm{d}X_t, \quad U_0 = 1 \iff U_t = 1 + \int_0^t U_s ~\mathrm{d}X_s
+    \end{equation}
+
+    $U$ is called the \textbf{stochastic exponential of $X$}. If $X_t$ have finite variation, then the solution of the equation \eqref{eq:exp_sde} is given by $U_t = e^{X_t}$. The proof follows imediatelly from the Itô's formula (see \cite{klebaner2012introduction}).
+
+    For the Brownian motion $B_t$, the stochastic exponential is given by
+    \begin{equation}
+        U_t = e^{B_t - \frac{1}{2}t}
+    \end{equation}
+\end{example}
+
+\begin{example}[Stochastic Logarithm]
+    How can we compute the integral $\int_0^t \frac{\mathrm{d} X_s}{X_s}$? Applying Itô formula for $g(t, x) = \ln x$, where $x > 0$,
+    \begin{equation*}\label{eq:log_sde}
+        \begin{aligned}
+            \mathrm{d}(\ln X_t) &= \frac{1}{X_t} \mathrm{d}X_t + \frac{1}{2} \left( - \frac{1}{X_t^2} \right) (\mathrm{d}X_t)^2 \\
+            &= \frac{\mathrm{d} X_t}{X_t} - \frac{1}{2 X_t^2} (\mathrm{d}X_t)^2
+        \end{aligned}
+    \end{equation*}
+
+    Hence,
+    \begin{equation}\label{eq:log_sde_2}
+        \frac{\mathrm{d} X_t}{X_t} = \mathrm{d}(\ln X_t) + \frac{1}{2 X_t^2} (\mathrm{d}X_t)^2
+    \end{equation}
+\end{example}
+
+\begin{example}[Population Growth]\label{ex:pop-growth}
+    Consider the following Stochastic Differential Equation (SDE):
+    \[
+        \frac{\mathrm{d} N_t}{\mathrm{d}t} = a_t N_t, \quad N_0 \in \textbf{R}
+    \]
+    where $a_t = r_t + \alpha W_t$. 
+
+    If $r_t$ is a constant $r$, by our previous discussion we have
+    \begin{equation*}
+        \frac{\mathrm{d} N_t}{N_t} = r \mathrm{d}t + \alpha \mathrm{d}B_t \iff \mathrm{d}N_t = rN_t \mathrm{d}t + \alpha N_t \mathrm{d} B_t
+    \end{equation*}
+
+    In the integral form,
+    \begin{equation*}
+        \int_0^t \frac{\mathrm{d} N_s}{N_s} = rt + \alpha B_t
+    \end{equation*}
+
+    Using \eqref{eq:log_sde_2}
+    \begin{equation*}
+        \frac{\mathrm{d} N_t}{N_t} = \mathrm{d}(\ln N_t) + \frac{1}{2 N_t^2} \left( \alpha^2 N_t^2 \mathrm{d}t \right) = \mathrm{d}(\ln N_t) + \frac{1}{2}\alpha^2 \mathrm{d}t
+    \end{equation*}
+
+    Hence, 
+    \begin{equation*}
+        \ln \left( \frac{N_t}{N_0} \right) = \left( r - \frac{1}{2} \alpha^2 \right)t + \alpha B_t \iff N_t = N_0 \exp \left( \left( r - \frac{1}{2}\alpha^2 \right) t + \alpha B_t \right)
+    \end{equation*}
+\end{example}
+
+Remark that if we used the Stratonovich interpretation, then the solution would be
+\[
+    N_t = N_0 \exp (rt + \alpha B_t)
+\]
+
+\begin{example}[Stock Prices]
+    Let $P(t)$ denote the price of a stock at time $t$. We may assume that the relative change of price evolves according to the SDE 
+    \[
+        \frac{\mathrm{d} P}{P} = \mu \mathrm{d}t + \sigma \mathrm{d} B_t \iff \mathrm{d} P = \mu P \mathrm{d}t + \sigma P \mathrm{d} B_t
+    \]
+    where $\mu > 0$ is the \textbf{drift}, and $\sigma$ is the \textbf{volatility} of the stock. 
+
+    By Itô's formula,
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}(\ln P) &= \frac{\mathrm{d} P}{P} - \frac{1}{2} \frac{\sigma^2 P^2}{P^2} \mathrm{d}t \\
+            &= \left( \mu - \frac{\sigma^2}{2} \right) \mathrm{d}t + \sigma \mathrm{d} B_t
+        \end{aligned}
+    \end{equation*}
+
+    Hence,
+    \[
+        P(t) = p_0 \exp \left( \sigma B_t + \left( \mu - \frac{\sigma^2}{2} \right) t \right)
+    \]
+
+    Since the integral form of the SDE is 
+    \[
+        P(t) = p_0 + \int_0^t \mu P~\mathrm{d}s + \int_0^t \sigma P~\mathrm{d}B_t
+    \]
+    and 
+    \[
+        \mathbb{E} \left( \int_0^t \sigma P ~\mathrm{d}B_t \right) = 0  
+    \]
+    we have that
+    \[
+        \mathbb{E}(P(t)) = p_0 + \int_0^t \mu \mathbb{E}(P(s))~\mathrm{d}s
+    \]
+
+    Hence, 
+    \[
+        \mathbb{E}(P(t)) = p_0 e^{\mu t} \quad \text{ for } ~ t \geq 0
+    \]
+\end{example}
+
+The above example is a generalization of Example \ref{ex:pop-growth}, where $B_t$ is independent of $N_0$, i.e., there's no noise in $a_t$. 
+
+In this case, we obtain
+\[
+    \mathbb{E}[N_t] = \mathbb{E}[N_0] e^{rt}
+\]
+
+For the Stratonovich solution,
+\[
+    \mathbb{E}[N_t] = \mathbb{E}[N_0] e^{\left( r+\frac{1}{2} \alpha^2 \right) t}
+\]
+
+For the Itô solution, we have 
+\begin{enumerate}
+    \item If $r > \frac{1}{2} \alpha^2$, then $N_t \to \infty$ as $t \to \infty$ a.s.
+    \item If $r < \frac{1}{2} \alpha^2$, then $N_t \to 0$ as $t \to \infty$ a.s.
+    \item If $r = \frac{1}{2} \alpha^2$, then $N_t$ will fluctuate between arbitrary large and small values as $t \to \infty$ a.s.
+\end{enumerate}
+
+\begin{definition}[Geometric Brownian Motion]
+    Processes of the type 
+    \[
+        X_t = X_0 \exp (\mu t + \alpha B_t)
+    \]
+    where $\mu, \alpha$ are constants, are called \textbf{geometric Brownian motions}.
+\end{definition}
+
+\begin{example}[Electric Circuit]
+    Let $Q(t)$ be the charge at time $t$ at a fixed point in a electric circuit. Then the charge satisfies the following differential equation
+    \[
+        L Q''(t) + R Q'(t) + \frac{1}{C}Q(t) = F(t), \quad Q(0) = Q_0, ~Q'(0) = I_0
+    \]
+    In which $L$ is inductance, $R$ is resistance, $C$ is capacitance and $F(t)$ the potential source.
+
+    It may be the case that some coefficient, say $F_t$, are not deterministic, but of the form
+    \[
+        F(t) = G(t) + \alpha W(t)
+    \]
+
+    We reduce this second order equation to a system of first order equations by defining
+    \[
+        X(t, \omega) = \begin{bmatrix}
+            X_1 \\
+            X_2
+        \end{bmatrix}
+        = \begin{bmatrix}
+            Q_t \\
+            Q_t'
+        \end{bmatrix}
+    \]
+    and then obtaining 
+    \begin{equation}\label{eq:202211081722}
+        \systeme{X_1' = X_2, LX_2' = -RX_2 - \frac{1}{2}X_1 + G_t + \alpha W_t}
+    \end{equation}
+
+    Letting 
+    \[
+        \mathrm{d}X = \begin{bmatrix}
+            \mathrm{d}X_1 \\
+            \mathrm{d}X_2
+        \end{bmatrix}, \quad
+        A = \begin{bmatrix}
+            0 && 1 \\
+            - \frac{1}{CL} && - \frac{R}{L}
+        \end{bmatrix}, \quad
+        H_t = \begin{bmatrix}
+            0 \\
+            \frac{1}{L} G_t
+        \end{bmatrix}, \quad
+        K = \begin{bmatrix}
+            0 \\
+            \frac{\alpha}{L}
+        \end{bmatrix}
+    \]
+    we can write the system \eqref{eq:202211081722} in a matricial form
+    \begin{equation}\label{eq:202211081727}
+        \mathrm{d}X_t = AX_t \mathrm{d}t + H_t\mathrm{d}t + K \mathrm{d}B_t
+    \end{equation}
+
+    Now, rewrite \eqref{eq:202211081727} as
+    \begin{equation}\label{eq:202211081729}
+        \exp(-At) \mathrm{d} X_t - \exp(-At) AX_t\mathrm{d}t = \exp(-At)[H_t\mathrm{d}t + K\mathrm{d}B_t]
+    \end{equation}
+
+    Applying Itô's formula to $\mathrm{d}(\exp(-At) X_t)$, 
+    \[
+        \mathrm{d}(\exp(-At)X_t) = (-A)\exp(-At)X_t\mathrm{d}t + \exp(-At)\mathrm{d}X_t
+    \]
+    and replacing it into \eqref{eq:202211081729} and using integration by parts,
+    \[
+        \exp(-At)X_t - X_0 = \int_0^t \exp(-As)H_s ~\mathrm{d}s + \int_0^t \exp(-As) K ~\mathrm{d}B_s
+    \]
+    i.e.,
+    \[
+        X_t = \exp(At)\left( X_0 + \exp(-At)K B_t + \int_0^t \exp(-As)[H_s + AK B_s]~\mathrm{d}s \right)
+    \]
+\end{example}
+
+\begin{example}
+    
+\end{example}
+
+\subsection{Linear SDEs}
+
+A linear SDE in one dimension is of the form
+\begin{equation}
+    \mathrm{d}X_t = (\alpha_t + \beta_t X_t)\mathrm{d}t + (\gamma_t + \delta_t X_t)\mathrm{d}B_t
+\end{equation}
+where $\alpha, \beta, \gamma, \delta$ are adapted processes and continuous functions of $t$.
+
+\begin{example}[Stochastic Exponential SDE]
+    If $\alpha_t = 0 = \gamma_t$, we have
+    \begin{equation}
+        \mathrm{d}U_t = \beta_t U_t \mathrm{d}t + \delta_t U_t \mathrm{d}B_t
+    \end{equation}
+
+    This can be simplified as 
+    \begin{equation}
+        \mathrm{d}U_t = U_t \mathrm{d}Y_t
+    \end{equation}
+    in which $Y_t$ is an Itô process defined by
+    \[
+        \mathrm{d}Y_t = \beta_t \mathrm{d}t + \delta_t \mathrm{d}B_t
+    \]
+
+    Therefore,
+    \begin{equation*}
+        \begin{aligned}
+            U_t &= U_0 \exp \left( Y_t - Y_0 - \frac{1}{2}[Y, Y](t) \right) \\
+                &= U_0 \exp \left( \int_0^t \beta_s~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s - \frac{1}{2}\int_0^t \delta_s^2~\mathrm{d}s \right) \\
+                &= U_0 \exp \left( \int_0^t \left( \beta_s - \frac{1}{2} \delta_s^2 \right)~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s \right)
+        \end{aligned}
+    \end{equation*}
+\end{example}
+
+\begin{example}[General Linear SDE]
+    
+\end{example}
+
+\begin{example}[Langevin-Type SDE]
+    
+\end{example}
+
+\begin{example}[Brownian Bridge]
+    
+\end{example}
+
+\section{Existence and Uniqueness}
+
+\begin{theorem}
+    Let $T > 0$ and $b : [0,T] \times \textbf{R}^n \longrightarrow \textbf{R}^n$, $\sigma : [0,T] \times \textbf{R}^n \longrightarrow \textbf{R}^{n \times m}$ are measurable functions.
+
+    If the following conditions are satisfied
+    \begin{enumerate}
+        \item Coefficients satisfy the linear growth condition \[ |b(t,x)| + |\sigma(t,x)| \leq C(1 + |x|), \quad x \in \textbf{R}^n, ~t \in [0,T] \] for some constant $C$;
+        \item Coefficients are locally Lipschitz in $x$ uniformly in $t$
+        \[
+            |b(t,x) - b(t,y)| + |\sigma(t,x) - \sigma(t,y)| \leq D|x-y|, \quad x,y \in \textbf{R}^n, ~t \in [0,T]
+        \]
+        for some constant $D$;
+        \item $Z$ is a random variable which is independent of the $\sigma$-algebra $\mathfrak{F}_\infty^{(m)}$ generated by $B_s$ ($s \geq 0$) and such that $\mathbb{E}[|Z|^2] < \infty$.
+    \end{enumerate}
+    
+    Then the stochastic differential equation 
+    \[
+        \mathrm{d}X_t = b(t, X_t)\mathrm{d}t + \sigma(t, X_t) \mathrm{d}B_t, \quad 0 \leq t \leq T, ~X_0 = Z
+    \]
+    has a unique $t$-continuous solution $X_t(\omega)$ with the property that $X_t(\omega)$ is adapted to the filtration $\mathfrak{F}_t^Z$ generated by $Z$ and $B_s$ ($s \leq t$), and 
+    \[
+        \mathbb{E}\left[ \int_0^T |X_t|^2~\mathrm{d}t \right] < \infty
+    \]
+\end{theorem}
+
+\begin{proof}
+    Existence: successive approximations (Picard iterations). By Gronwall's lemma, the Lipschitz condition and Itô isometry imply uniqueness.
+\end{proof}
