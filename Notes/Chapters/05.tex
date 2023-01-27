@@ -1,11 +1,12 @@
 \chapter{Stochastic Differential Equations}
 
+Stochastic differential equations model evolution processes with continuous random noise, and are of the form
 \begin{equation}\label{202211031443}
     \frac{\mathrm{d} X_t}{\mathrm{d} t} = b_t(X_t) + \sigma_t(X_t) W_t
 \end{equation}
 where $b_t(x), \sigma_t(x) \in \textbf{R}$ and $W_t$ is the one-dimensional `white noise'.
 
-Itô interpretation:
+Inspired by the deterministic case, we propose as a solution a stochastic process $X_t$ which satisfies the following identity
 \begin{equation}\label{202211031444}
     X_t = X_0 + \int_0^t b_s(X_s)~\mathrm{d}s + \int_0^t \sigma_s(X_s)~\mathrm{d}B_s
 \end{equation}
@@ -15,13 +16,13 @@ I.e.,
     \mathrm{d} X_t = b_t(X_t)~\mathrm{d}t + \sigma_t(X_t)~\mathrm{d}B_t
 \end{equation}
 
-To get from \eqref{202211031443} to \eqref{202211031445} we replace $W_t$ by $\frac{\mathrm{d}B_t}{\mathrm{d}t}$ and multiply by $\mathrm{d}t$.
+Notice that to get from \eqref{202211031443} to \eqref{202211031445} we replace $W_t$ by $\frac{\mathrm{d}B_t}{\mathrm{d}t}$ and multiply by $\mathrm{d}t$.
 
-When there exists a solution? Is this solution unique? What are its properties? How to solve such equation?
+In this chapter, we address the following questions. When does a solution exists, and when is it unique? What are its properties? How to solve such an equation?
 
 \section{Solution Methods}
 
-\subsection{Examples}
+We start this section by the following example, which shows an `Itô correction' to the exponential.
 
 \begin{example}[Stochastic Exponential]
     Consider
@@ -35,6 +36,80 @@ When there exists a solution? Is this solution unique? What are its properties? 
     \begin{equation}
         U_t = e^{B_t - \frac{1}{2}t}
     \end{equation}
+
+    Let $Y_t = B_t - \frac{1}{2}t$ and $g(t,x) = x - \frac{1}{2}t$. Then 
+    \[
+        \mathrm{d}Y_t = - \frac{1}{2} \mathrm{d}t + \mathrm{d}B_t
+    \]
+
+    Noting that $U_t = e^{Y_t}$, define $g(t, x) = e^x$. Then $U_t = g(t, Y_t)$ and 
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}U_t &= e^{Y_t} \mathrm{d} Y_t + \frac{1}{2} e^{Y_t} (\mathrm{d} Y_t)^2
+            = U_t \left( - \frac{1}{2} \mathrm{d}t + \mathrm{d}B_t \right) + \frac{1}{2} U_t \mathrm{d}t \\
+            &= U_t \mathrm{d} B_t
+        \end{aligned}
+    \end{equation*}
+\end{example}
+
+A linear SDE in one dimension is of the form
+\begin{equation}
+    \mathrm{d}X_t = (\alpha_t + \beta_t X_t)\mathrm{d}t + (\gamma_t + \delta_t X_t)\mathrm{d}B_t
+\end{equation}
+where $\alpha, \beta, \gamma, \delta$ are adapted processes and continuous functions of $t$.
+
+% Black–Scholes–Merton
+\begin{example}[Stochastic Exponential SDE]
+    If $\alpha_t = 0 = \gamma_t$, we have
+    \begin{equation*}
+        \mathrm{d}U_t = \beta_t U_t \mathrm{d}t + \delta_t U_t \mathrm{d}B_t
+    \end{equation*}
+
+    The solution for this equation is 
+    \begin{equation*}
+        \begin{aligned}
+            U_t = U_0 \exp \left( \int_0^t \left( \beta_s - \frac{1}{2} \delta_s^2 \right)~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s \right)
+        \end{aligned}
+    \end{equation*}
+
+    To verify this, suppose for simplicity that $U_0 = 1$, and let
+    \begin{equation*}
+        g(t,x) = \exp \left( \int_0^t \left( \beta_s - \frac{1}{2} \delta_s^2 \right)~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}x \right)
+    \end{equation*}
+
+    Note that $U_t = g(t,B_t)$ and compute 
+    \begin{equation*}
+        \begin{aligned}
+            \frac{\partial g}{\partial t} = \left( \beta_t - \frac{1}{2} \delta_t^2 \right) U_t, \quad 
+            \frac{\partial g}{\partial x} = \delta_t  U_t, \quad \frac{\partial^2 g}{\partial x^2} = \delta_t^2 U_t
+        \end{aligned}
+    \end{equation*}
+
+    By Itô's formula, 
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}U_t &= \left( \beta_t - \frac{1}{2} \delta_t^2 \right) U_t \mathrm{d}t + \delta_t U_t \mathrm{d}B_t + \frac{1}{2} \delta_t^2 U_t \mathrm{d}t \\ 
+            &= \beta_t U_t \mathrm{d}t + \delta_t U_t \mathrm{d}B_t
+        \end{aligned}
+    \end{equation*}
+
+    Another way to look at this equation is by remarking that it is the stochastic exponential of $Y_t$, i.e.,
+    \begin{equation}
+        \mathrm{d}U_t = U_t \mathrm{d}Y_t
+    \end{equation}
+    in which $Y_t$ is an Itô process defined by
+    \[
+        \mathrm{d}Y_t = \beta_t \mathrm{d}t + \delta_t \mathrm{d}B_t
+    \]
+
+    Therefore,
+    \begin{equation*}
+        \begin{aligned}
+            U_t &= U_0 \exp \left( Y_t - Y_0 - \frac{1}{2}[Y, Y](t) \right) \\
+                &= U_0 \exp \left( \int_0^t \beta_s~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s - \frac{1}{2}\int_0^t \delta_s^2~\mathrm{d}s \right) \\
+                &= U_0 \exp \left( \int_0^t \left( \beta_s - \frac{1}{2} \delta_s^2 \right)~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s \right)
+        \end{aligned}
+    \end{equation*}
 \end{example}
 
 \begin{example}[Stochastic Logarithm]
@@ -78,12 +153,12 @@ When there exists a solution? Is this solution unique? What are its properties? 
     \begin{equation*}
         \ln \left( \frac{N_t}{N_0} \right) = \left( r - \frac{1}{2} \alpha^2 \right)t + \alpha B_t \iff N_t = N_0 \exp \left( \left( r - \frac{1}{2}\alpha^2 \right) t + \alpha B_t \right)
     \end{equation*}
-\end{example}
 
-Remark that if we used the Stratonovich interpretation, then the solution would be
-\[
-    N_t = N_0 \exp (rt + \alpha B_t)
-\]
+    Remark that if we used the Stratonovich interpretation, then the solution would be
+    \[
+        N_t = N_0 \exp (rt + \alpha B_t)
+    \]
+\end{example}
 
 \begin{example}[Stock Prices]
     Let $P(t)$ denote the price of a stock at time $t$. We may assume that the relative change of price evolves according to the SDE 
@@ -136,7 +211,7 @@ For the Stratonovich solution,
     \mathbb{E}[N_t] = \mathbb{E}[N_0] e^{\left( r+\frac{1}{2} \alpha^2 \right) t}
 \]
 
-For the Itô solution, we have 
+Notice that for Itô solution we have 
 \begin{enumerate}
     \item If $r > \frac{1}{2} \alpha^2$, then $N_t \to \infty$ as $t \to \infty$ a.s.
     \item If $r < \frac{1}{2} \alpha^2$, then $N_t \to 0$ as $t \to \infty$ a.s.
@@ -222,58 +297,11 @@ For the Itô solution, we have
     \]
 \end{example}
 
-\begin{example}
-    
-\end{example}
-
-\subsection{Linear SDEs}
-
-A linear SDE in one dimension is of the form
-\begin{equation}
-    \mathrm{d}X_t = (\alpha_t + \beta_t X_t)\mathrm{d}t + (\gamma_t + \delta_t X_t)\mathrm{d}B_t
-\end{equation}
-where $\alpha, \beta, \gamma, \delta$ are adapted processes and continuous functions of $t$.
-
-\begin{example}[Stochastic Exponential SDE]
-    If $\alpha_t = 0 = \gamma_t$, we have
-    \begin{equation}
-        \mathrm{d}U_t = \beta_t U_t \mathrm{d}t + \delta_t U_t \mathrm{d}B_t
-    \end{equation}
-
-    This can be simplified as 
-    \begin{equation}
-        \mathrm{d}U_t = U_t \mathrm{d}Y_t
-    \end{equation}
-    in which $Y_t$ is an Itô process defined by
-    \[
-        \mathrm{d}Y_t = \beta_t \mathrm{d}t + \delta_t \mathrm{d}B_t
-    \]
-
-    Therefore,
-    \begin{equation*}
-        \begin{aligned}
-            U_t &= U_0 \exp \left( Y_t - Y_0 - \frac{1}{2}[Y, Y](t) \right) \\
-                &= U_0 \exp \left( \int_0^t \beta_s~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s - \frac{1}{2}\int_0^t \delta_s^2~\mathrm{d}s \right) \\
-                &= U_0 \exp \left( \int_0^t \left( \beta_s - \frac{1}{2} \delta_s^2 \right)~\mathrm{d}s + \int_0^t \delta_s~\mathrm{d}B_s \right)
-        \end{aligned}
-    \end{equation*}
-\end{example}
-
-\begin{example}[General Linear SDE]
-    
-\end{example}
-
-\begin{example}[Langevin-Type SDE]
-    
-\end{example}
-
-\begin{example}[Brownian Bridge]
-    
-\end{example}
+For more solution methods, see \cite{evans2012introduction}, \cite{gard1988introduction}, and \cite{klebaner2012introduction}.
 
 \section{Existence and Uniqueness}
 
-\begin{theorem}
+\begin{theorem}\label{thm:existence_uniqueness}
     Let $T > 0$ and $b : [0,T] \times \textbf{R}^n \longrightarrow \textbf{R}^n$, $\sigma : [0,T] \times \textbf{R}^n \longrightarrow \textbf{R}^{n \times m}$ are measurable functions.
 
     If the following conditions are satisfied
@@ -288,9 +316,10 @@ where $\alpha, \beta, \gamma, \delta$ are adapted processes and continuous funct
     \end{enumerate}
     
     Then the stochastic differential equation 
-    \[
-        \mathrm{d}X_t = b(t, X_t)\mathrm{d}t + \sigma(t, X_t) \mathrm{d}B_t, \quad 0 \leq t \leq T, ~X_0 = Z
-    \]
+    \begin{equation}
+      \mathrm{d}X_t = b(t, X_t)\mathrm{d}t + \sigma(t, X_t) \mathrm{d}B_t, \quad 0 \leq t \leq T, ~X_0 = Z
+      \label{eq:oks_5.2.3}
+    \end{equation}
     has a unique $t$-continuous solution $X_t(\omega)$ with the property that $X_t(\omega)$ is adapted to the filtration $\mathfrak{F}_t^Z$ generated by $Z$ and $B_s$ ($s \leq t$), and 
     \[
         \mathbb{E}\left[ \int_0^T |X_t|^2~\mathrm{d}t \right] < \infty
@@ -300,3 +329,35 @@ where $\alpha, \beta, \gamma, \delta$ are adapted processes and continuous funct
 \begin{proof}
     Existence: successive approximations (Picard iterations). By Gronwall's lemma, the Lipschitz condition and Itô isometry imply uniqueness.
 \end{proof}
+
+\section{Weak and Strong Solutions}
+
+The solution that we found is called a \textbf{strong solution}, in which the version of Brownian motion is given, and the solution is $\mathfrak{F}_t^Z$-adapted. 
+
+However, what if we're to find a pair of processes $((\bar{X}_t, \bar{B}_t), \mathfrak{H}_t)$ on a probability space such that the differential form \eqref{eq:oks_5.2.3} holds? In this case, the solution $(\bar{X}_t, \bar{B}_t)$ is called a \textbf{weak solution}. Put another way, `weak solutions are solutions in distribution' \cite[137]{klebaner2012introduction}.
+
+The uniqueness of the Theorem \ref{thm:existence_uniqueness} is \textbf{strong} or \textbf{pathwise} uniqueness. \textbf{Weak uniqueness} means that any two solutions are identical in law (have the same finite-dimensional distributions). 
+
+Notice that any strong solution is a weak solution (a result from Yamada and Watanabe) and any solution is weakly unique. The next example shows that it is possible to have no strong solutions, but a weakly unique weak solution.
+
+\begin{example}[The Tanaka Equation]
+  Consider 
+  \begin{equation}
+    \mathrm{d}X_t = \text{sign}(X_t) \mathrm{d}B_t, \quad X_0 = 0
+    \label{eq:tanaka_sde}
+  \end{equation}
+  
+  Since $\sigma(t,x) = \text{sign}(x)$ is not continuous, it is not Lipschitz and hence the Theorem \ref{thm:existence_uniqueness} does not apply. In fact, \eqref{eq:tanaka_sde} has no strong solution. 
+
+  Let $X_t$ be any Brownian motion. Then 
+  \[
+    Y_t = \int_0^t \text{sign}(X_s)~\mathrm{d}X_s \iff \mathrm{d}Y_t = \text{sign}(X_t) \mathrm{d}X_t
+  \]
+
+  Hence,
+  \[
+    \mathrm{d}X_t = \text{sign}(X_t) \mathrm{d}Y_t
+  \]
+
+  We'll see in Levy's theorem that $Y_t$ is a Brownian motion (more than that, any weak solution is a Brownian motion) and $X_t$ is a weakly unique weak solution.    
+\end{example}

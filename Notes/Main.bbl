@@ -12,6 +12,11 @@ Lawrence~C Evans.
   volume~82.
 \newblock American Mathematical Soc., 2012.
 
+\bibitem[Gar88]{gard1988introduction}
+Thomas~C Gard.
+\newblock {\em Introduction to Stochastic Differential Equations}.
+\newblock Dekker, Inc, 1988.
+
 \bibitem[Jak]{texexchange:brownian-tikz}
 Jake.
 \newblock How to draw brownian motions in tikz/pgf.

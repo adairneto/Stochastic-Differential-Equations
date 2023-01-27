@@ -50,7 +50,23 @@ Hence, we can write
     \]
 \end{theorem}
 
-The idea is to take the Taylor expansion with respect to the arguments (in this case, $t$ and $X_t$), taking the first order terms for all arguments with zero quadratic variation (here, $t$) and up to the second order for every argument with non zero quadratic variation (here, $X_t$).
+\begin{proof}
+    Notice that the claim is equivalent to the expression  
+    \[
+        g(t, X_t) = g(0, X_0) + \int_0^t \left( \frac{\partial g}{\partial s}(s, X_s) + u_s \frac{\partial g}{\partial x} (s, X_s) + \frac{1}{2} v_s^2 \frac{\partial^2 g}{\partial x^2} (s, X_s) \right) ~\mathrm{d}s + \int_0^t v_s \frac{\partial g}{\partial x} (s, X_s) ~\mathrm{d}B_s
+    \]
+    where $u_s = u(s, \omega)$ and $v_s = v(s, \omega)$. 
+
+    We'll assume that $g$ and its derivatives above are bounded. In the general case, we can approximate $g$ by $\mathfrak{C}^2$ functions that converge uniformly to $g$.
+
+    Then write the Taylor expansion with respect to the arguments (in this case, $t$ and $X_t$), taking the first-order terms for all arguments with zero quadratic variation (here, $t$) and up to the second order for every argument with non zero quadratic variation (here, $X_t$).
+
+    Notice that the terms with crossed $\Delta t_j$ and $\Delta B_j$ go to zero by Itô isometry.
+    
+    Also notice that the terms with crossed $(\Delta B_i)^2 - \Delta t_i$ and $(\Delta B_j)^2 - \Delta t_j$, $i \neq j$, vanish because they are indepedent. For the similar terms with $i = j$, the sum converges to a $\mathrm{d}t$ integral, showing that $(\mathrm{d} B_t)^2 = \mathrm{d}t$. 
+
+    Since the remainder goes to zero as $\Delta t_j \to 0$, we complete the proof.
+\end{proof}
 
 \begin{example}
     Consider again the following integral
@@ -169,7 +185,7 @@ This example is generalized in the next theorem.
     \[
         \mathrm{d}X(t) = u \mathrm{d}t + v \mathrm{d}B(t)
     \]
-    be an $n$-dimensional Itô process. And let $g(t,x) = (g_1(t,x), \ldots, g_p(t,x))$ be a $\mathcal{C}^2$ map from $[0, \infty) \times \textbf{R}^n$ into $\textbf{R}^p$. Then the process 
+    be an $n$-dimensional Itô process. And let $g(t,x) = (g_1(t,x), \ldots, g_p(t,x))$ be a $\mathfrak{C}^2$ map from $[0, \infty) \times \textbf{R}^n$ into $\textbf{R}^p$. Then the process 
     \[
         Y(t, \omega) = g(t, X(t))
     \]

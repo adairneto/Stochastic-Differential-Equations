@@ -21,16 +21,21 @@
 \contentsline {section}{\numberline {4.3}The Martingale Representation Theorem}{24}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Stochastic Differential Equations}{26}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Solution Methods}{26}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Examples}{26}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Linear SDEs}{30}{subsection.5.1.2}%
-\contentsline {section}{\numberline {5.2}Existence and Uniqueness}{30}{section.5.2}%
-\contentsline {chapter}{\numberline {A}Measure Theory}{32}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Measurable Spaces}{32}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Measures}{32}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Measurable Functions}{34}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Integration}{36}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Product Spaces}{39}{section.A.5}%
-\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{40}{section.A.6}%
-\contentsline {section}{\numberline {A.7}Modes of Convergence}{41}{section.A.7}%
-\contentsline {section}{\numberline {A.8}Conditional Expectation}{42}{section.A.8}%
-\contentsline {chapter}{References}{44}{appendix*.2}%
+\contentsline {section}{\numberline {5.2}Existence and Uniqueness}{31}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Weak and Strong Solutions}{31}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Diffusion Processes}{33}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Basic Definitions}{33}{section.6.1}%
+\contentsline {section}{\numberline {6.2}The Markov Property}{34}{section.6.2}%
+\contentsline {section}{\numberline {6.3}The Generator of an It\IeC {\^o} Diffusion}{36}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Dynkin's Formula}{37}{section.6.4}%
+\contentsline {section}{\numberline {6.5}The Characteristic Operator}{39}{section.6.5}%
+\contentsline {chapter}{\numberline {A}Measure Theory}{41}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Measurable Spaces}{41}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Measures}{41}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Measurable Functions}{43}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Integration}{45}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Product Spaces}{48}{section.A.5}%
+\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{49}{section.A.6}%
+\contentsline {section}{\numberline {A.7}Modes of Convergence}{50}{section.A.7}%
+\contentsline {section}{\numberline {A.8}Conditional Expectation}{51}{section.A.8}%
+\contentsline {chapter}{References}{53}{appendix*.2}%

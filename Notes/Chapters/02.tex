@@ -180,12 +180,12 @@ The variance of $X$ can be computed more simply using the following theorem.
 \begin{definition}[Conditional Expectation]
 	Let $X$ and $Y$ be random variables. Then, given that $f_Y(y) > 0$, the \textbf{conditional distribution} of $X$ given $Y=y$ is given by the conditional density
 	\[
-		f(x|y) = \frac{f(x,y)}{f_Y(y)}
+		f(x \mid y) = \frac{f(x,y)}{f_Y(y)}
 	\]
 	
 	And the \textbf{conditional expectation} of $X$ given $Y=y$ is
 	\[
-		\mathbb{E} [X| Y = y] = \int_{-\infty}^\infty x f(x|y) \, \mathrm{d}x
+		\mathbb{E} [X \mid  Y = y] = \int_{-\infty}^\infty x f(x \mid y) \, \mathrm{d}x
 	\]
 \end{definition}
 
@@ -193,16 +193,16 @@ The intuition behind this definition is to build an estimate of the random varia
 
 Some important and very useful properties of conditional expectation are listed below.
 
-\begin{theorem}
+\begin{theorem}\label{thm:cond_exp_2}
 	Let $X, Y : \Omega \longrightarrow \textbf{R}^n$ be random variables with $\mathbb{E}[|X|] < \infty$ and $\mathbb{E}[|Y|] < \infty$, $\mathfrak{H} \subseteq \mathfrak{F}$ a $\sigma$-algebra, and let $a, b \in \textbf{R}$.
 	\begin{enumerate}
-		\item $\mathbb{E} [ a X + b Y | \mathfrak{H}] = a \mathbb{E} [X | \mathfrak{H}] + b \mathbb{E} [Y | \mathfrak{H}]$.
-		\item $\mathbb{E} [ \mathbb{E} [X | \mathfrak{H}] ] = \mathbb{E} [X]$.
-		\item $\mathbb{E} [X | \mathfrak{H}] = X$ if $X$ is $\mathfrak{H}$-measurable.
-		\item $\mathbb{E} [X | \mathfrak{H}] = \mathbb{E} [X]$ if $X$ is independent of $\mathfrak{H}$.
-		\item $\mathbb{E} [Y \cdot X | \mathfrak{H}] = Y \cdot \mathbb{E} [X | \mathfrak{H}]$ if $Y$ is $\mathfrak{H}$-measurable.
-		\item If $\mathfrak{G} \subseteq \mathfrak{H}$ is a $\sigma$-algebra, then \[ \mathbb{E} [X | \mathfrak{G}] = \mathbb{E} [ \mathbb{E} [X | \mathfrak{H}] | \mathfrak{G}] \]
-		\item If $\varphi : \textbf{R} \longrightarrow \textbf{R}$ is convex and $\mathbb{E} [ | \varphi (X) | ] < \infty$, then \[ \varphi (\mathbb{E} [X | \mathfrak{H}]) \leq \mathbb{E} [\varphi(X) | \mathfrak{H}] \]
+		\item $\mathbb{E} [ a X + b Y  \mid  \mathfrak{H}] = a \mathbb{E} [X  \mid  \mathfrak{H}] + b \mathbb{E} [Y  \mid  \mathfrak{H}]$.
+		\item $\mathbb{E} [ \mathbb{E} [X  \mid  \mathfrak{H}] ] = \mathbb{E} [X]$.
+		\item $\mathbb{E} [X  \mid  \mathfrak{H}] = X$ if $X$ is $\mathfrak{H}$-measurable.
+		\item $\mathbb{E} [X  \mid  \mathfrak{H}] = \mathbb{E} [X]$ if $X$ is independent of $\mathfrak{H}$.
+		\item $\mathbb{E} [Y \cdot X  \mid  \mathfrak{H}] = Y \cdot \mathbb{E} [X  \mid  \mathfrak{H}]$ if $Y$ is $\mathfrak{H}$-measurable.
+		\item If $\mathfrak{G} \subseteq \mathfrak{H}$ is a $\sigma$-algebra, then \[ \mathbb{E} [X  \mid  \mathfrak{G}] = \mathbb{E} [ \mathbb{E} [X  \mid  \mathfrak{H}]  \mid  \mathfrak{G}] \]
+		\item If $\varphi : \textbf{R} \longrightarrow \textbf{R}$ is convex and $\mathbb{E} [ | \varphi (X) | ] < \infty$, then \[ \varphi (\mathbb{E} [X  \mid  \mathfrak{H}]) \leq \mathbb{E} [\varphi(X)  \mid  \mathfrak{H}] \]
 	\end{enumerate}
 \end{theorem}
 
@@ -255,7 +255,7 @@ Notice that $X$ can be normalized (i.e. transformed into a distribution of the f
 
 	Then,
 	\begin{equation*}
-		\mathbb{E}[X | \mathfrak{N}_k] \longrightarrow \mathbb{E}[X | \mathfrak{N}_\infty] \, \text{ as } k \to \infty
+		\mathbb{E}[X  \mid  \mathfrak{N}_k] \longrightarrow \mathbb{E}[X  \mid  \mathfrak{N}_\infty] \, \text{ as } k \to \infty
 	\end{equation*}
 	a.e. $\mathbb{P}$ and in $L^1(\mathbb{P})$.
 \end{corollary}
@@ -285,7 +285,7 @@ Given a stochastic process $\{ X(t) \}$, let $\mathfrak{F}_t$ be the $\sigma$-al
 	\begin{enumerate}
 		\item $M_t$ is $\mathfrak{M}_t$-measurable for all $t$.
 		\item $\mathbb{E}[|M_t|] < \infty$ for all $t$.
-		\item $\mathbb{E}[M_s | \mathfrak{M}_t] = M_t$ for all $s \geq t$.
+		\item $\mathbb{E}[M_s  \mid  \mathfrak{M}_t] = M_t$ for all $s \geq t$.
 	\end{enumerate}
 \end{definition}
 
