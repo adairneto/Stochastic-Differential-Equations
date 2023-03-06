@@ -26,16 +26,17 @@
 \contentsline {chapter}{\numberline {6}Diffusion Processes}{33}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Basic Definitions}{33}{section.6.1}%
 \contentsline {section}{\numberline {6.2}The Markov Property}{34}{section.6.2}%
-\contentsline {section}{\numberline {6.3}The Generator of an It\IeC {\^o} Diffusion}{36}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Dynkin's Formula}{37}{section.6.4}%
-\contentsline {section}{\numberline {6.5}The Characteristic Operator}{39}{section.6.5}%
-\contentsline {chapter}{\numberline {A}Measure Theory}{41}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Measurable Spaces}{41}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Measures}{41}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Measurable Functions}{43}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Integration}{45}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Product Spaces}{48}{section.A.5}%
-\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{49}{section.A.6}%
-\contentsline {section}{\numberline {A.7}Modes of Convergence}{50}{section.A.7}%
-\contentsline {section}{\numberline {A.8}Conditional Expectation}{51}{section.A.8}%
-\contentsline {chapter}{References}{53}{appendix*.2}%
+\contentsline {subsection}{\numberline {6.2.1}Hitting distribution and Harmonic measure}{36}{subsection.6.2.1}%
+\contentsline {section}{\numberline {6.3}The Generator of an It\IeC {\^o} Diffusion}{37}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Dynkin's Formula}{39}{section.6.4}%
+\contentsline {section}{\numberline {6.5}The Characteristic Operator}{40}{section.6.5}%
+\contentsline {chapter}{\numberline {A}Measure Theory}{42}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Measurable Spaces}{42}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Measures}{42}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Measurable Functions}{44}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Integration}{46}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Product Spaces}{49}{section.A.5}%
+\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{50}{section.A.6}%
+\contentsline {section}{\numberline {A.7}Modes of Convergence}{51}{section.A.7}%
+\contentsline {section}{\numberline {A.8}Conditional Expectation}{52}{section.A.8}%
+\contentsline {chapter}{References}{54}{appendix*.2}%

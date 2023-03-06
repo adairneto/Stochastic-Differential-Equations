@@ -1675,6 +1675,10 @@ INPUT ./Chapters/06.tex
 INPUT Chapters/06.tex
 INPUT /usr/share/texmf-dist/fonts/vf/public/mathdesign/mdbch/mdbchri7m.vf
 INPUT /usr/share/texmf-dist/fonts/tfm/public/mathdesign/mdbch/md-chri7m.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/public/mathdesign/mdbch/mdbchb8t.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvb8t.tfm
+INPUT /usr/share/texmf-dist/fonts/vf/adobe/helvetic/phvb8t.vf
+INPUT /usr/share/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm
 INPUT ./Chapters/a01.tex
 INPUT ./Chapters/a01.tex
 INPUT ./Chapters/a01.tex
