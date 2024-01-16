@@ -1,5 +1,10 @@
 \newcommand{\etalchar}[1]{$^{#1}$}
-\begin{thebibliography}{Wik22}
+\begin{thebibliography}{BRR96}
+
+\bibitem[BRR96]{baxter1996financial}
+Martin Baxter, Andrew Rennie, and Andrew~JO Rennie.
+\newblock {\em Financial calculus: an introduction to derivative pricing}.
+\newblock Cambridge university press, 1996.
 
 \bibitem[Dur19]{durrett2019probability}
 Rick Durrett.
@@ -8,8 +13,7 @@ Rick Durrett.
 
 \bibitem[Eva12]{evans2012introduction}
 Lawrence~C Evans.
-\newblock {\em An introduction to stochastic differential equations},
-  volume~82.
+\newblock {\em An introduction to stochastic differential equations}, volume~82.
 \newblock American Mathematical Soc., 2012.
 
 \bibitem[Gar88]{gard1988introduction}
@@ -28,24 +32,25 @@ Fima~C Klebaner.
 \newblock {\em Introduction to stochastic calculus with applications}.
 \newblock World Scientific Publishing Company, 2012.
 
+\bibitem[LL11]{lamberton2011introduction}
+Damien Lamberton and Bernard Lapeyre.
+\newblock {\em Introduction to stochastic calculus applied to finance}.
+\newblock CRC press, 2011.
+
 \bibitem[Oks13]{oksendal2013stochastic}
 Bernt Oksendal.
-\newblock {\em Stochastic differential equations: an introduction with
-  applications}.
+\newblock {\em Stochastic differential equations: an introduction with applications}.
 \newblock Springer Science \& Business Media, 2013.
 
 \bibitem[S{\etalchar{+}}04]{shreve2004stochastic}
 Steven~E Shreve et~al.
-\newblock {\em Stochastic calculus for finance II: Continuous-time models},
-  volume~11.
+\newblock {\em Stochastic calculus for finance II: Continuous-time models}, volume~11.
 \newblock Springer, 2004.
 
 \bibitem[Wik22]{wiki:Kalman_filter}
 Wikipedia.
 \newblock {Kalman filter} --- {W}ikipedia{,} the free encyclopedia.
-\newblock
-  \url{http://en.wikipedia.org/w/index.php?title=Kalman\%20filter&oldid=1091166052},
-  2022.
+\newblock \url{http://en.wikipedia.org/w/index.php?title=Kalman\%20filter&oldid=1091166052}, 2022.
 \newblock [Online; accessed 06-July-2022].
 
 \end{thebibliography}

@@ -217,7 +217,7 @@ In this section, we show that the converse is also true: Any $\mathfrak{F}_t^n$-
 \begin{lemma}
     The linear span of random variables of the type
     \begin{equation*}
-        \exp \left\{ \int_0^T h(t) ~\mathrm{d}B_t(\omega) - \frac{1}{2} \int_0^T H^2(t) ~\mathrm{d}t \right\}
+        \exp \left\{ \int_0^T h(t) ~\mathrm{d}B_t(\omega) - \frac{1}{2} \int_0^T h^2(t) ~\mathrm{d}t \right\}
     \end{equation*}
     where $h \in L^2[0,T]$ is dense in $L^2(\mathfrak{F}_T, \mathbb{P})$.
 \end{lemma}
@@ -239,7 +239,7 @@ so $V \in L^2(\mathfrak{F}_T, \mathbb{P})$.
     \end{equation*}
 \end{theorem}
 
-\begin{theorem}[The Martingale Representation Theorem]
+\begin{theorem}[The Martingale Representation Theorem]\label{thm:martingale_representation}
     Let $B(t)$ be an $n$-dimensional Brownian motion. Suppose $M_t$ is an $\mathfrak{F}_t^{(n)}$-martingale w.r.t. $\mathbb{P}$ and that $M_t \in L^2(\mathbb{P})$ for all $t \geq 0$.
 
     Then there exists a unique stochastic process $g(s, \omega)$ such that $g \in \mathfrak{V}^{(n)}(0, t)$ for all $t \geq 0$ and 

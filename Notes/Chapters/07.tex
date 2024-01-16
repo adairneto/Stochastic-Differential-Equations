@@ -1,0 +1,1691 @@
+\chapter{Application to Option Pricing}
+
+In this chapter, we present an application of the stochastic differential equations to the problem of option pricing. 
+
+\section{Introduction}
+
+\subsection{Risk Neutral Valuation: Discrete Model Intuition}
+
+The problem we're interested in is how to price derivatives whilst minimizing the risk. Derivatives are contingent claims `that promise some payment or delivery in the future contingent on an underlying stock's behavior.' \cite[p. 3]{baxter1996financial}
+
+The simplest derivative is a \textbf{forward contract}, which pays to the holder $S-K$ at the time $T$, where $S_T$ is the \textbf{stock price} at $T$ and $K$ is the \textbf{exercise price} or \textbf{strike price}. The time $T$ is called \textbf{maturity time}.
+
+Most commonly in this chapter, we'll be interested in a kind of derivative called \textbf{options}. The main difference here is that the buyer has the right, but not the obligation, to exercise the contract.
+\begin{enumerate}
+    \item A \textbf{call option} pays $\max \{ S-K, 0 \}$ at time $T$. Intuitively, it's a bet that the price will go up, giving the buyer the option to receive the stock for the strike price $K$.
+    \item A \textbf{put option} pays $\max \{ K-S, 0 \}$ at time $T$. It's a bet that the price will go down and gives the buyer the option to sell the stock for the strike price $K$.
+\end{enumerate}
+
+The options defined above are called \textbf{European}. Another kind is the \textbf{American option}, which can be executed before maturity.
+
+Given this language, how do you price an option at the time $t = 0$? And how to hedge it? 
+
+% `Given the current price of the underlining stock and assumptions on the dynamics of stock price, there is no uncertainty about the price of the derivative.'
+
+% `The price is defined only by the price of the stock and not by the risk preferences of market participants. Only depends on the volatility of the stock.'
+
+% `Mathematical apparatus allows us to compute the current price of a derivative and its risks, given certain assumptions about the market.'
+
+If the economy includes a stock $S$ and a \textbf{riskless asset} $B$ (a bond, for example) with \textbf{interest rate} $r$ and derivative claim $f$, we may assume only two outcomes at time $\Delta t$ either it goes up with probability $p$ or down, with probability $(1-p)$ (see Figure \ref{fig:bin_branch}).
+
+We may think that the strike price $K$ should be defined by the real-world probability $p$. However, this leads to arbitrage problems. For simplicity, we assume a \textbf{viable market}, i.e., a market without arbitrage opportunity.
+
+\begin{figure}[h]
+    \begin{center}
+        \tikzstyle{bag} = [text width=2em, text centered]
+        \tikzstyle{end} = []
+        \begin{tikzpicture}[sloped]
+        \node (a) at ( 0,0) [bag] {$S_0$};
+        \node (b) at ( 4,-1.5) [bag] {$S_1$};
+        \node (c) at ( 4,1.5) [bag] {$S_2$};
+        \draw [->] (a) to node [below] {$1-p_1$} (b);
+        \draw [->] (a) to node [above] {$p_1$} (c);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Binomial branch}
+    \label{fig:bin_branch}
+\end{figure}
+
+Consider instead the following strategy. Borrow $S_0$ to buy the stock and enter a forward contract with strike price $K_0$. In time $\Delta t$, deliver stock in exchange for $K_0$ and repay the loan, which now costs $S_0 e^{r \Delta t}$. 
+
+Then, the outcome is 
+
+\begin{itemize}
+    \item If $K_0 > S_0 e^{r \Delta t}$, then we made riskless profit.
+    \item If $K_0 < S_0 e^{r \Delta t}$, then we lost money. 
+\end{itemize}
+
+Hence, the enforced strike price must be $K_0 = S_0 e^{r \Delta t}$, i.e., `the current price of a derivative claim is determined by current price of a portfolio which exactly replicates the payoff of the derivative at the maturity'.
+
+We want to find $a, b$ such that 
+\[
+    f_2 = a S_2 + b B_0 e^{r \Delta t}
+\]
+\[
+    f_1 = a S_1 + b B_0 e^{r \Delta t}
+\]
+where $f_2$ is the price of the derivative if the price goes up and $f_1$, if it goes down. 
+
+Solving for $a$ and $b$,
+\[
+    a = \frac{f_2 - f_1}{S_2 - S_1}, \quad b= \frac{S_2 f_1 - S_1 f_2}{(S_2 - S_1) B_0 e^{r \Delta t}}
+\]
+
+Substituting the values above into
+\[
+    f_0 = a S_0 + b B_0
+\]
+we obtain
+\[
+    f_0 = e^{-r \Delta t} \left( S_0 e^{r \Delta t} \frac{f_2 - f_1}{S_2 - S_1} + \frac{S_2 f_1 - S_1 f_2}{S_2 - S_1} \right)
+\]
+
+Thus, it's possible to rewrite
+\[
+    f_0 = e^{-r \Delta t}(f_2 q + f_1(1-q))
+\]
+where 
+\[
+    q = \frac{S_0 e^{r \Delta t} - S_1}{S_2 - S_1}, \quad 0 < q < 1
+\]
+is the \textbf{risk-neutral probability}, or \textbf{martingale probability}, i.e., the \textbf{arbitrage probability} that the stock price goes up. 
+
+Hence,
+\[
+    S_2 q + S_1 (1-q) = e^{r \Delta t} S_0
+\]
+
+\begin{theorem} 
+    Summarizing, 
+    \begin{enumerate}
+        \item Arbitrage probability: $q = \frac{S_0 e^{r \Delta t} - S_1}{S_2 - S_1}$;
+        \item Claim value: $f_0 = e^{r \Delta t} (q f_2 + (1-q) f_1)$;
+        \item Claim value at time $0$: $V = \mathbb{E}_Q (B_T^{-1} X)$, where $X$ is the claim pay-off;
+        \item Stock holding strategy: $\varphi = \frac{f_2 - f_1}{S_2 - S_1}$;
+        \item Bond holding strategy: $\psi = B_0^{-1}(f_0 - \varphi S_0)$.
+    \end{enumerate}
+\end{theorem}
+
+Notice that $u = e^{\sigma \Delta t}$, where $\sigma$ is the underlying volatility.
+
+Given $S_0, K, T, r$ as defined, let $N$ be the number of time steps, $u$ the up-factor and let $d = 1/u$ to ensure that the tree is recombinant. Then, we have the following algorithm.
+
+\begin{algorithm}
+    \SetKwComment{Comment}{/* }{ */}
+    \caption{Cox-Ross-Rubinstein Binomial Model}\label{alg:binomial_call}
+        \KwIn{$S_0, K, T, r, N, u, d$}
+        \KwOut{$C_0$}
+
+        \BlankLine
+        \tcp{Initialize constants}
+        $dt \gets T/N$\;
+        $q \gets (e^{r \cdot dt} - d)/(u-d)$\;
+        $disc \gets exp^{-r \cdot dt}$\;
+
+        \BlankLine
+        \tcp{Compute asset prices at maturity}
+        $S[0] = S_0 \cdot d^N$\;
+        \For{$j \in \{1, \ldots, N+1\}$}{
+            $S[j] \gets S[j-1] \cdot u/d$\;
+        }
+
+        \BlankLine
+        \tcp{Compute option values at maturity}
+        \For{$j \in \{0, 1, \ldots, N+1\}$}{
+            $C[j] \gets \max \{ 0, S[j] - K \}$\;
+        }
+
+        \BlankLine
+        \tcp{Step backwards through the tree}
+        \For{$i \in \{ N, N-1, \ldots, 0 \}$}{
+            \For{$j \in \{ 0, \ldots, i \}$}{
+                $C[j] = disc \cdot \left( q \cdot C[j+1] + (1-q) \cdot C[j] \right)$\;
+            }
+        }
+
+        \BlankLine
+        \Return $C[0]$
+\end{algorithm}
+
+\subsection{Continuous Model Intuition}
+
+% In the continuous model, 
+% \[
+%     f_t = e^{-r(T-t)} \mathbb{E}_Q [f_T]
+% \]
+% and 
+% \[
+%     S_0 = e^{-rt} \mathbb{E}_Q [S_t]
+% \]
+
+Since the claim in discrete model has binomial distribution, by the central limit theorem the distribution of the claim converges to a normal. Then, as the intertick time $\Delta t$ gets smaller and the number of time steps $N$ gets larger, the distribution of $S_t$ becomes log-normal. Thus, we can write
+\[
+    dS = \mu S dt + \sigma S dW
+\]
+where $W$ is a Brownian motion. 
+
+Our goal is to find a replicating portfolio such that 
+\[
+    df = a dS + b dB
+\]
+
+Applying Itô's formula to $df$ and substituting $dS$, $df$, $dB = rBdt$ and $(dS)^2 = \sigma^2 S^2 dt$, 
+\[
+    df = (a \mu S + brB) dt + a \sigma S dW
+\]
+
+Comparing terms,
+\[
+    a = \frac{\partial f}{\partial S}, \quad brB = \frac{\partial f}{\partial t} + \frac{1}{2} \frac{\partial^2 f}{\partial S^2} \sigma^2 S^2
+\]
+
+Since $bB = f - aS$ is deterministic and $dB = rB dt$, 
+\[
+    d(f-aS) = r(f-aS) dt
+\]
+and we obtain the Black-Scholes equation
+\[
+    \frac{\partial f}{\partial t} + \frac{1}{2} \frac{\partial^2 f}{\partial S^2} \sigma^2 S^2 + \frac{\partial f}{\partial S} rS - rf = 0
+\]
+
+\begin{remark}
+    \begin{enumerate}
+        \item Notice that the Black-Scholes model assumes that the volatility is constant.
+        \item Any tradable derivative satisfies the equation.
+        \item Since there's no dependence on the drift $\mu$, this gives a hedging strategy by replicating portfolio. 
+    \end{enumerate}
+\end{remark}
+
+Changing variables, we have the heat equation 
+\[
+    \frac{\partial u}{\partial \tau} = \frac{\partial^2 u}{\partial x^2}
+\]
+where the pay-off of the derivative gives boundary and final conditions.
+
+For an European Call, we have: 
+\[
+    C(S,T) = \max \{ S-K, 0 \} 
+\]
+\[
+    C(0, t) = 0, \quad C(\infty, t) \approx S
+\]
+
+For an European Put: 
+\[
+    P(S,T) = \max \{ K-S, 0 \} 
+\]
+\[
+    P(0, t) = Ke^{-r(T-t)}, \quad P(\infty, t) = 0 
+\]
+
+For European call/put, we have the following analytical solution:
+\[
+    C_t = e^{-r(T-t)} \left( e^{r(T-t)} SN(d_1) - KN(d_2) \right)
+\]
+\[
+    P_t = e^{-r(T-t)} \left( KN(-d_2) - e^{r(T-t)} SN(-d_1) \right)
+\]
+where 
+\[
+    d_1 = \frac{\ln(S/K) + (r + \sigma^2 / 2)(T-t)}{\sigma \sqrt{T-t}}
+\]
+\[
+    d_2 = \frac{\ln(S/K) + (r - \sigma^2 / 2)(T-t)}{\sigma \sqrt{T-t}}
+\]
+\[
+    N(x) = \frac{1}{\sqrt{2\pi}} \int_{- \infty}^x e^{-u^2 / 2}~\mathrm{d}u
+\]
+
+With $Q$ being the risk neutral measure under which $ds = rS dt + \sigma S dw$, we have
+\[
+    f_t = e^{-r(T-t)} \mathbb{E}_{Q}[f_T]
+\]
+
+In more complicated options, it is necessary to use numerical methods, like finite difference, tree methods, and Monte Carlo.
+
+% How to hedge? Make a replicating portfolio that replicates the payoff.
+
+% Write a replicating portfolio (hedging strategy)?
+% 1. Buy a call with strike $K - 1/2$.
+% 2. Sell a call with strike $K + 1/2$.
+
+% \[
+%     \frac{\partial C}{\partial K} = \frac{C(K - \varepsilon) - C(K + \varepsilon)}{2 \varepsilon}
+% \]
+
+\subsection{Option Price and Probability Duality}
+
+In this section, we'll interpret option prices as probability distributions. Let us fix the following notation:
+
+\begin{itemize}
+    \item Call option with payout at $T$: $\max (S_T - K, 0)$.
+    \item ZCB (zero coupon bond): $1$.
+    \item Digital option: $\chi_{\{S_T > T\}}$.
+    \item $T$ is maturity.
+    \item $K$ is the strike.
+    \item Price of a call at $t \le 1$: $C_K(t, T)$.
+    \item Price of the ZCB at $t \le 1$: $Z(t, T)$.
+    \item Price of the digital at $t \le 1$: $D_K(t, T)$.
+\end{itemize}
+
+Consider the portfolio: $\lambda$ calls with strike $K$, $-\lambda$ calls with strike $K+1/\lambda$. The price at $t$ is given by $\lambda C_K(t, T) - \lambda C_{K + 1/\lambda}(t,T)$. The payout at $T$ (call spread) is $0$ between $0$ and $K$ and $1$ after $K + 1/\lambda$ with a straight line between them. 
+
+Let $\lambda \to \infty$: $- \frac{\partial C}{\partial K}$. Then the payout function becomes `instantaneously one', it is the payout of the digital:
+\[
+    - \frac{\partial C}{\partial K}(t, T) = D_K(t, T)
+\]
+
+By the fundamental theorem of asset pricing, prices today (at $t$) are the expected payout at $T$ suitably discounted. Thus, we can write 
+\[
+    D_K(t, T) = Z(t, T)\mathbb{E}^\ast[\chi_{\{S_T > K\}} \mid S_t] = Z(t,T) \mathbb{P}^\ast[S_T > K \mid S_t]
+\]
+under the risk-neutral distribution. 
+
+In fact, 
+\[
+    \frac{D_K(t, T)}{Z(t, T)}
+\]
+is a martingale. 
+
+By equating two prices: 
+\[
+    - \frac{\partial C}{\partial K}(t, T) = Z(t,T) \mathbb{P}^\ast[S_T > K \mid S_t] \iff \mathbb{P}^\ast[S_T < K \mid S_t] = 1 + \frac{\partial C}{\partial K}(t, T) \frac{1}{Z(t, T)}
+\]
+
+Differentiating, we obtain the density function
+\[
+    f_{S_T \mid S_t}(x) = \frac{1}{Z(t, T)} \left.\frac{\partial^2 C}{\partial K^2}\right|_x 
+\]
+
+Thus, given the set of call prices, we can determine the density of the underlying asset.
+
+Now consider the \textbf{call butterfly} portfolio, given as follows: $\lambda$ calls with strike $K-1/\lambda$, $-2\lambda$ calls with strike $K$ and $\lambda$ calls with strike $K + 1/\lambda$, $\lambda > 0$.
+
+This approximates the density function. Its price is
+\[
+    \lambda(C_{K - 1/\lambda}(t, T) - C_K(t, T)) - \lambda(C_K(t, T) - C_{K+1/\lambda}(t, T)) =: B_{K, \lambda}(t, T)
+\]
+
+Take 
+\[
+    \lambda B_{K, \lambda}(t, T) \approx \frac{\partial^2 C}{\partial K^2}(t, T)
+\]
+
+For large $\lambda$, 
+\[
+    B_{K, \lambda}(t, T) \approx \left. \frac{1}{\lambda}f(x) \right|_K
+\]
+
+Note that none of this depends on the option price. Putting Black-Scholes at $C$ and taking the second derivative with respect to $K$, we end up with a log-normal distribution.
+
+The fundamental theorem of asset pricing states that for a derivative with payout $D(T,T) = g(S_T)$ at $T$ and price $D(t, T)$ at $t \le T$, we have
+\[
+    \frac{D(t,T)}{Z(t, T)} = \mathbb{E}^\ast \left[ \frac{D(T,T)}{Z(T,T)} ~ \middle| ~ S_t \right]
+\]
+In other words, $\frac{D(t,T)}{Z(t, T)}$ is a martingale with respect to the stock price under the risk-neutral distribution.
+
+Then 
+\[
+    D(t, T) = Z(t, T) \mathbb{E}^\ast [D(T,T) \mid S_t] = Z(t, T) \int g(x)f_{S_T \mid S_t}(x)~\mathrm{d}x
+\]
+
+The theorem means we can go from $f(x)$, the probability density, to $D(t,T)$, the derivative price.
+
+\begin{remark}
+    Call prices do span all derivative prices. Piecewise linear $g$ replicating portfolio.
+\end{remark}
+
+Write the Taylor expansion:
+\[
+    g(S_T) = g(0) + S_T g'(0) + \int_0^\infty (S_T - K)^+ g''(K)~\mathrm{d}K
+\]
+
+Take the discounted expected value:
+\[
+    D(t, T) = Z(t, T)g(0) + g'(0)S_t + \int_0^\infty C_K(t, T) g''(K)~\mathrm{d}K
+\]
+which gives the number of bonds and stocks, and the portfolio of calls. 
+
+\section{Discrete Time Models}
+
+\subsection{European Options}
+
+More generally, letting $N$ be the horizon of our investment, i.e., the maturity of our options, we have the following definitions
+
+\begin{definition}[Market]
+    \begin{enumerate}
+        \item Our market consists of $d+1$ assets with prices $S_n^0, S_n^1, \ldots, S_n^d$ at time $n$. These prices are positive random variables which are $\mathfrak{F}_n$-measurable.
+        \item The asset indexed by zero is the \textbf{riskless asset}, which we set $S_0^0 = 1$ with return $r$ over one period. I.e., $S_n^0 = (1+r)^n$.
+        \item The assets indexed by $i = 1, 2, \ldots, d$ are the \textbf{risky assets}.
+        \item The factor $\beta_n = 1/S_n^0$ is the \textbf{discount factor}.
+    \end{enumerate} 
+
+\end{definition}
+
+\begin{definition}[Trading Strategy]
+    A \textbf{trading strategy} is the stochastic process 
+    \[
+        \varphi = ((\varphi_n^0, \varphi_n^1, \ldots, \varphi_n^d))_{0 \leq n \leq N}
+    \]
+    where each $\varphi_n^i$ is the number of shares of the asset $i$ at time $n$. 
+
+    We assume that this process is \textbf{predictable}, i.e., each $\varphi_0^i$ is $\mathfrak{F}_0$-measurable and, for $n \geq 1$, $\varphi_n^i$ is $\mathfrak{F}_{n-1}$-measurable. 
+\end{definition}
+
+\begin{definition}[Value of the portfolio]
+    We define 
+    \begin{enumerate}
+        \item The \textbf{value of the portfolio} at time $n$:
+        \[
+            V_n(\varphi) = \varphi_n S_n = \sum_{i=0}^{d} \varphi_n^i S_n^i
+        \]
+        \item The \textbf{discounted prices}:
+        \[ 
+            \tilde{S}_n = \beta_n S_n = (1, \beta_n S_n^1, \ldots, \beta_n S_n^d)
+        \]
+        \item The \textbf{discounted value of the portfolio}:
+        \[
+            \tilde{V}_n(\varphi) = \beta_n (\varphi_n S_n) = \varphi_n \tilde{S}_n
+        \]
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Self-financing strategy]
+    A trading strategy is called \textbf{self-financing} if it readjusts positions without bringing or consuming wealth, i.e., 
+    \[
+        \varphi_n S_n = \varphi_{n+1} S_n, \quad \forall~ 0 \leq n \le N-1
+    \]
+\end{definition}
+
+\begin{remark}
+    The identity $\varphi_n S_n = \varphi_{n+1} S_n$ is equivalent to
+    \[
+        \varphi_{n+1}(S_{n+1} - S_n) = \varphi_{n+1} S_{n+1} - \varphi_{n+1}S_n = \varphi_{n+1}S_{n+1} - \varphi_n S_n
+    \]
+    and
+    \[
+        V_{n+1}(\varphi) - V_n(\varphi) = \varphi_{n+1} (S_{n+1} - S_n)
+    \]
+\end{remark}
+
+Now we present a characterization of self-financing strategies.
+
+\begin{proposition}\label{prop:1.1.2}
+    The following are equivalent:
+    \begin{enumerate}
+        \item The strategy $\varphi$ is self-financing. 
+        \item For any $n \in \{ 1, \ldots, N \}$,
+        \[
+            V_n(\varphi) = V_0(\varphi) + \sum_{i=1}^{n} \varphi_i \Delta S_i
+        \]
+        \item For any $n \in \{ 1, \ldots, N \}$,
+        \[
+            \tilde{V}_n(\varphi) = V_0(\varphi) + \sum_{i=1}^{n} \varphi_i \Delta \tilde{S}_i
+        \]
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    To show that $1.$ and $2.$ are equivalent, notice that 
+    \[
+        V_n(\varphi) - V_0(\varphi) = \sum_{i=1}^{n}[V_i(\varphi) - V_{i-1}(\varphi)] = \sum_{i=1}^{n} \varphi_i \Delta S_i
+    \] 
+    by the previous remark. 
+
+    Since $\varphi_n S_n = \varphi_{n+1} S_n \iff \varphi \tilde{S}_n = \varphi_{n+1} \tilde{S}_n$, the equivalence $1.$ and $3.$ holds.
+\end{proof}
+
+\begin{proposition}\label{prop:1.1.3}
+    Let $((\varphi_n^1, \ldots, \varphi_n^d))_{0 \leq n \leq N}$ be a predictable process and $V_0$ a $\mathfrak{F}_0$-measurable random variable. There exists a unique predictable process $(\varphi_n^0)_{0 \leq n \leq N}$ such that $(\varphi^0, \varphi^1, \ldots, \varphi^d)$ is self-financing and its initial value is $V_0$.
+\end{proposition}
+
+\begin{proof}
+    By the self-financing condition, we can write 
+    \begin{equation*}
+        \begin{aligned}
+            \tilde{V}_n(\varphi) &= \varphi_0^n + \varphi_n^1 \tilde{S}_n^1 + \cdots + \varphi_n^d \tilde{S}_n^d \\
+            &= V_0 + \sum_{i=1}^{n} \varphi_i \Delta \tilde{S}_i 
+        \end{aligned}
+    \end{equation*}
+
+    Isolating $\varphi_n^0$ we obtain the process and, by canceling the $n$th term, predictability follows.
+\end{proof}
+
+\begin{definition}[Admissible strategy]
+    A strategy is called \textbf{admissible} if it is self-financing and $V_n(\varphi) \geq 0$ for all $n$. 
+\end{definition}
+
+\begin{definition}[Arbitrage]
+    `An \textbf{arbitrage} strategy is an admissible strategy with zero initial value and non-zero final value.'
+\end{definition}
+
+To exclude arbitrage, we use martingales. In the context of financial assets, saying that $(S_n^i)$ is a martingale means that the best estimate for $S_{n+1}^i$ is $S_i$. 
+
+\begin{proposition}\label{prop:1.2.3}
+    Let $(M_n)$ be a martingale and $(H_n)$ a predictable sequence w.r.t. the filtration $(\mathfrak{F}_n)$. The sequence $(X_n)$ given by
+    \begin{equation*}
+        X_n =
+        \begin{cases}
+            H_0 M_0, & \text{ if } n = 0 \\
+            H_0 M_0 + \sum_{i=1}^{n} H_i \Delta M_i, & \text{ if } n \geq 1
+        \end{cases}
+    \end{equation*}
+    is a martingale w.r.t. $(\mathfrak{F}_n)$.
+\end{proposition}
+
+\begin{proof}
+    Using that $(H_n)$ is predictable and $(M_n)$ is a martingale, compute 
+    \begin{equation*}
+        \mathbb{E}[X_{n+1} - X_n \mid \mathfrak{F}_n] = \mathbb{E}[H_{n+1} \Delta M_{n+1} \mid \mathfrak{F}_n] = H_{n+1} \mathbb{E} [ M_{n+1} - M_n \mid \mathfrak{F}_n] = 0
+    \end{equation*}
+
+    Thus, $(X_n)$ is a martingale.
+\end{proof}
+
+This proposition implies that, if the vector of discounted prices is a martingale, then the expected value of the wealth generated by a self-financing strategy equals the initial wealth.
+
+The following is a characterization of Martingales.
+
+\begin{proposition}\label{prop:1.2.4}
+    An adapted sequence of real-valued random variables $(M_n)$ is a martingale if and only if for any predictable sequence $(H_n)$, we have 
+    \[
+        \mathbb{E} \left(\sum_{n=1}^{N} H_n \Delta M_n \right) = 0
+    \]
+\end{proposition}
+
+\begin{proof}
+    $(\Rightarrow)$ Let 
+    \begin{equation*}
+        X_n =
+        \begin{cases}
+            0, & \text{ if } n = 0 \\
+            \sum_{i=1}^{n} H_i \Delta M_i, & \text{ if } n \geq 1
+        \end{cases}
+    \end{equation*} 
+
+    By the previous proposition, $(X_n)$ is a martingale. Thus, $\mathbb{E}[X_n] = \mathbb{E}[X_0] = 0$.
+
+    $(\Leftarrow)$ Fix $1 \leq j \leq N$ and an $\mathfrak{F}_j$-measurable set $A$.
+    
+    Consider 
+    \begin{equation*}
+        H_n =
+        \begin{cases}
+            0, & \text{ if } n \neq j+1 \\
+            \chi_A, & \text{ if } n = j+1
+        \end{cases}
+    \end{equation*} 
+
+    Then $H_n$ is predictable and 
+    \[
+        0 = \mathbb{E} \left[ \sum_{n=1}^{N} H_n \Delta M_n \right] = \mathbb{E}[\chi_A(M_{j+1} - M_j)] = \mathbb{E}[M_{j+1} - M_j \mid \mathfrak{F}_j]
+    \]
+
+    Hence, $(M_n)$ is a martingale.
+\end{proof}
+
+\begin{definition}[Viable Markets]
+    A market is called \textbf{viable} if there's no arbitrage opportunity.
+\end{definition}
+
+In the next result, known as the Fundamental Theorem of Asset Pricing, we'll show how to use martingales to exclude arbitrage. Before that, we need two definitions and a lemma.
+
+\begin{definition}[Equivalent probability measures]
+    Two probability measures $\mathbb{P}_1$ and $\mathbb{P}_2$ are \textbf{equivalent} if, for any event $A$, we have that $\mathbb{P}_1(A) = 0 \iff \mathbb{P}_2(A) = 0$.
+\end{definition}
+
+Intuitively, equivalent probabilities agree on what is possible.
+
+Notice that this definition means that, for any $\omega \in \Omega$, $\mathbb{P}^\ast[\{\omega\}] > 0$.
+
+\begin{definition}[Cumulative Discounted Gain]
+    The cumulative discounted gain realized by following the self-financing strategy $\varphi_n^1, \ldots, \varphi_n^d$ is 
+    \[
+        \tilde{G}_n(\varphi) = \sum_{j=1}^{n} \left( \varphi_j^1 \Delta \tilde{S}_j^1 + \cdots + \varphi_j^d \Delta \tilde{S}_j^d \right)
+    \]
+\end{definition}
+
+\begin{lemma}\label{lm:1.2.7}
+    Let $\Gamma$ be the set of all non-negative random variables $X$ such that $\mathbb{P}[X > 0] > 0$, $(\varphi_n^1, \ldots, \varphi_n^d)$ be an admissible process, and $\tilde{G}_n(\varphi)$ be the cumulative discounted gain.
+    
+    If the market if viable, then any predictable process $(\varphi^1, \ldots, \varphi^d)$ satisfies $\tilde{G}_N(\varphi) \notin \Gamma$.
+\end{lemma}
+    
+\begin{proof}
+    We proceed by contrapositive. Suppose that $\tilde{G}_N(\varphi) \in \Gamma$. If all $\tilde{G}_n(\varphi) \ge 0$, the market is not viable. 
+
+    Suppose that not all $\tilde{G}_n(\varphi)$ are non-negative. Let
+    \[
+        n = \sup \{ k : \mathbb{P}[\tilde{G}_k(\varphi) < 0] > 0 \}
+    \]
+
+    Then we can construct a new process 
+    \begin{equation*}
+        \psi_j(\omega) = \begin{cases}
+            0 & \quad \text{if} ~j \le n \\
+            \chi_A(\omega) \varphi_j(\omega) & \quad \text{if} ~j > n
+        \end{cases}
+    \end{equation*}
+    where $A$ is the event $\{ \tilde{G}_n(\varphi) < 0 \}$.
+
+    Thus, $\tilde{G}_j(\omega) \geq 0$ for all $j \in \{ 0, 1, \ldots, N \}$ and the market is not viable.
+\end{proof}
+
+\begin{theorem}[Fundamental Theorem of Asset Pricing]\label{thm:fund_thm_asset}
+    The market is viable if and only if there exists a probability $\mathbb{P}^\ast$, equivalent to $\mathbb{P}$, such that the discounted prices are $\mathbb{P}^\ast$-martingales.
+\end{theorem}
+
+\begin{proof}
+    $(\Leftarrow)$ Suppose that $\mathbb{P}^\ast$ and $\mathbb{P}$ are equivalent and that the discounted prices $(\tilde{S}_n(\varphi))$ are $\mathbb{P}^\ast$-martingales. 
+
+    By the Proposition \ref{prop:1.1.2},
+    \[
+        \tilde{V}_n(\varphi) = V_0(\varphi) + \sum_{j=1}^{n} \varphi_j \Delta \tilde{S}_j
+    \]
+
+    And by the Proposition \ref{prop:1.2.3}, $(\tilde{V}_n(\varphi))$ is a $\mathbb{P}^\ast$-martingale. Thus,
+    \[
+        \mathbb{E}^\ast[\tilde{V}_N(\varphi)] = \mathbb{E}^\ast[\tilde{V}_0(\varphi)]
+    \]
+
+    To prove that there's no arbitrage opportunity, suppose that the strategy is admissible and its initial value is zero. Then,
+    \[
+        \tilde{V}_N(\varphi) \ge 0 \quad \text{ and } \quad \mathbb{E}^\ast[\tilde{V}_N(\varphi)] = 0
+    \]
+
+    Since the probability measures are equivalent, $\mathbb{P}^\ast[\{\omega\}] > 0$. Which implies that $\tilde{V}_N(\varphi) = 0$.
+
+    $(\Rightarrow)$ Let $\Gamma$ be as in the Lemma \ref{lm:1.2.7} and $\tilde{G}_n(\varphi)$ be the cumulative discounted gain. Notice that $\Gamma$ is a convex cone in the vector space of real-valued random variables (Hahn–Banach separation theorem: the separation in $\mathbb{R}^n$ is a hyperplane). 
+
+    Since we're supposing that the market is viable, we have that
+    \[
+        V_0(\varphi) = 0 \implies \tilde{V}_N(\varphi) \notin \Gamma
+    \]
+
+    By the Proposition \ref{prop:1.1.3}, there exists a unique $(\varphi_n^0)$ such that the strategy $((\varphi_n^0, \ldots, \varphi_n^d))$ is self-financing and has zero initial value. 
+
+    By the hypothesis that the market is viable and $\tilde{G}_n(\varphi) \geq 0$, it follows that $\tilde{G}_N(\varphi) = 0$. By the Lemma \ref{lm:1.2.7}, a stronger fact holds: even if not all $\tilde{G}_n(\varphi)$ are non-negative, we still have that $\tilde{G}_N(\varphi) = 0$.
+
+    Now we can construct our risk-neutral measure. Notice that 
+    \[
+        \mathfrak{V} = \{ \tilde{G}_N(\varphi : \varphi \in \mathbb{R}^d \text{ is predictable})\}
+    \]
+    is a vector subspace of $\mathbb{R}^\Omega$.
+
+    By the Lemma \ref{lm:1.2.7}, $\mathfrak{V} \cap \Gamma = \emptyset$. Thus, $\mathfrak{V}$ doesn't intersect 
+    \[
+        K = \{X \in \Gamma : \sum_\omega X(\omega = 1) \} \subseteq \Gamma
+    \]
+    which is a convex compact set. 
+
+    Using the convex sets separation theorem, there exists $(\lambda(\omega))_\omega$ such that 
+    \begin{enumerate}
+        \item For all $X \in K$, 
+        \[
+            \sum_\omega \lambda(\omega) X(\omega) > 0
+        \]
+        \item If $\varphi$ is predictable, 
+        \[
+            \sum_\omega \lambda(\omega) \tilde{G}_N(\varphi)(\omega) = 0
+        \]
+    \end{enumerate}
+
+    By the first property, $\lambda(\omega) > 0$ for all $\omega \in \Omega$. Thus, the probability $\mathbb{P}^\ast$ defined by 
+    \[
+        \mathbb{P}^\ast(\{ \omega \}) = \frac{\lambda(\omega)}{\sum_{\omega' \in \Omega} \lambda(\omega')}
+    \]
+    is equivalent to $\mathbb{P}$.
+
+    Using the second property, 
+    \[
+        \mathbb{E}^\ast \left( \sum_{j=1}^{N} \varphi_j \Delta \tilde{S}_j \right) = 0 \implies \mathbb{E}^\ast \left( \sum_{j=1}^{n} \varphi_j^i \Delta \tilde{S}_j^i \right) = 0
+    \]
+
+    Hence, by the Proposition \ref{prop:1.2.4}, the discounted prices $(\tilde{S}_n^1), \ldots, (\tilde{S}_n^d)$ are $\mathbb{P}^\ast$-martingales.
+\end{proof}
+
+A European option is characterized by its payoff $h$, which is a non-negative $\mathfrak{F}_n$-measurable random variable.
+\begin{enumerate}
+    \item For a \textbf{call} on the asset $i$ with strike price $K$, we have $h = (S_N^i - K)$.
+    \item For a \textbf{put} on the same asset, $h = (K - S_N^i)$.
+\end{enumerate}
+
+\begin{definition}[Attainable claim]
+    A contingent claim defined by $h$ is \textbf{attainable} if there exists an admissible strategy worth $h$ at maturity $N$.
+\end{definition}
+
+\begin{remark}\label{rmk:1.3.2}
+    If the market is viable, then it is sufficient to find a self-financing strategy worth $h$ at maturity to say that $h$ is attainable.
+
+    In fact, if $\varphi$ is self-financing and $\mathbb{P}^\ast$ is a risk-neutral measure, then $(\tilde{V}_n(\varphi))$ is a $\mathbb{P}^\ast$-martingale and $\tilde{V}_n(\varphi) = \mathbb{E}^\ast[\tilde{V}_N(\varphi) \mid \mathfrak{F}_n]$. 
+
+    Thus, if $\tilde{V}_N(\varphi) \geq 0$, the strategy is admissible. 
+\end{remark}
+
+\begin{definition}[Complete market]
+    The market is \textbf{complete} if every contingent claim is attainable.
+\end{definition}
+
+Altough a complete market is a restrictive assumption, it allows us to deduce an important theory of option pricing and hedging. 
+
+\begin{theorem}
+    A viable market is complete if and only if there exists unique measure $\mathbb{P}^\ast$ equivalent to $\mathbb{P}$ under which discounted prices are martingales.
+\end{theorem}
+
+\begin{proof}
+    $(\Rightarrow)$ If the market is viable and complete, any non-negative $\mathfrak{F}_N$-measurable random variable $h$ can be written as $h = V_N(\varphi$), in which $\varphi$ is an admissible strategy that replicates the claim $h$.
+
+    Since $\varphi$ is self-financing, 
+    \[
+        \frac{h}{S_N^0} = \tilde{V}_N(\varphi) = V_0(\varphi) + \sum_{j=1}^{N} \varphi_j \Delta \tilde{S}_j
+    \]
+
+    If there are two probability measures under which the discounted prices are martingales, by computing the expected value of $\tilde{V}_N(\varphi)$ under each measure, we see that the measures agree on the whole $\sigma$-algebra $\mathfrak{F}_N$, i.e., the probability measure is unique.
+
+    $(\Leftarrow)$ Notice that the \hyperref[thm:fund_thm_asset]{Fundamental Theorem of Asset Pricing} implies that the market is viable. 
+
+    Suppose that the market is viable and incomplete. Then there exists a random variable $h \geq 0$ that is not attainable. Define $\tilde{\mathfrak{V}}$ the set of random variables of the form 
+    \[
+        U_0 + \sum_{n=1}^{N} \varphi_n \Delta \tilde{S}_n 
+    \]
+    in which $U_0$ is $\mathfrak{F}_0$-measurable and $((\varphi_n^1, \ldots, \varphi_n^d))$ is predictable. 
+
+    By the Proposition \ref{prop:1.1.3} and the \hyperref[rmk:1.3.2]{previous remark}, $h/S_N^0$ does not belong to $\tilde{\mathfrak{V}}$, i.e., $\tilde{\mathfrak{V}}$ is a strict subset of all random variables on $(\Omega, \mathfrak{F})$.
+
+    Define the following scalar product on the set of random variables
+    \[
+        (X,Y) \longmapsto \mathbb{E}^\ast[XY]
+    \]
+    and notice that there exists a non-zero random variable $X$ orthogonal to $\tilde{\mathfrak{V}}$ (via orthogonal projection).
+
+    Now define 
+    \[
+        \mathbb{P}^{\ast \ast}[\{\omega\}] = \left( 1 + \frac{X(\omega)}{2 \| X \|_\infty}\right) \mathbb{P}^\ast[\{\omega\}]
+    \]
+
+    Since $\mathbb{E}^\ast[X] = 0$, we obtain a new probability measure equivalent to $\mathbb{P}$ and different from $\mathbb{P}^\ast$ satisfying 
+    \[
+        \mathbb{E}^{\ast \ast} \left( \sum_{n=1}^{N} \varphi_n \Delta \tilde{S}_n \right) = \int_\Omega \sum_{n=1}^{N} \varphi_n \Delta \tilde{S}_n ~\mathrm{d}\mathbb{P}^\ast + \int_\Omega \frac{1}{2 \| X \|_\infty} \left( \sum_{n=1}^{N} \varphi_n \Delta \tilde{S}_n \right) \cdot X ~\mathrm{d}\mathbb{P}^\ast  = 0
+    \]
+    where the first integral is zero, since the process is a martingale, and the second one is zero because it is the definition of inner product and $X$ is orthogonal do $\tilde{\mathfrak{V}}$.
+
+    Thus, from the Proposition \ref{prop:1.2.4}, $(\tilde{S}_n)$ is a $\mathbb{P}^{\ast \ast}$-martingale, contradicting the uniqueness hypothesis.
+\end{proof}
+
+\begin{example}
+    How to price and hedge contingent claims in a viable and complete market? 
+
+    Suppose $h = V_N(\varphi)$, i.e., we have an admissible strategy replicating the claim. 
+
+    Since $(\tilde{V}_n)$ are $\mathbb{P}^\ast$-martingales, we have 
+    \[
+        V_0(\varphi) = \mathbb{E}^\ast[\tilde{V}_N(\varphi)] = \mathbb{E}^\ast[h / S_N^0]
+    \]
+
+    Hence,
+    \[
+        V_n(\varphi) = S_n^0 \mathbb{E}^\ast \left[ \frac{h}{S_N^0} ~ \middle| ~ \mathfrak{F}_n \right]
+    \]
+    is completely determined by $h$.
+
+    Thus, we may call $V_n(\varphi)$ the \textbf{value of the option} at $n$.
+
+    Note that the investor is \textbf{perfectly hedged} if, at time zero, he sells the option for $\mathbb{E}^\ast[h / S_N^0]$, which is called the \textbf{fair price} of the option. The computation of the option price only requires the knowledge of the risk-neutral probability and doesn't depend on the true probability.
+\end{example}
+
+\subsection{American Options}
+
+An American option may be exercised at any time before maturity. So we define as a non-negative sequence $(Z_n)_{0 \le n \le N}$ adapted to $\mathfrak{F}_n$ in which $Z_n$ is the profit made by exercising the option at time $n$. 
+
+Naturally, for a call option we have $Z_n = (S_n - K)$ and for a put option, $Z_n = (K-S_n)$. But how do we price American options?
+
+At maturity, the value of the option $U_N$ is equal to $Z_N$. At $N-1$, it is the maximum between $Z_{N-1}$ and the value at $N - 1$ of an strategy paying $Z_N$ at $N$, i.e.,
+\[
+    U_{N-1} = \max \{Z_{N-1}, ~S_{N-1}^0 \mathbb{E}^\ast[\tilde{Z}_N \mid \mathfrak{F}_{N-1}]\}
+\]
+where $\tilde{Z}_N = Z_N / S_N^0$.
+
+By induction,
+\[
+    U_{n-1} = \max \left\{Z_{n-1}, ~S_{n-1}^0 \mathbb{E}^\ast \left[\frac{U_n}{S_n^0} ~ \middle| ~ \mathfrak{F}_{n-1} \right]\right\}
+\]
+
+If $S_n^0 = (1+r)^n$,
+\[
+    U_{n-1} = \max \left\{Z_{n-1}, ~\frac{1}{1+r} \mathbb{E}^\ast [U_n \mid \mathfrak{F}_{n-1} ] \right\}
+\] 
+
+\begin{proposition}
+    Let $\tilde{U}_n = U_n/S_n^0$ be the discounted price of the American option. Then $(\tilde{U}_n)$ is a $\mathbb{P}^\ast$-supermartingale and is the smallest $\mathbb{P}^\ast$-supermartingale that dominates $(\tilde{Z}_n)$.
+\end{proposition}
+
+\begin{proof}
+    By definition of $\tilde{U}_n$, 
+    \[
+        \tilde{U}_{n-1} = \max \{\tilde{Z}_{n-1}, ~\mathbb{E}^\ast [\tilde{U}_n \mid \mathfrak{F}_{n-1} ]\}
+    \]
+    
+    Thus, $(\tilde{U}_n)$ is a supermartingale that dominates $(\tilde{Z}_n)$. 
+
+    To show that it is the smallest, consider a supermartingale $(\tilde{T}_n)$ that dominates $(\tilde{Z}_n)$. By induction, it dominates $(\tilde{U}_n)$. 
+
+    Notice that $\tilde{T}_N \ge \tilde{U}_N$. If $\tilde{T}_n \ge \tilde{U}_n$, then 
+    \[
+        \tilde{T}_{n-1} \ge \mathbb{E}^\ast [\tilde{T}_n \mid \mathfrak{F}_{n-1}] \ge \mathbb{E}^\ast [\tilde{U}_n \mid \mathfrak{F}_{n-1}]
+    \]
+
+    Thus, 
+    \[
+        \tilde{T}_{n-1} \ge \max \{ \tilde{Z}_{n-1}, ~\mathbb{E}^\ast [\tilde{U}_n \mid \mathfrak{F}_{n-1}] \} = \tilde{U}_{n-1}
+    \]
+\end{proof}
+
+\subsection{Optimal Stopping}
+
+In this subsection, we apply the concept of stopping time to find the optimal exercise date of an American option. We start with a basic definition and a result.
+
+\begin{definition}
+    Let $(X_n)$ be an adapted sequence and $\nu$ a stopping time. The \textbf{sequence stopped at a stopping time} $\nu$ is defined as
+    \[
+        X_n^\nu(\omega) = X_{\nu(\omega) \wedge n(\omega)}
+    \]
+\end{definition}
+
+\begin{proposition}
+    Let $(X_n)$ be an adapted sequence and $\nu$ a stopping time.
+    \begin{enumerate}
+        \item The stopped sequence is adapted.
+        \item If $(X_n)$ is a martingale (supermartingale), then $(X_n^\nu)$ is a martingale(supermartingale).
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    For $n\ge 1$,
+    \[
+        X_{\eta \wedge n} = X_0 + \sum_{j=1}^{n} \varphi_j \Delta X_j
+    \]
+    in which $\varphi_j = \chi_{\{ j \le \nu \}}$.
+    
+    Since $\{ j \le \nu \}$ is the complement of $\{\nu < j \} = \{\nu \le j - 1\}$, $(\varphi_n)$ is predictable. Thus, $(X_{\nu \wedge n})$ is $\mathfrak{F}_n$-adapted. 
+
+    Given that $(X_{\nu \wedge n})$ is a martingale transform of $(X_n)$, it is also a martingale. 
+
+    For supermartingales or submartingales, the procedure is analogous.
+\end{proof}
+
+Now we turn to the concept of the Snell envelope, which is a fundamental concept to solve the problem at hand. 
+
+\begin{definition}[Snell envelope]
+    Consider $(Z_n)$ and adapted sequence and 
+    \begin{equation*}
+        U_n =
+        \begin{cases}
+        U_N = Z_N \\
+        U_n = \max \{ Z_n, ~\mathbb{E}[U_{n+1} \mid \mathfrak{F}_n] \}, \quad n = 0, \ldots, N-1
+        \end{cases}
+    \end{equation*}
+
+    The sequence $(U_n)$, which is the smallest supermartingale that dominates $(Z_n)$, is called the \textbf{Snell envelope} of the sequence $(Z_n)$. 
+\end{definition}
+
+The idea is that by stopping at an appropriate time, it is possible to obtain a martingale.
+
+\begin{proposition}
+    Let 
+    \[
+        \nu_0 = \inf \{ n \ge 0 : U_n = Z_n \}
+    \]
+
+    The stopped sequence $(U_{n \wedge \nu_0})$ is a martingale.
+\end{proposition}
+
+\begin{proof}
+    1. Write 
+    \[
+        U_n^{\nu_0} = U_{n \wedge \nu_0} = U_0 + \sum_{j=1}^{n} \varphi_j \Delta U_j
+    \]
+    with $\varphi_j = \chi_{\{j \le \nu_0\}}$.
+
+    2. Compute the differences 
+    \begin{equation*}
+        \begin{aligned}
+            U_{n+1}^{\nu_0} - U_n^{\nu_0} &= \varphi_{n+1} (U_{n+1} - U_n) \\
+            &= \chi_{\{n+1 \le \nu_0\}} (U_{n+1} - U_n)
+        \end{aligned}
+    \end{equation*}
+
+    3. Use the definition of $U_n$ and the fact that $U_n > Z_n$ for $n+1 \le \nu_0$ to conclude that 
+    \[
+        U_n = \mathbb{E}[U_{n+1} \mid \mathfrak{F}_n]
+    \]
+
+    4. Replace this in the previous equation, 
+    \[
+        U_{n+1}^{\nu_0} - U_n^{\nu_0} = \chi_{\{n+1 \le \nu_0\}} (U_{n+1} - \mathbb{E}[U_{n+1} \mid \mathfrak{F}_n])
+    \]
+
+    5. Take the conditional expectation 
+    \begin{equation*}
+        \begin{aligned}
+            \mathbb{E}[U_{n+1}^{\nu_0} - U_n^{\nu_0} \mid \mathfrak{F}_n] = \chi_{\{n+1 \le \nu_0\}} \mathbb{E}[(U_{n+1} - \mathbb{E}[U_{n+1} \mid \mathfrak{F}_n] \mid \mathfrak{F}_n] = 0
+        \end{aligned}
+    \end{equation*}
+\end{proof}
+
+Let $\mathfrak{I}_{n, N}$ denote the set of stopping times taking values in $\{n, n+1, \ldots, N\}$. The next corollary relates the Snell envelope to the optimal stopping problem.
+
+\begin{corollary}\label{cor:2.2.2}
+    The stopping time $\nu_0$ satisfies 
+    \[
+        U_0 = \mathbb{E}[Z_{\nu_0} \mid \mathfrak{F}_0] = \sup_{\nu \in \mathfrak{I}_{0, N}} \mathbb{E}[Z_{\nu} \mid \mathfrak{F}_0]
+    \]
+\end{corollary}
+
+\begin{proof}
+    1. Use that $U^{\nu_0}$ is a martingale
+    \[
+        U_0 = U_0^{\nu_0} = \mathbb{E}[U_N^{\nu_0} \mid \mathfrak{F}_0] = \mathbb{E}[U_{\nu_0} \mid \mathfrak{F}_0] = \mathbb{E}[Z_{\nu_0} \mid \mathfrak{F}_0]
+    \]
+
+    2. Suppose that $\nu \in \mathfrak{I}_{0, N}$. Then the stopped sequence $U^\nu$ is a supermatingale. Thus, 
+    \begin{equation*}
+        \begin{aligned}
+            U_0 &\ge \mathbb{E}[U_N^\nu \mid \mathfrak{F}_0] = \mathbb{E}[U_\nu \mid \mathfrak{F}_0] \\
+            &\ge \mathbb{E}[Z_\nu \mid \mathfrak{F}_0]
+        \end{aligned}
+    \end{equation*}
+\end{proof}
+
+Hence, if we interpret $Z_n$ as the total winnings of a gambler after $n$ games, then stopping at $\nu_0$ maximizes the expected gain given $\mathfrak{F}_0$.
+
+More generally, 
+\begin{equation}\label{eq:202304221434}
+    U_n = \sup_{\nu \in \mathfrak{I}_{n, N}} \mathbb{E}[Z_{\nu} \mid \mathfrak{F}_n] = \mathbb{E}[Z_{\nu_n} \mid \mathfrak{F}_n]
+\end{equation}
+where $\nu_n = \inf \{j \ge n : U_j = Z_j\}$.
+
+\begin{definition}[Optimal Stopping Time]
+    A stopping time $\nu^\ast$ is called \textbf{optimal} for the sequence $(Z_n)$ if
+    \[
+        \mathbb{E}[Z_{\nu^\ast} \mid \mathfrak{F}_0] = \sup_{\nu \in \mathfrak{I}_{0, N}} \mathbb{E}[Z_{\nu} \mid \mathfrak{F}_0]
+    \]
+\end{definition}
+
+$\nu_0$ is optimal. The following theorem shows that $\nu_0$ is the smallest optimal time. 
+
+\begin{theorem}
+    A stopping time $\nu$ is optimal if, and only if, $Z_\nu = U_\nu$ and $(U_{\nu \wedge n})$ is a martingale. 
+\end{theorem}
+
+\begin{proof}
+    $(\Leftarrow)$ If $U^\nu$ is a martingale, $U_0 = \mathbb{E}[U_\nu \mid \mathfrak{F}_0]$.
+    
+    By hypothesis, $U_0 = \mathbb{E}[Z_\nu \mid \mathfrak{F}_0]$.
+    
+    By the Corollary \ref{cor:2.2.2}, $\nu$ is optimal.
+
+    $(\Rightarrow)$ Supposing that $\nu$ is optimal, we have 
+    \[
+        U_0 = \mathbb{E}[Z_\nu \mid \mathfrak{F}_0] \leq \mathbb{E}[U_\nu \mid \mathfrak{F}_0]
+    \]
+
+    Since $U^\nu$ is a supermartingale, $\mathbb{E}[U_\nu \mid \mathfrak{F}_0] \le U_0$. Thus,
+    \[
+        \mathbb{E}[U_\nu \mid \mathfrak{F}_0] = \mathbb{E}[Z_\nu \mid \mathfrak{F}_0]
+    \]
+
+    Using that $U_\nu \ge Z_\nu$, it follows that $U_\nu = Z_\nu$.
+
+    Now use that $\mathbb{E}[U_\nu \mid \mathfrak{F}_0] = U_0$ and, by the supermartingale property of $(U_n^\nu)$, that 
+    \[
+        U_0 \ge \mathbb{E}[U_{\nu \wedge n} \mid \mathfrak{F}_0] \ge \mathbb{E}[U_\nu \mid \mathfrak{F}_0]
+    \]
+    to obtain 
+    \[
+        \mathbb{E}[U_{\nu \wedge n} \mid \mathfrak{F}_0] = \mathbb{E}[U_\nu \mid \mathfrak{F}_0] = \mathbb{E}[\mathbb{E}[U_\nu \mid \mathfrak{F}_n] \mid \mathfrak{F}_0]
+    \]
+
+    Since $U_{\nu \wedge n} \ge \mathbb{E}[U_\nu \mid \mathfrak{F}_n]$, it follows that $U_{\nu \wedge n} = \mathbb{E}[U_\nu \mid \mathfrak{F}_n]$, and thus $(U_n^\nu)$ is a martingale.
+\end{proof}
+
+Now that we know what is an optimal stopping time, we'll use a decomposition of supermartingales in viable complete markets to associate any supermartingale with a trading strategy in which consumption is allowed.
+
+\begin{proposition}[Doob Decomposition]\label{prop:doob-decomposition}
+    Every supermartingale $(U_n)$ has the unique following decomposition: 
+    \[
+        U_n = M_n - A_n
+    \]
+    where $(M_n)$ is a martingale and $(A_n)$ is a non-decreasing, predictable process and null at zero.
+\end{proposition}
+
+\begin{proof}
+    1. For $n = 0$, $M_0 = U_0$ and $A_0 = 0$.
+
+    2. Write the difference
+    \[
+        U_{n+1} - U_n = M_{n+1} - M_n - (A_{n+1} - A_n)
+    \]
+
+    3. Conditioning w.r.t. $\mathfrak{F}_n$:
+    \[
+        \mathbb{E}[U_{n+1} \mid \mathfrak{F}_n] - U_n = -(A_{n+1} - A_n)
+    \]
+    and
+    \[
+        M_{n+1} - M_n = U_{n+1} - \mathbb{E}[U_{n+1} \mid \mathfrak{F}_n]
+    \]
+
+    4. These equations entirely determine $(M_n)$ and $(A_n)$, $(M_n)$ is a martingale and, since $(U_n)$ is a supermartingale, $(A_n)$ is a predictable and non-decreassing process. 
+\end{proof}
+
+The next result shows how to characterize the largest optimal stopping time for $(Z_n)$ using the process $(A_n)$ of the Doob decomposition.
+
+\begin{proposition}\label{prop:2.3.2}
+    The largest optimal stopping time for $(Z_n)$ is given by 
+    \begin{equation*}
+        \nu_{\max} =
+        \begin{cases}
+            N, & A_n = 0 \\
+            \inf\{n, ~A_{n+1} \neq 0\} & A_n \neq 0
+        \end{cases}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    1. $\nu_{\max}$ is a stopping time: follows from the fact that $(A_n)$ is predictable. 
+
+    2. Optimality of $\nu_{\max}$:
+    \begin{itemize}
+        \item Using that $U_n = M_n - A_n$ and $A_j = 0$ for $j \le \nu_{\max}$, it follows that $U^{\nu_{\max}} = M^\nu_{\max}$ and, thus, $U^{\nu_{\max}}$ is a martingale.
+        \item Thus, it is sufficient to show that $U_{\nu_{\max}} = Z_{\nu_{\max}}$.
+        \item To do that, notice 
+        \begin{equation*}
+            \begin{aligned}
+                U_{\nu_{\max}} &= \sum_{j=0}^{N-1} \chi_{\nu_{\max} = j} U_j + \chi_{\nu_{\max} = N} U_n \\ 
+                &= \sum_{j=0}^{N-1} \chi_{\nu_{\max} = j} \max \{Z_j, ~\mathbb{E}[U_{j+1} \mid \mathfrak{F}_j]\} + \chi_{\nu_{\max} = N} Z_n
+            \end{aligned}
+        \end{equation*}
+        \item We have $\mathbb{E}[U_{j+1} \mid \mathfrak{F}_j] = M_j - A_{j+1}$, and that $A_j = 0$, $A_{j+1} > 0$ on $\{\nu_{\max} = j\}$.
+        \item Thus, $U_j = M_j$ and $\mathbb{E}[U_{j+1} \mid \mathfrak{F}_j] < U_j$.
+        \item Then, $U_j = \max \{Z_j, ~\mathbb{E}[U_{j+1} \mid \mathfrak{F}_j]\} = Z_j$ and $U_{\nu_{\max}} = Z_{\nu_{\max}}$.
+    \end{itemize}
+
+    3. It is the greatest optimal stopping time.
+    \begin{itemize}
+        \item Let $\nu$ be a stopping time such that $\nu \ge \nu_{\max}$ with positive probability.
+        \item Then 
+        \[
+            \mathbb{E}[U_\nu] = \mathbb{E}[M_\nu] - \mathbb{E}[A_\nu] = \mathbb{E}[U_0] - \mathbb{E}[A_\nu] < \mathbb{E}[U_0]
+        \]
+        \item Which implies that $U^\nu$ is not a martingale.
+    \end{itemize}
+\end{proof}
+
+Before applying these concepts to the pricing of American options, it is necessary to know how to compute Snell envelopes in a Markovian setting.
+
+Recall that a sequence $(X_n)$ of random variables taking their values in a finite set $E$ is called a \textbf{Markov chain} if, for any integer $n \ge 1$ and $x_0, x_1, \ldots, x_{n-1}, x, y \in E$, we have that 
+\[
+    \mathbb{P}[X_{n+1} = y \mid X_0 = x_0, \ldots, X_{n-1} = x_{n-1}, X_n = x] = \mathbb{P}[X_{n+1} = y \mid X_n = x]
+\]
+
+The chain is \textbf{homogeneous} if the value $P(x,y) = \mathbb{P}[X_{n+1} = y \mid X_n = x]$ does not depend on $n$.
+
+And the matrix $P = (P(x,y))_{(x, y) \in E \times E}$ is called the \textbf{transition matrix} of the chain. It has non-negative entries and satisfies $\sum_{y \in E} P(x,y) = 1$ for all $x \in E$ and is also called \textbf{stochastic matrix}.
+
+Alternatively, a sequence $(X_n)$ of random variables taking values in $E$ is a \textbf{homogeneous Markov chain} with respect to the filtration $(\mathfrak{F}_n)$ and with transition matrix $P$ if $(X_n)$ is adapted and for any real valued function $f$ on $E$ we have 
+\[
+    \mathbb{E}[f(X_{n+1}) \mid \mathfrak{F}_n] = Pf(X_n)
+\]
+where $Pf$ is the function that maps $x \in E$ to 
+\[
+    Pf(x) = \sum_{y \in E} P(x,y) f(y)
+\]
+
+Note that the previous definition is a Markov chain with respect to its natural filtration. 
+
+The next result is used to compute the prices of American options in discrete models.
+
+\begin{proposition}
+    Let $(Z_n)$ be the adapted sequence defined by $Z_n = \psi(n, X_n)$ in which $(X_n)$ is a homogeneous Markov chain with transition matrix $P$ and taking values in $E$, and $\psi : \mathbb{N} \times E \longrightarrow \mathbb{R}$.
+
+    The Snell envelope $(U_n)$ of $(Z_n)$ is given by $U_n = u(n, X_n)$ in which
+    \begin{equation*}
+        u(n, x) =
+        \begin{cases}
+            \psi(n, x), & n = N \\
+            \max \{ \psi(n, x), ~Pu(n+1, x) \}, & n \le N-1
+        \end{cases}
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    A consequence of the definition of Markov chain and Snell envelope.
+\end{proof}
+
+Now we are ready to apply these concepts to American options.
+
+\begin{example}
+    Suppose that we are in a viable complete market. Let $\mathbb{P}^\ast$ be the unique probability under which the discounted asset prices are martingales. 
+
+    \textbf{1. Pricing the option}
+
+    The sequence $(\tilde{U}_n)$ of discounted prices of the option is the Snell envelope, under $\mathbb{P}^\ast$ of $(\tilde{Z}_n)$.
+
+    By the equation \eqref{eq:202304221434},
+    \[
+        \tilde{U}_n = \sup_{\nu \in \mathfrak{I}_{n, N}} \mathbb{E}^\ast[\tilde{Z}_{\nu} \mid \mathfrak{F}_n]
+    \]
+    and thus 
+    \[
+        U_n = S_n^0 \sup_{\nu \in \mathfrak{I}_{n, N}} \mathbb{E}^\ast \left[\frac{Z_{\nu}}{S_\nu^0} ~ \middle| ~ \mathfrak{F}_n \right]
+    \]
+
+    Using the \hyperref[prop:doob-decomposition]{Doob Decomposition}, 
+    \[
+        \tilde{U}_n = \tilde{M}_n - \tilde{A}_n
+    \]
+    in which $\tilde{M}_n$ is a $\mathbb{P}^\ast$-martingale and $(\tilde{A}_n)$ is an increasing predictable process null at zero.
+
+    Since the market is complete, there exists a self-financing strategy $\varphi$ such that 
+    \[
+        V_N(\varphi) = S_N^0 \tilde{M}_N \implies \tilde{V}_N(\varphi) = \tilde{M}_N
+    \]
+
+    And given that $(\tilde{V}_n(\varphi))$ is a $\mathbb{P}^\ast$-martingale,
+    \[
+        \tilde{V}_n(\varphi) = \mathbb{E}^\ast[\tilde{V}_N(\varphi) \mid \mathfrak{F}_n] = \mathbb{E}^\ast[\tilde{M}_N \mid \mathfrak{F}_n] = \tilde{M}_n
+    \]
+
+    Hence, 
+    \[
+        \tilde{U}_n = \tilde{V}_n(\varphi) - \tilde{A}_n \implies U_n = V_n(\varphi) - A_n
+    \]
+    where $A_n = S_n^0 \tilde{A}_n$. 
+
+    Notice that a perfect hedging is available: receive the premium $U_0 = V_0(\varphi)$, generate wealth equal to $V_n(\varphi)$ at $n$ which is bigger than $U_n \ge Z_n$.
+
+    \textbf{2. Optimal exercise date}
+
+    If $U_n > Z_n$, we would be trading an asset worth $U_n$ for an amount $(Z_n)$. Therefore, it must be at a stopping time $\tau$ such that $U_\tau = Z_\tau$.
+
+    Also, it should not be after $\nu_{\max} = \inf \{j, ~A_{j+1} \neq 0 \}$ (see Proposition \ref{prop:2.3.2}). Selling gives $U_{\nu_{\max}} = V_{\nu_{\max}}(\varphi)$. (What happens after that?)
+
+    Thus, we set $\tau \le \nu_{\max}$ and then $U^\tau$ is a martingale. The optimal dates of exercise are optimal stopping times for $(\tilde{Z}_n)$ under $\mathbb{P}^\ast$. 
+
+    If the writer hedges himself with the strategy $\varphi$ defined earlier and the buyer exercises at a non-optimal time $\tau$, then either $U_\tau > Z_\tau$ or $A_\tau > 0$. In both cases, the writer makes a profit 
+    \[
+        V_\tau(\varphi) - Z_\tau = U_\tau + A_\tau - Z_\tau > 0
+    \]
+\end{example}
+
+The following proposition relates American and European options.
+
+\begin{proposition}
+    Let $C_N$ be the value, at time $n$, of an American option described by an adapted sequence $(Z_n)$, and $(c_n)$ be the value, at time $n$, of the Europen option defined by the $\mathfrak{F}_N$-measurable random variable $h = Z_n$. 
+
+    Then,
+    \begin{enumerate}
+        \item $C_n \ge c_n$;
+        \item If $c_n \ge Z_n$ for any $n$, then $c_n = C_n$ for all $n \in \{0, 1, \ldots, N\}$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    $(\tilde{C}_n)$ is a supermartingale under $\mathbb{P}^\ast$:
+    \[
+        (\tilde{C}_n) \ge \mathbb{E}^\ast[\tilde{C}_N \mid \mathfrak{F}_n] = \mathbb{E}^\ast[\tilde{c}_N \mid \mathfrak{F}_n] = \tilde{c}_n \implies C_n \ge c_n
+    \]
+
+    If $c_n \ge Z_n$ for any $n$, then $(\tilde{c}_n)$ is a martingale under $\mathbb{P}^\ast$ is an upper bound for the $(\tilde{Z}_n)$ and thus $\tilde{C}_n \le \tilde{c}_n$ for all $n \in \{0, 1, \ldots, N\}$.
+\end{proof}
+
+Remark that if the conditions didn't hold, there would be arbitrage opportunities. The property doesn't hold for puts or calls on currencies or dividend-paying stocks.
+
+\section{Continuous Time: The Black-Scholes model}
+
+In this section, we present the Black-Scholes model. The intuition gained from discrete time will prove itself useful. 
+
+\subsection{The behavior of prices}
+
+Suppose that we have one risk asset $S_t$ and a riskless asset $S_t^0$ such that 
+\[
+    \mathrm{d}S_t^0 = rS_t^0 \mathrm{d}t
+\]
+where $r \ge 0$ is the instantaneous interest rate. 
+
+Setting $S_0^0 = 1$, we have $S_t^0 = e^{rt}$. We also assume that the following stochastic differential equation determines the behavior of the stock price 
+\[
+    \mathrm{d} S_t = \mu S_t \mathrm{d}t + \sigma S_t \mathrm{d}B_t
+\]
+
+From the Example \ref{ex:stock_prices}, we have that its solution is
+\begin{equation}\label{eq:black_scholes_solution}
+    S_t = S_0 \exp \left(\left(\mu - \frac{\sigma^2}{2}\right)t + \sigma B_t \right)
+\end{equation}
+
+Notice that the law of $S_t$ is lognormal and that the hypotheses for this model are the same as the Brownian motion. 
+
+\subsection{Self-financing Strategies}
+
+Before pricing options, we need to fix our terminology for the continuous case.
+
+\begin{definition}[Strategy]
+    We define a \textbf{strategy} as a process $\varphi = (\varphi_t) = (H_t^0, H_t)$ adapted to the natural filtration $(\mathfrak{F}_t)$ of Brownian motion, where $H_t^0$ and $H_t$ are the quantities of the riskless and risky asset at $t$, respectively.
+\end{definition}
+
+\begin{definition}[Value of the portfolio]
+    The \textbf{value of the portfolio} at $t$ is given by:
+    \[
+        V_t(\varphi) = H_t^0 S_t^0 + H_t S_t
+    \]
+\end{definition}
+
+To characterize self-financing strategies, we have the following identity
+\[
+    \mathrm{d} V_t(\varphi) = H_t^0 \mathrm{d} S_t^0 + H_t \mathrm{d} S_t
+\]
+
+In order to make this equality meaningful, we set the following conditions
+\[
+    \int_0^T |H_t^0|~\mathrm{d}t < +\infty \text{ a.s. } \quad \text{ and } \quad \int_0^T H_t^2 < + \infty \text{ a.s. }
+\]
+
+Thus,
+\[
+    \int_0^T H_t^0~\mathrm{d}S_t^0 = \int_0^T H_t^0 re^{rt}~\mathrm{d}t
+\]
+and 
+\[
+    \int_0^T H_t^0 ~\mathrm{d}S_t^0 = \int_0^T (H_t S_t \mu)~\mathrm{d}t + \int_0^T \sigma H_t S_t ~\mathrm{d}B_t
+\]
+are well-defined.
+
+\begin{definition}[Self-Financing Strategy]
+    A \textbf{self-financing strategy} is a pair of adapted processes $(H_t^0)$ and $(H_t)$ satisfying
+    \[
+        \int_0^T |H_t^0| ~\mathrm{d}t + \int_0^T H_t^2 ~\mathrm{d}t < + \infty \text{ a.s.}
+    \]
+    and 
+    \[
+        H_t^0 S_t^0 + H_t S_t = H_0^0 S_0^0 + H_0 S_0 + \int_0^t H_u^0 ~\mathrm{d}S_u^0 + \int_0^t H_u ~\mathrm{d}S_u \text{ a.s. }, \quad \forall ~t \in [0,T]
+    \]
+
+    We call $\tilde{S}_t = e^{-rt} S_t$ the \textbf{discounted price} of risky asset.
+\end{definition}
+
+\begin{proposition}\label{prop:4.1.2}
+    Suppose that $\varphi = (H_t^0, H_t)$ is an adapted process, valued in $\mathbb{R}^2$, satisfying \[ \int_0^T |H_t^0| ~\mathrm{d}t + \int_0^T H_t^2 ~\mathrm{d}t < + \infty \text{ a.s.} \]
+    and let $V_t(\varphi) = H_t^0 S_t^0 + H_t S_t$ and $\tilde{V}_t(\varphi) = e^{-rt}V_t(\varphi)$.
+
+    Then $\varphi$ defines a self-financing strategy if, and only if, 
+    \[
+        \tilde{V}_t(\varphi) = V_0(\varphi) + \int_0^t H_u ~\mathrm{d}\tilde{S}_u \text{ a.s.}, \quad \forall ~t \in [0, T]
+    \]
+\end{proposition}
+
+\begin{proof}
+    If $\varphi$ is self-financing, differentiating the product of $(e^{rt})$ and $(V_t(\varphi))$ yields
+    \[
+        \mathrm{d}\tilde{V}_t(\varphi) = -r \tilde{V}_t(\varphi) \mathrm{d}t + e^{-rt} \mathrm{d}V_t(\varphi)
+    \]
+
+    Rewriting, we have that $\mathrm{d}\tilde{V}_t(\varphi) = H_t \mathrm{d}\tilde{S}_t$. The converse follows similarly.
+\end{proof}
+
+Notice that no condition of predictability is needed.
+
+\subsection{Change of Measure}
+
+We need the following definition and result to define equivalent probabilities in the continuous context.
+
+\begin{definition}[Absolutely Continuous Measure]
+    A probability $\mathbb{Q}$ is \textbf{absolutely continuous} with respect to $\mathbb{P}$ if 
+    \[
+        \mathbb{P}(A) = 0 \implies \mathbb{Q}(A) = 0, \quad \forall~ A \in \mathfrak{F}
+    \]
+\end{definition}
+
+\begin{theorem}
+    A probability measure $\mathbb{Q}$ is absolutely continuous with respect to $\mathbb{P}$ if, and only if, there exists a non-negative random variable $Z$ such that 
+    \[
+        \mathbb{Q}(A) = \int_A Z ~\mathrm{d}\mathbb{P}, \quad \forall~ A \in \mathfrak{F}
+    \]
+
+    $Z$ is called the \textbf{density} of $\mathbb{Q}$ with respect to $\mathbb{P}$ and is denoted by $\frac{\mathrm{d} \mathbb{Q}}{\mathrm{d} \mathbb{P}}$.
+\end{theorem}
+
+\begin{definition}[Equivalent Probabilities]
+    The probabilities $\mathbb{P}$ and $\mathbb{Q}$ are \textbf{equivalent} if each of them is absolutely continuous with respect to the other. 
+\end{definition}
+
+Notice that $\mathbb{P}$ and $\mathbb{Q}$ are equivalent if, and only if, $\mathbb{P}[Z > 0] = 1$.
+
+\begin{theorem}[Girsanov]
+    Let $(\theta_t)$ be an adapted process satisfying 
+    \[
+        \int_0^T \theta_s^2 ~\mathrm{d}s < \infty \text{ a.s. }
+    \]
+    and such that the process $(L_t)$ given by 
+    \[
+        L_t = \exp \left(-\int_0^t \theta_s ~\mathrm{d}B_s - \frac{1}{2} \int_0^t \theta_s^2 ~\mathrm{d}s \right)
+    \] 
+    is a martingale. 
+
+    Then, under the probability $\mathbb{P}^L$ with density $L_T$ with respect to $\mathbb{P}$, the process $(W_t)$ defined by
+    \[
+        W_t = B_t + \int_0^t \theta_s ~\mathrm{d}s
+    \]
+    is an $(\mathfrak{F}_t)$-Brownian motion. 
+\end{theorem}
+
+\begin{proof}
+    Refer to \cite[Theorem 5.2.3]{shreve2004stochastic}.
+\end{proof}
+
+\begin{remark}[Novikov's criterion]
+    If 
+    \[
+        \mathbb{E}\left[ \exp \left( \frac{1}{2} \int_0^T \theta_t^2 ~\mathrm{d}t \right)\right] < \infty
+    \]
+    then $(L_t)$ is a martingale.
+\end{remark}
+
+\subsection{Pricing and Hedging Options in the Black-Scholes Model}
+
+To price and hedge options, we first show that there exists a probability equivalent to $\mathbb{P}$ under which the discounted prices are martingales. 
+
+Using that $\tilde{S}_t = e^{-rt} S_t$ and applying Itô's formula to 
+\[
+    \mathrm{d} S_t = \mu S_t \mathrm{d}t + \sigma S_t \mathrm{d}B_t
+\]
+we obtain 
+\[
+    \mathrm{d} \tilde{S}_t = -re^{-rt} S_t \mathrm{d} t + e^{-rt} \mathrm{d}S_t = (\mu - r)\tilde{S}_t \mathrm{d}t + \sigma \tilde{S}_t \mathrm{d}B_t
+\]
+
+Setting $W_t = B_t + (\mu - r)t/\sigma$, 
+\begin{equation}\label{eq:202305051135}
+    \mathrm{d} \tilde{S}_t = \tilde{S}_t \sigma \mathrm{d}W_t
+\end{equation}
+
+By the Girsanov's theorem applied to $\theta_t = (\mu-r)/\sigma$, there exists a probability $\mathbb{P}^\ast$ equivalent to $\mathbb{P}$ under which $(W_t)$ is a standard Brownian motion. 
+
+Using that the stochastic integral is invariant by change of equivalent probability, it follows that, under $\mathbb{P}^\ast$, $(\tilde{S}_t)$ is a martingale and 
+\[
+    \tilde{S}_t = \tilde{S}_0 \exp \left(\sigma W_t - \frac{\sigma^2 t}{2} \right)
+\]
+
+With that, we may price the option following a procedure analogous to the discrete case. We define a European option by a non-negative, $\mathfrak{F}_T$-measurable random variable $h = f(S_T)$, with $f(x) = \max \{(x - K), 0 \}$ for a call, or $f(x) = \max \{(K-x), 0 \}$ for a put.
+
+\begin{definition}[Admissible Strategy]
+    A strategy $\varphi = (H_t^0, H_t)$ is \textbf{admissible} if 
+    \begin{enumerate}
+        \item It is self-financing;
+        \item The discounted value $$\tilde{V}_t(\varphi) = H_t^0 + H_t \tilde{S}_t$$ of the portfolio is non-negative for all $0 \le t \le T$;
+        \item $\sup_{t \in [0, T]} \tilde{V}_t \in L^2(\mathbb{P}^\ast)$.
+    \end{enumerate}
+
+    An option is \textbf{replicable} if its payoff at maturity is equal to the final value of an admissible strategy.
+\end{definition}
+
+The next result shows that, under some conditions, any option is replicable and gives the value of any replicating portfolio.
+
+\begin{theorem}
+    Any option defined by a non-negative, $\mathfrak{F}_T$-measurable random variable $h$ in $L^2(\mathbb{P}^\ast)$ is replicable (in the Black-Scholes model).
+    
+    In fact, the value at time $t$ of any replicating portfolio is given by 
+    $$
+        V_t = \mathbb{E}^\ast \left[ e^{-r(T-t)} h ~ \middle| ~ \mathfrak{F}_t \right]
+    $$
+\end{theorem}
+
+Hence, option value at $t$ can be naturally defined by $\mathbb{E}^\ast \left[ e^{-r(T-t)} h ~ \middle| ~ \mathfrak{F}_t \right]$.
+
+\begin{proof}
+    Suppose that we already found an admissible strategy $(H^0, H)$ replicating the option. The value of the portfolio at time $t$ is given by 
+    \[
+        V_t = H_t^0 S_t^0 + H_t S^t 
+    \]
+    and the discounted value is 
+    \[
+        \tilde{V}_t = H_t^0 + H_t \tilde{S}_t
+    \]
+
+    Since the strategy is self-financing, by Proposition \ref{prop:4.1.2},
+    \[
+        \tilde{V}_t = V_0 + \int_0^t H_u ~\mathrm{d}\tilde{S}_u
+    \]
+    and, by the equation \eqref{eq:202305051135}, 
+    \[
+        \tilde{V}_t = V_0 + \int_0^t H_u \sigma \tilde{S}_u ~\mathrm{d}W_u
+    \]
+
+    Using that $\sup_{t \in [0, T]} \tilde{V}_t \in L^2(\mathbb{P}^\ast)$, the process $(\tilde{V}_t)$ is a stochastic integral with respect to $(W_t)$ it follows that $(\tilde{V}_t)$ is a square-integrable martingale under $\mathbb{P}^\ast$.
+
+    Hence, 
+    \[
+        \tilde{V}_t = \mathbb{E}^\ast [\tilde{V}_T \mid \mathfrak{F}_t] \implies V_t = \mathbb{E}^\ast [e^{-r(T-t)} h \mid \mathfrak{F}_t]
+    \]
+    proves the second part of our theorem. 
+
+    Now, we need to prove that the option is replicable. That means to find $(H_t)^0$ and $(H_t)$ defining an admissible strategy satisfying 
+    \[
+        H_t^0 S_t^0 + H_t S_t = \mathbb{E}^\ast [e^{-r(T-t)} h \mid \mathfrak{F}_t]
+    \]
+    
+    The process $M_t = \mathbb{E}^\ast [e^{-r(T-t)} h \mid \mathfrak{F}_t]$ is a square-integrable $\mathbb{P}^\ast$-martingale. Thus, from the \hyperref[thm:martingale_representation]{Martingale Representation Theorem}, there exists an adapted process $(K_t)$ such that 
+    \[
+        \mathbb{E}^\ast \left[ \int_0^T K_s^2 ~\mathrm{d}s \right] < \infty, \quad M_t = M_0 + \int_0^t K_s ~\mathrm{d}W_s \text{ a.s. } \forall~t \in [0, T]
+    \]
+
+    Applying the Proposition \ref{prop:4.1.2} and the equation \eqref{eq:202305051135} again, the strategy $\varphi = (H^0, H)$ with $H_t = K_t/(\sigma \tilde{S}_t)$ and $H_t^0 = M_t - H_t \tilde{S}_t$ is a self-finacing strategy with value at $t$ given by 
+    \[
+        V_t(\varphi) = e^{rt} M_t = \mathbb{E}^\ast [e^{-r(T-t)} h \mid \mathfrak{F}_t]
+    \]
+
+    Thus, $\varphi$ is the admissible strategy replicating $h$.
+\end{proof}
+
+The next result expresses the option value only as a function of $t$ and $S_t$. Put another way, it is an explicit solution of the Black-Scholes formula. Before that, we need the following. 
+
+\begin{lemma}
+    Let $X$ and $Y$ be two random variables with values in $(E, \mathfrak{E})$ and $(F, \mathfrak{F})$ respectively. Suppose that $X$ is $\mathfrak{B}$-measurable and that $Y$ is independent of $\mathfrak{B}$. Then, for any non-negative (or bounded) Borel function $\Psi$ on $(E \times F, \mathfrak{E} \otimes \mathfrak{F})$, the function $\psi$ defined by 
+    \[
+        \psi(x) = \mathbb{E}[\Psi(x, Y)], \quad x \in E
+    \]
+    is a Borel function on $(E, \mathfrak{E})$. 
+
+    And we have 
+    \[
+        \mathbb{E}[\Psi(X, Y) \mid \mathfrak{B}] = \psi(X) \text{ a.s. }
+    \]
+\end{lemma}
+
+\begin{proof}
+    Refer to Proposition A.2.5. \cite[p. 240]{lamberton2011introduction}.
+\end{proof}
+
+\begin{proposition}\label{prop:202305191628}
+    The option value $V_t$ can be expressed as $V_t = F(t, S_t)$ in which 
+    \[
+        F(t, x) = x\Phi(d_1) - Ke^{-r\theta} \Phi(d_2)
+    \]
+    for a call and 
+    \[
+        F(t, x) = Ke^{-r\theta} \Phi(-d_2) - x\Phi(-d_1)
+    \]
+    for a put, where $\Phi(x), d_1$ and $d_2$ are given by 
+    \[
+        \Phi(t) = \frac{1}{\sqrt{2\pi}} \int_{- \infty}^t e^{-u^2 / 2}~\mathrm{d}u
+    \]
+    and 
+    \[
+        d_1 = \frac{\ln(x/K) + (r + \sigma^2 / 2)\theta}{\sigma \sqrt{\theta}},
+        \quad
+        d_2 = \frac{\ln(x/K) + (r - \sigma^2 / 2)\theta}{\sigma \sqrt{\theta}}
+    \]
+\end{proposition}
+
+\begin{proof}
+    Using \eqref{eq:black_scholes_solution}, 
+    \begin{equation*}
+        \begin{aligned}
+            V_t(\varphi) &= \mathbb{E}^\ast [e^{-r(T-t)} f(S_T) \mid \mathfrak{F}_t] \\
+            &= \mathbb{E}^\ast \left[ e^{-r(T-t)} f \left( S_t e^{r(T-t)} e^{\sigma (W_T - W_t)} e^{- (\sigma^2/2)(T-t)} \right) ~ \middle| ~ \mathfrak{F}_t \right]
+        \end{aligned}
+    \end{equation*}
+
+    $S_t$ is $\mathfrak{F}_t$-measurable and, under $\mathbb{P}^\ast$, $W_T - W_t$ is independent of $\mathfrak{F}_t$, by the previous lemma we have that $V_t = F(t, S_t)$, where 
+    \[
+        F(t, x) = \mathbb{E}^\ast \left[ e^{-r(T-t)} f \left( x e^{r(T-t)} e^{\sigma (W_T - W_t)} e^{- (\sigma^2/2)(T-t)} \right) \right]
+    \]
+
+    Since, under $\mathbb{P}^\ast$, $(W_T - W_t) \sim N(0, ~T-t)$, 
+    \[
+        F(t, x) = e^{-r(T-t)} \int_{-\infty}^{+\infty} f \left( x e^{(r-\sigma^2/2)(T-t) + \sigma y \sqrt{T-t}} \right) \frac{e^{-y^2/2}}{\sqrt{2\pi}} ~\mathrm{d}y
+    \]
+
+    For a call option, $f(x) = \max \{(x-K), 0\}$. Hence,
+    \begin{equation*}
+        \begin{aligned}
+            F(t, x) &= \mathbb{E}^\ast \left[ e^{-r(T-t)} \max \left( x e^{(r-\sigma^2/2)(T-t) + \sigma y (W_T - W_t)} - K, ~0 \right) \right] \\
+            &= \mathbb{E} \left[ \max \left( x e^{\sigma \sqrt{\theta} g -\sigma^2 \theta/2} - Ke^{-r\theta}, ~0 \right) \right]
+        \end{aligned}
+    \end{equation*}
+    where $g$ is a standard normal random variable and $\theta = T - t$.
+
+    Using $d_1$ and $d_2$:
+    \begin{equation*}
+        \begin{aligned}
+            F(t, x) &= \mathbb{E} \left[ \left( x e^{\sigma \sqrt{\theta} g -\sigma^2 \theta/2} - Ke^{-r\theta} \right) \chi_{\{ g + d_2 \ge 0 \}} \right] \\
+            &= \int_{- d_2}^{+\infty} \left( x e^{\sigma \sqrt{\theta} y -\sigma^2 \theta/2} - Ke^{-r\theta} \right) \frac{e^{-y^2/2}}{\sqrt{2\pi}} ~\mathrm{d}y \\
+            &= \int_{- \infty}^{d_2} \left( x e^{\sigma \sqrt{\theta} y -\sigma^2 \theta/2} - Ke^{-r\theta} \right) \frac{e^{-y^2/2}}{\sqrt{2\pi}} ~\mathrm{d}y
+        \end{aligned}
+    \end{equation*}
+
+    Writing as the difference of two integrals and using the change of variables $z = y + \sigma \sqrt{\theta}$ in the first one, we obtain the result.
+\end{proof}
+
+With these results, how can we build a replicating portfolio to hedge an option? It must have, at time $t$, a discounted value $\tilde{V}_t = e^{-rt}F(t, S_t)$. 
+
+It can be proved that, under some hypothesis on $f$, the function $F$ is of class $\mathfrak{C}^\infty$ on $[0, T) \times \mathbb{R}$. Therefore, we can set $\tilde{F}(t, x) = e^{-rt} F(t, xe^{rt})$ and, by applying Itô's formula and using that $\tilde{F}(t, \tilde{S}_t)$ is a $\mathbb{P}^\ast$-martingale, we can deduce that 
+\[  
+    \tilde{F}(t, \tilde{S}_t) = \tilde{F}(0, \tilde{S}_0) + \int_0^t \frac{\partial \tilde{F}}{\partial x} (u, \tilde{S}_u) ~\mathrm{d}\tilde{S}_u
+\]
+
+Thus, the hedging process $H_t$ is given by 
+\[
+    H_t = \frac{\partial \tilde{F}}{\partial x} (t, \tilde{S}_t) = \frac{\partial F}{\partial x} (t, S_t)
+\]
+
+Notice that, in the case of a call:
+\[
+    \frac{\partial F}{\partial x} (t, S_t) = \Phi(d_1)
+\]
+and for a put: 
+\[
+    \frac{\partial F}{\partial x} (t, S_t) = -\Phi(-d_1)
+\]
+
+\begin{definition}['Greeks']
+    The quantity $\frac{\partial F}{\partial x} (t, S_t)$ above is called the \textbf{delta} of the option. It measures the sensitivity of the portfolio with respect to the variations of the asset price at time $t$. 
+
+    The \textbf{gamma} is the second derivative, \textbf{theta} is the time derivative, and \textbf{vega} is the derivative with respect to the volatility. 
+\end{definition}
+
+\subsection{American Options}
+
+\begin{definition}[Trading strategy with consumption]
+    A \textbf{trading strategy with consumption} is an adapted process $\varphi = (H_t^0, H_t)$ with values in $\mathbb{R}^2$ satisfying 
+    \begin{enumerate}
+        \item $\int_0^T |H_t^0| ~\mathrm{d}t + \int_0^T H_t^2 ~\mathrm{d}t < +\infty$ a.s.
+        \item $H_t^0 S_t^0 + H_t S_t = H_0^0 S_0^0 + H_0 S_0 + \int_0^t H_u^0 ~\mathrm{d}S_u^0 + \int_0^t H_u ~\mathrm{d}S_u - C_t$ for all $t \in [0, T]$, where $(C_t)$ is an adapted, continuous, non-decreasing process null at $t = 0$, corresponding to the cumulative consumption up to time $t$.
+    \end{enumerate}
+\end{definition}
+
+An American option is an adapted non-negative process $(h_t)$. We'll consider only payoffs of the form $h_t = \psi(S_t)$, where $\psi : \mathbb{R}^+ \longrightarrow \mathbb{R}^+$ is a continuous function satisfying $\psi(x) \le A + Bx$ for some non-negative constants $A$ and $B$. 
+
+Denote by $\Phi^\psi$ the set of all trading strategies with consumption hedging the American option of the form $h_t = \psi(S_t)$.
+
+Notice that $\varphi$ hedges $h_t$ if, setting $V_t(\varphi) = H_t^0 S_t^0 + H_t S_t$, we have $V_t(\varphi) \ge \psi(S_t)$ for all $t \in [0, T]$ almost surely. 
+
+\begin{theorem}
+    Let $u : [0, T] \times \mathbb{R}^+ \longrightarrow \mathbb{R}$ be given by 
+    \[
+        u(t, x) = \sup_{t \in \mathfrak{I}_{t, T}} \mathbb{E}^\ast [e^{-r(\tau - t)} \psi (x \exp ((r - (\sigma^2 /2)) (\tau - t) + \sigma (W_\tau - W_t)))]
+    \]
+    where $\mathfrak{I}_{t, T}$ is the set of all stopping times with values in $[t, T]$.
+
+    Then there exists a strategy $\overline{\varphi} \in \Phi^\psi$ such that $V_t(\overline{\varphi}) = u(t, S_t)$ for all $t \in [0, T]$. 
+
+    Also, for any strategy $\varphi \in \Phi^\psi$, $V_t(\varphi) \ge u(t, S_t)$ for all $t \in [0, T]$. 
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Show that $(e^{-rt} u(t, S_t))$ is the Snell envelope of $(e^{-rt} \psi(S_t))$.
+        \item Since the discounted value of a trading strategy with consumption is a $\mathbb{P}^\ast$-martingale, $V_t(\varphi) \ge u(t, S_t)$ for all $\varphi \in \Phi^\psi$.
+        \item Use the decomposition of martingales and the representation theorem to show the existence of $\overline{\varphi}$ such that $V_t(\overline{\varphi}) = u(t, S_t)$.
+    \end{enumerate}
+\end{proof}
+
+This result inspires us to interpret $u(t, S_t)$ as the price for the American option at time $t$.
+
+\begin{remark}
+    The minimal wealth that hedges all possible exercises is given by 
+    \[
+        u(0, S_0) = \sup_{\tau \in \mathfrak{I}_{0, T}} \mathbb{E}^\ast [e^{-r \tau} \psi(S_\tau)]
+    \]
+\end{remark}
+
+Notice that the American call price, on a non-dividend paying stock, equals the European call price. However, this is not the case for puts, which need numerical methods. 
+
+\subsection{Perpetual Puts and Critical Price}
+
+We study qualitative properties of $u(t,x)$.
+
+Taking $T$ to infinity,
+\begin{equation*}
+    \begin{aligned}
+        u(0, x) &= \sup_{\tau \in \mathfrak{I}_{0, T}} \mathbb{E}^\ast [\max \{ e^{-r \tau} -x \exp(\sigma W_\tau - \sigma^2 \tau/2), ~0 \}] \\
+        &\le \sup_{\tau \in \mathfrak{I}_{0, T}} \mathbb{E} [\max \{ e^{-r \tau} -x \exp(\sigma B_\tau - \sigma^2 \tau/2), ~0 \} \chi_{\tau < \infty}] =: u^\infty(x)
+    \end{aligned}
+\end{equation*}
+where $u^\infty(x)$ is called the \textbf{value of perpetual put}. 
+
+\begin{proposition}
+    \begin{equation}\label{eq:202305131550}
+        u^\infty(x) = \begin{cases}
+            K-x, & x \le x^\ast \\
+            (K-x^\ast)\left(\frac{x}{x^\ast}\right)^{- \gamma} & x > x^\ast 
+        \end{cases}
+    \end{equation}
+    with $x^\ast = K \gamma / (1+ \gamma)$ and $\gamma = 2r/\sigma^2$.
+\end{proposition}
+
+\begin{proof}
+    \begin{enumerate}
+        \item Notice that $u^\infty$ is convex, decreasing on $[0, \infty)$ and \[ u^\infty(x) \ge \max \{(K-x), 0 \} \]
+        \item For all $T > 0$, $u^\infty(x) \ge \mathbb{E} [\max \{ e^{-r T} -x \exp(\sigma B_T - \sigma^2 T/2), ~0 \}]$ implies that $u^\infty(x) > 0$ for all $x \ge 0$.
+        \item Define $x^\ast = \sup \{x \ge 0 : u^\infty(x) = K - x \}$.
+        \item Conclude that \begin{equation}\label{eq:202305101027}
+            \forall ~x \leq x^\ast, \quad u^\infty(x) = K - x \quad \text{ and } \quad \forall ~x \ge x^\ast, \quad u^\infty(x) > \max \{ (K-x), 0 \}
+        \end{equation}
+        \item Define the stopping time \[ \tau_x = \inf \{ t \ge 0 : e^{rt} u^\infty(X_t^x) = e^{-rt} \max \{K - X_t^x, ~0\} \} \]
+        \item Using the continuous time version of Snell envelope, \[ u^\infty(x) = \mathbb{E}[\max \{ e^{-r \tau_x} -x \exp(\sigma B_{\tau_x} - \sigma^2 \tau_x/2), ~0 \} \chi_{\tau_x < \infty}] \]
+        \item Notice that $\tau_x$ is an optimal stopping time.
+        \item From \eqref{eq:202305101027}, it follows that \[ \tau_x = \inf \{ t \ge 0 : X_t^x \le x^\ast \} = \inf \{ t \ge 0 : (r - \sigma^2/w)t + \sigma B_t \le \log(x^\ast / x)\} \]
+        \item Define a new stopping time $\tau_{x, z} = \inf \{ t \ge 0 : X_t^x \le z \}$ and notice that the optimal stopping time $\tau_x = \tau_{x, x^\ast}$. 
+        \item Now define \[ \varphi(z) = \mathbb{E} \left[ e^{-r\tau_{x, z}} \chi_{\tau_{x, z} < \infty} \max \{ K  - X_{\tau_{x, z}}^x, ~0\} \right]\]
+        \item Since $\tau_{x, x^\ast}$ is optimal, $\varphi(z)$ attains its maximum at $z = x^\ast$. 
+        \item Compute $\varphi$ explicitely and maximize it to find $x^\ast$ and $u^\infty(x) = \varphi(x^\ast)$.
+    \end{enumerate}
+\end{proof}
+
+Remark that for an American put with finite maturity $T$, we may apply the same argument above. For $t \in [0, t)$, there exists $s(t) \in [0, K]$ such that 
+\[
+    \forall ~x \le s(t), \quad u(t,x) = K-x   
+\]
+and 
+\[
+    \forall ~x > s(t), \quad u(t,x) > \max \{K-x, ~0 \}
+\]
+Using \eqref{eq:202305131550}, we have that $s(t) \ge x^\ast$ for all $t \in [0, t)$. 
+
+The number $s(t)$ is interpreted as the \textbf{critical price} at time $t$. If the price of the underlying asset at $t$ is less than or equal to $s(t)$, the buyer of the option should exercise the option. 
+
+\subsection{Implied and local volatilities}
+
+Notice that the Black-Scholes model only depends on the volatility $\sigma$. The natural question, then, is how to evaluate it? We start by listing the two most used methods.
+
+\begin{enumerate}
+    \item \textbf{Historical method}:
+    \begin{itemize}
+        \item $\sigma^2T$ variance of $\log(S_T)$;
+        \item $\log(S_T/S_0), \ldots, \log(S_{NT},S_{(n-1)T})$ are i.i.d. 
+        \item $\sigma$ is estimated by past observations.
+    \end{itemize}
+    \item \textbf{Implied volatility}:
+    \begin{itemize}
+        \item The price of the options is an increasing function of $\sigma$.
+        \item By inversion of Black-Scholes, associate an `implied' volatility.
+        \item Used for hedging more than pricing. 
+    \end{itemize}
+\end{enumerate}
+
+A more consistent approach, however, is to replace the constant $\sigma$ by a stochastic process $(\sigma_t)$. With this, our model becomes 
+\[
+    \mathrm{d}S_t = \mu S_t \mathrm{d}t + \sigma_t S_t \mathrm{d}B_t
+\]
+
+If $\sigma_t$ is adapted and bounded, we can extend the approach developed previously. 
+
+In the \textbf{local volatility} model, $\sigma_t = \sigma(t, S_t)$ is a deterministic function of time and current price. Using market prices of calls, we can build a local volatility model that provides the same prices as the market. If $C(T,K)$ is the market price, the consistent local volatility is given by the \textbf{Dupire's formula}:
+\[
+    \frac{\partial C}{\partial T}(T, K) = \frac{\sigma^2(T, K) K^2}{2} \frac{\partial^2 C}{\partial K^2}(T, K) - rK \frac{\partial C}{\partial T}(T, K)
+\]
+
+However, this is not easy to implement and has unstability issues. Thus, it is prefered, by practicioners, to use stochastic volatility models with jumps.
+
+In a \textbf{stochastic volatility} model,
+\begin{itemize}
+    \item $(\sigma_t)$ satisfies an stochastic differential equation following another Brownian motion, which may not be correlated with $(B_t)$.
+    \item No longer adapted to the natural filtration of Brownian motion. 
+    \item Are incomplete, replication may not be possible. 
+\end{itemize}
+
+\subsection{Call/Put Symmetry}
+
+Notice that our previous model assumes that the underlying stock does not distribute dividends. In this subsection, we model options with dividends by assuming that the holder receives $\delta S_t \mathrm{d}t$ in an infinitesimal time interval.
+
+In this context, the self-financing condition yields 
+\[
+    \mathrm{d}V_t = H_t^0 \mathrm{d}S_t^0 + H_t \mathrm{d} S_t + \delta H_t S_t \mathrm{d} t 
+\]
+and 
+\[
+    \mathrm{d} \tilde{V}_t = H_t \mathrm{d}\tilde{S}_t + \delta H_t \tilde{S}_t \mathrm{d}t = \sigma H_t \tilde{S}_t \mathrm{d}W_t^\delta
+\]
+where
+\[
+    W_t^\delta = B_t + (\mu - \delta - r)t/\sigma 
+\]
+and $\mathbb{P}^\delta$ is the measure under which $(W_t^\delta)$ is a standard Brownian motion. 
+
+Remark that, under the probability $\mathbb{P}^\delta$, $(e^{(\delta-r)t} S_t)$ is a martingale.
+
+We denote by $C_e(t, x, K, r, \delta)$ and $P_e(t, x, K, r, \delta)$ the price, at time $t$ of an European call (respectively put), with current stock price $x$, strike price $K$, interest rate $r$ and dividend yield $\delta$. Analogously, we define $C_a$ and $P_a$ for American call and put. 
+ 
+Then, 
+\[
+    C_e(t, x, K, r, \delta) = \mathbb{E}^\delta \left[ e^{-r(T-t)} \max \left\{xe^{(r-\delta-(\sigma^2/2)(T-t)) + \sigma(W_T^\delta - W_t^\delta)} - K, ~0 \right\} \right]
+\]
+
+\begin{proposition}[Call/Put Symmetry]
+    \[
+        C_e(t, x, K, r, \delta) = P_e(t, K, x, r, \delta) \quad \text{ and } \quad C_a(t, x, K, r, \delta) = P_a(t, K, x, r, \delta)
+    \]
+\end{proposition}
+
+\begin{proof} 
+    We prove for American options.
+    \begin{enumerate}
+        \item Assume $t = 0$ and write \[ C_a(0, x, K, r, \delta) = \sup_{\tau \in \mathfrak{I}_{0, T}} \mathbb{E}^\delta \left[ e^{-r\tau } \max \left\{xe^{(r-\delta-(\sigma^2/2)\tau) + \sigma W_\tau^\delta} - K, ~0 \right\} \right] \]
+        \item Let $\hat{W}_t^\delta = W_t^\delta - \sigma t$ and $\hat{\mathbb{P}}^\delta$ be the probability measure with density \[ \frac{\mathrm{d}\hat{\mathbb{P}}^\delta}{\mathrm{d} \mathbb{P}^\delta} = e^{\sigma W_T^\delta - (\sigma^2/2)T} \]
+        \item Thus, using that $(\hat{W}_t^\delta)$ is a $\hat{\mathbb{P}}^\delta$-martingale,
+        \begin{equation*}
+            \begin{aligned}
+                \mathbb{E}^\delta & \left[ e^{-r\tau } \max \left\{xe^{(r-\delta-(\sigma^2/2)\tau) + \sigma W_\tau^\delta} - K, ~0 \right\} \right] \\
+                &= \mathbb{E}^\delta \left[ e^{-\delta \tau} e^{\sigma W_\tau^\delta - (\sigma^2/2)\tau} \max \left\{ x - Ke^{(\delta - r - (\sigma^2/2)\tau) + \sigma W_\tau^\delta} ,~0 \right\}  \right] \\
+                &= \mathbb{E}^\delta \left[ e^{-\delta \tau} e^{\sigma W_T^\delta - (\sigma^2/2)T} \max \left\{ x - Ke^{(\delta - r - (\sigma^2/2)\tau) + \sigma \hat{W}_\tau^\delta} ,~0 \right\}  \right]
+            \end{aligned}
+        \end{equation*}
+        \item Hence,
+        \begin{equation*}
+            \begin{aligned}
+                \mathbb{E}^\delta & \left[ e^{-r\tau } \max \left\{xe^{(r-\delta-(\sigma^2/2)\tau) + \sigma W_\tau^\delta} - K, ~0 \right\} \right] \\
+                &= \hat{\mathbb{E}}^\delta \left[ e^{-\delta \tau } \max \left\{x - K e^{(\delta - r - (\sigma^2/2)\tau) + \sigma \hat{W}_\tau^\delta} , ~0 \right\} \right]
+            \end{aligned}
+        \end{equation*}
+    \end{enumerate}
+\end{proof}

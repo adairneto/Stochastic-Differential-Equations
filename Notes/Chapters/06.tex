@@ -149,7 +149,7 @@ To define a stopping time, the intuition is that we should be able to verify whe
 \begin{theorem}[Strong Markov Property for Itô Diffusions]
     Let $f$ be a bounded Borel function defined on $\textbf{R}^n$, $\tau$ a stopping time w.r.t. $\mathfrak{F}_t^{(m)}$, $\tau < \infty$ a.s. then 
     \begin{equation}\label{eq:str_markov_property}
-        \mathbb{E}^x [f(X_{\tau+h}) \mid \mathfrak{F}_t^{(m)}]_{(\omega)} = \mathbb{E}^{X_\tau(\omega)} [f(X_h)], \quad \forall ~h \geq 0
+        \mathbb{E}^x [f(X_{\tau+h}) \mid \mathfrak{F}_\tau^{(m)}]_{(\omega)} = \mathbb{E}^{X_\tau(\omega)} [f(X_h)], \quad \forall ~h \geq 0
     \end{equation}
 \end{theorem}
 
@@ -493,6 +493,142 @@ In words, if the point is not a trap, there exists an open set containing it suc
 
     This means that an Itô diffusion is a diffusion in the sense of Dynkin. 
 \end{remark}
+
+\section{The Feynman-Kac Formula}
+
+Relates stochastic differential equations and partial differential equations. Special case: the relationship between geometric Brownian motion and Black-Scholes-Merton model.
+
+\begin{theorem}[Feynman-Kac]\label{thm:feynman-kac}
+    Consider the stochastic differential equation 
+    \begin{equation}\label{eq:202305271535}
+        \mathrm{d}X_t = \mu(t, X_t) \mathrm{d}t + \sigma(t, X_t)\mathrm{d}B_t
+    \end{equation}
+
+    Let $h(y)$ be a Borel-measurable function and define 
+    \begin{equation}\label{eq:202305271536}
+        g(t, x) = \mathbb{E}^{t, x} [h(X_T)]
+    \end{equation}
+    which we suppose to satisfy $\mathbb{E}^{t, x} [|h(X_T)|] < \infty$ for all $t$ and $x$. 
+
+    Then $g(t, x)$ satisfies the partial differential equation 
+    \begin{equation*}
+        \frac{\partial g}{\partial t}(t, x) + \mu(t, x) \frac{\partial g}{\partial x}(t, x) + \frac{1}{2} \sigma^2(t, x) \frac{\partial^2 g}{\partial x^2}(t, x) = 0
+    \end{equation*}
+    and the terminal condition 
+    \begin{equation*}
+        g(T, x) = h(x), \quad \forall ~x
+    \end{equation*}
+\end{theorem}
+
+\begin{lemma}\label{lm:202305271614}
+    Let $X_u$ be a solution to the stochastic differential equation \eqref{eq:202305271535} with initial condition given at $t = 0$. And let $h(y)$ be a Borel-measurable function, $T > 0$, and $g(t,x)$ given by \eqref{eq:202305271536}. Then the stochastic process $g(t, X_t)$, $0 \le t \le T$, is a martingale.
+\end{lemma}
+
+\begin{proof}
+    Let $0 \le s \le t \le T$. By the \hyperref[thm:markov_prop_ito]{Markov Property for Itô Diffusions}, 
+    \[
+        \mathbb{E}[h(X_T) \mid \mathfrak{F}_s] = g(s, X_s), \quad \mathbb{E}[h(X_T) \mid \mathfrak{F}_t] = g(t, X_t)
+    \]
+
+    Taking conditional expectation of the second equation and using iterated expectation,
+    \begin{equation*}
+        \begin{aligned}
+            \mathbb{E}[g(t, X_t) \mid \mathfrak{F}_s] & = \mathbb{E}[\mathbb{E}[h(X_T) \mid \mathfrak{F}_t] \mid \mathfrak{F}_s] \\
+            &= \mathbb{E}[h(X_T) \mid \mathfrak{F}_s] = g(s, X_s)
+        \end{aligned}
+    \end{equation*}
+\end{proof}
+
+Now, we're ready to prove \hyperref[thm:feynman-kac]{Feynman-Kac}.
+
+\begin{proof}
+    \textbf{First step: Find the martingale}.
+
+    Let $X_t$ be the solution to the stochastic differential equation \eqref{eq:202305271535} starting at zero. 
+
+    Since $g(t, X_t)$ is a martingale (by the lemma \ref{lm:202305271614}), the term $\mathrm{d}t$ must be zero.
+    
+    \textbf{Second step: take the differential}.
+    
+    Thus (omitting the argument $(t, X_t)$), 
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}g &= g_t \mathrm{d}t + g_x \mathrm{d}X + \frac{1}{2}g_{xx} \mathrm{d}X \mathrm{d}X \\
+            &= g_t \mathrm{d}t + \mu g_x \mathrm{d}t + \sigma g_x \mathrm{d}B_t + \frac{1}{2} \sigma^2 g_{xx} \mathrm{d}t \\
+            &= \left( g_t + \mu g_x + \frac{1}{2} \sigma^2 g_{xx} \right) \mathrm{d}t + \sigma g_x \mathrm{d}B_t
+        \end{aligned}
+    \end{equation*}
+
+    \textbf{Third step: set the $\mathrm{d}t$ term equal to zero}.
+
+    Setting $\mathrm{d}t$ to zero, 
+    \[
+        g_t + \mu g_x + \frac{1}{2} \sigma^2 g_{xx} = 0
+    \]
+    along every path of $X$. 
+\end{proof}
+
+\begin{theorem}[Discounted Feynman-Kac]\label{thm:discounted_fk}
+    Consider the stochastic differential equation 
+    \begin{equation*}
+        \mathrm{d}X_t = \mu(t, X_t) \mathrm{d}t + \sigma(t, X_t)\mathrm{d}B_t
+    \end{equation*}
+
+    Let $h(y)$ be a Borel-measurable function and $r$ be a constant. Fix $T > 0$ and let $t \in [0,T]$. Define 
+    \begin{equation*}
+        g(t, x) = \mathbb{E}^{t, x} [e^{-r(T-t)} h(X_T)]
+    \end{equation*}
+    which we suppose to satisfy $\mathbb{E}^{t, x} [|h(X_T)|] < \infty$ for all $t$ and $x$. 
+
+    Then $g(t, x)$ satisfies the partial differential equation 
+    \begin{equation*}
+        \frac{\partial g}{\partial t}(t, x) + \mu(t, x) \frac{\partial g}{\partial x}(t, x) + \frac{1}{2} \sigma^2(t, x) \frac{\partial^2 g}{\partial x^2}(t, x) = r g(t,x)
+    \end{equation*}
+    and the terminal condition 
+    \begin{equation*}
+        g(T, x) = h(x), \quad \forall ~x
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}
+    As in the previous proof, we let $X_t$ be the solution of the stochastic differential equation starting at zero.
+
+    The difference here is that $g(t, X_t)$ is not a martingale. For $0 \le s \le t \le T$, we have 
+    \begin{equation*}
+        \begin{aligned}
+            \mathbb{E}[g(t, X_t) \mid \mathfrak{F}_s] &= \mathbb{E}[\mathbb{E}[e^{-r(T-t)} h(X_T) \mid \mathfrak{F}_t] \mid \mathfrak{F}_s] \\
+            &= \mathbb{E}[e^{-r(T-t)} h(X_T) \mid \mathfrak{F}_s]
+        \end{aligned}
+    \end{equation*}
+    However,
+    \begin{equation*}
+        g(s, X_s) = \mathbb{E}[e^{-r(T-s)} h(X_T) \mid \mathfrak{F}_s]
+    \end{equation*}
+    
+    The idea now is to `complete the discounting', since the random variable should not depend on $t$. Notice that 
+    \begin{equation*}
+        e^{-rt} g(t, X_t) = \mathbb{E}[e^{-rT} h(X_T) \mid \mathfrak{F}_t]
+    \end{equation*}
+
+    We apply iterated conditioning to show that $e^{-rt} g(t, X_t)$ is a martingale:
+    \begin{equation*}
+        \begin{aligned}
+            \mathbb{E}[e^{-rt} g(t, X_t) \mid \mathfrak{F}_s] &= \mathbb{E}[\mathbb{E}[e^{-rT} h(X_T) \mid \mathfrak{F}_t] \mid \mathfrak{F}_s] \\
+            &= \mathbb{E}[e^{-rT} h(X_T) \mid \mathfrak{F}_s] \\
+            &= e^{-rs}g(s, X_s)
+        \end{aligned}
+    \end{equation*}
+
+    Computing the differential,
+    \begin{equation*}
+        \begin{aligned}
+            \mathrm{d}(e^{-rt} g(t, X_t)) &= e^{-rt} \left[ -r g \mathrm{d}t + \frac{\partial g}{\partial t} \mathrm{d}t + \frac{\partial g}{\partial x} \mathrm{d}X_t + \frac{1}{2} \frac{\partial^2 g}{\partial x^2} (\mathrm{d}X_t)^2 \right] \\
+            &= e^{-rt}\left[ -r g + \frac{\partial g}{\partial t} + \mu \frac{\partial g}{\partial x} + \frac{1}{2} \sigma^2 \frac{\partial^2 g}{\partial x^2} \right] \mathrm{d}t + e^{-rt} \sigma \frac{\partial g}{\partial x} \mathrm{d}B_t
+        \end{aligned}
+    \end{equation*}
+
+    Set $\mathrm{d}t$ to zero and we have our result.
+\end{proof}
 
 % \section*{Without Section}
 

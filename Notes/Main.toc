@@ -11,13 +11,13 @@
 \contentsline {chapter}{\numberline {3}Stochastic Integrals}{12}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Formalizing the `noise'}{12}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Preparing the Terrain}{13}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Constructing the It\IeC {\^o} Integral}{15}{section.3.3}%
+\contentsline {section}{\numberline {3.3}Constructing the Itô Integral}{15}{section.3.3}%
 \contentsline {section}{\numberline {3.4}Properties}{18}{section.3.4}%
 \contentsline {section}{\numberline {3.5}Extensions}{18}{section.3.5}%
 \contentsline {section}{\numberline {3.6}Stratonovich integral}{19}{section.3.6}%
-\contentsline {chapter}{\numberline {4}The It\IeC {\^o} Formula and the Martingale Representation Theorem}{21}{chapter.4}%
-\contentsline {section}{\numberline {4.1}1-Dimensional It\IeC {\^o} Processes}{21}{section.4.1}%
-\contentsline {section}{\numberline {4.2}The Multi-Dimensional It\IeC {\^o} Formula}{23}{section.4.2}%
+\contentsline {chapter}{\numberline {4}The Itô Formula and the Martingale Representation Theorem}{21}{chapter.4}%
+\contentsline {section}{\numberline {4.1}1-Dimensional Itô Processes}{21}{section.4.1}%
+\contentsline {section}{\numberline {4.2}The Multi-Dimensional Itô Formula}{23}{section.4.2}%
 \contentsline {section}{\numberline {4.3}The Martingale Representation Theorem}{24}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Stochastic Differential Equations}{26}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Solution Methods}{26}{section.5.1}%
@@ -27,16 +27,35 @@
 \contentsline {section}{\numberline {6.1}Basic Definitions}{33}{section.6.1}%
 \contentsline {section}{\numberline {6.2}The Markov Property}{34}{section.6.2}%
 \contentsline {subsection}{\numberline {6.2.1}Hitting distribution and Harmonic measure}{36}{subsection.6.2.1}%
-\contentsline {section}{\numberline {6.3}The Generator of an It\IeC {\^o} Diffusion}{37}{section.6.3}%
+\contentsline {section}{\numberline {6.3}The Generator of an Itô Diffusion}{37}{section.6.3}%
 \contentsline {section}{\numberline {6.4}Dynkin's Formula}{39}{section.6.4}%
 \contentsline {section}{\numberline {6.5}The Characteristic Operator}{40}{section.6.5}%
-\contentsline {chapter}{\numberline {A}Measure Theory}{42}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Measurable Spaces}{42}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Measures}{42}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Measurable Functions}{44}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Integration}{46}{section.A.4}%
-\contentsline {section}{\numberline {A.5}Product Spaces}{49}{section.A.5}%
-\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{50}{section.A.6}%
-\contentsline {section}{\numberline {A.7}Modes of Convergence}{51}{section.A.7}%
-\contentsline {section}{\numberline {A.8}Conditional Expectation}{52}{section.A.8}%
-\contentsline {chapter}{References}{54}{appendix*.2}%
+\contentsline {section}{\numberline {6.6}The Feynman-Kac Formula}{41}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Application to Option Pricing}{44}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction}{44}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Risk Neutral Valuation: Discrete Model Intuition}{44}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Continuous Model Intuition}{46}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Option Price and Probability Duality}{48}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}Discrete Time Models}{50}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}European Options}{50}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}American Options}{57}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Optimal Stopping}{57}{subsection.7.2.3}%
+\contentsline {section}{\numberline {7.3}Continuous Time: The Black-Scholes model}{63}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}The behavior of prices}{64}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Self-financing Strategies}{64}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Change of Measure}{65}{subsection.7.3.3}%
+\contentsline {subsection}{\numberline {7.3.4}Pricing and Hedging Options in the Black-Scholes Model}{66}{subsection.7.3.4}%
+\contentsline {subsection}{\numberline {7.3.5}American Options}{70}{subsection.7.3.5}%
+\contentsline {subsection}{\numberline {7.3.6}Perpetual Puts and Critical Price}{71}{subsection.7.3.6}%
+\contentsline {subsection}{\numberline {7.3.7}Implied and local volatilities}{72}{subsection.7.3.7}%
+\contentsline {subsection}{\numberline {7.3.8}Call/Put Symmetry}{73}{subsection.7.3.8}%
+\contentsline {chapter}{\numberline {A}Measure Theory}{75}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Measurable Spaces}{75}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Measures}{75}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Measurable Functions}{77}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Integration}{79}{section.A.4}%
+\contentsline {section}{\numberline {A.5}Product Spaces}{82}{section.A.5}%
+\contentsline {section}{\numberline {A.6}The Monotone Class Lemma}{83}{section.A.6}%
+\contentsline {section}{\numberline {A.7}Modes of Convergence}{84}{section.A.7}%
+\contentsline {section}{\numberline {A.8}Conditional Expectation}{85}{section.A.8}%
+\contentsline {chapter}{References}{87}{appendix*.2}%
